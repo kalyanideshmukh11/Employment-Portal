@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Navbar, Nav, NavDropdown, Form, FormControl, Button, Image, DropdownButton, Dropdown, InputGroup} from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import glassdorNavIco from '../../images/glassdoor-logotype-rgb.png'
+import glassdorNavIco from '../images/glassdoor-logotype-rgb.png'
 
 class StudentNavbar extends Component {
     constructor(props) {

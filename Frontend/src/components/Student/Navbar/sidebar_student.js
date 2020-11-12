@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Image, ListGroup} from 'react-bootstrap'
-import profilePicture from '../../images/studentPlaceholder.png'
+import profilePicture from '../images/studentPlaceholder.png'
 
 
 class SideBarStudent extends Component {

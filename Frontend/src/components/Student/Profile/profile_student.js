@@ -4,16 +4,21 @@ import SideBarStudent from '../Navbar/sidebar_student';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import {Button} from 'react-bootstrap'
+import BasicProfileModal from './basicProfile_modalForm_student'
 
 class StudentProfile extends Component {
     constructor(props){
         super(props)
         this.state = {
+            show: false,
+            setShow: false
         }
         
     }
-    render() {
+    handleClose = () => this.setState({setShow: false});
+    handleShow = () => this.setState({setShow: true});
 
+    render() {
 
         return (
             <div>
@@ -31,9 +36,10 @@ class StudentProfile extends Component {
                         <h4 style={{fontFamily:"helvetica", fontWeight:"bold"}}> FirstName LastName  </h4>
                         </div>
                         <div class='col'>
-                        <Button variant='link' onClick={this.editBasic} >
+                        <Button variant='link' onClick={this.handleShow} >
                         <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="s" />
                         </Button>
+                        <BasicProfileModal />
                         </div>
                         </div>
 
@@ -83,7 +89,6 @@ class StudentProfile extends Component {
                             </Button>
                         </div>
                     </div>
-                    <br />
                     <br />
                     <br />
                         <h4 style={{fontFamily:"helvetica", fontWeight:"bold"}}> About Me  

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
-import StudentHome from './LandingPage/home_student';
-import StudentProfile from './Profile/profile_student';
-import StudentResume from './Resume/resume_student'
+import StudentHome from './Student/LandingPage/home_student';
+import StudentProfile from './Student/Profile/profile_student';
+import StudentResume from './Student/Resume/resume_student'
 
 class Main extends Component {
     render() {

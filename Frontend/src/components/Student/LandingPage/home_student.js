@@ -3,7 +3,7 @@ import StudentNavbar from '../Navbar/navbar_student'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBriefcase, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons'
 import {Card, Image} from 'react-bootstrap'
-import profilePicture from '../../images/studentPlaceholder.png'
+import profilePicture from '../images/studentPlaceholder.png'
 
 class StudentHome extends Component {
     constructor(props) {
