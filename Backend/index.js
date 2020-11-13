@@ -1,6 +1,6 @@
 const app = require('./app');
 
-const images = require('./routes/images')
+const images = require('./Student/routes/images')
 
 
 app.use("/images", images)
