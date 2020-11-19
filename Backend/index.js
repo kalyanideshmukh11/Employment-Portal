@@ -1,10 +1,12 @@
 const app = require('./app');
 
 const images = require('./routes/Student/images')
-const userRouter = require("./routes/Student/user");
+const studentRouter = require("./routes/Student/student");
+const companyRouter = require("./routes/Employer/company");
 
 app.use("/images", images)
-app.use("/user", userRouter);
+app.use("/student", studentRouter);
+app.use("/company", companyRouter);
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {

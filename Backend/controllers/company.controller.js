@@ -1,5 +1,5 @@
 const db = require("../models");
-const user = db.user;
+const company = db.company;
 const Op = db.Sequelize.Op;
 const passwordHash = require('password-hash');
 
@@ -16,11 +16,10 @@ exports.create = (req, res) => {
   const c = {
     name: req.body.name,
     email: req.body.email,
-    password: hashedPassword,
-    type: req.body.type
+    password: hashedPassword
   };
   
-  user.create(c)
+  company.create(c)
     .then(data => {
       res.send(data);
     })
