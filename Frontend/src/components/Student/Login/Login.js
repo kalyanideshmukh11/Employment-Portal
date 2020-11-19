@@ -3,6 +3,12 @@ import '../../../Login.css'
 import '../../../App.css'
 import {Redirect} from 'react-router';
 import { Link } from 'react-router-dom';
+import SideBarStudent from '../Navbar/sidebar_student';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPen, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import {Button} from 'react-bootstrap'
+import BasicProfileModal from '../Profile/basicProfile_modalForm_student'
+
 
 // import axios from 'axios';
 // import backendServer from '../../config'
@@ -14,6 +20,7 @@ class Login extends Component{
         super(props);
         //maintain the state required for this component
         this.state = {
+            show: false,
             cust_username : "",
             cust_password : "",
             cust_authFlag : false,
@@ -24,6 +31,15 @@ class Login extends Component{
         this.cust_passwordChangeHandler = this.cust_passwordChangeHandler.bind(this);
         this.submitLogin = this.submitLogin.bind(this);
     }
+
+    showModal = () => {
+        this.setState({ show: true });
+    };
+    
+    hideModal = () => {
+    this.setState({ show: false });
+    };
+
     //Call the Will Mount to set the auth Flag to false
     componentWillMount(){
         this.setState({
@@ -91,44 +107,105 @@ class Login extends Component{
             message = "Invalid username or password"
         }
         return(
-            <div class="login-class"> 
-                {redirectVar}
-                <div >
-                            <div class="main-div">
-                                <div class="panel">
-                            
-                            <h2>Sign In</h2>
-                            <p>Please enter your username and password</p>
-                            
-                        </div>
-                        <form onSubmit={this.submitLogin}>                        
-                            <div class="form-group">
-                                <input onChange = {this.cust_usernameChangeHandler} type="text" class="form-control" name="username" placeholder="Username" required/>
-                            </div>
-                            <div class="form-group">
-                                <input onChange = {this.cust_passwordChangeHandler} type="password" class="form-control" name="password" placeholder="Password" required/>
-                            </div>
-                            <div style={{ color: "#ff0000" }}>{message}</div>
-                            <button type="submit" class="btn btn-primary">Login</button>                 
-                            <div class="signup-section">
-                                
-                                <div>
-                                    <p>Don't have an account?
-                                        <Link to='/CustomersSignup'>   Signup here</Link>
-                                    </p>
-                                    {/* <p>
-                                        <Link to="/RestaurantsLogin">Restaurant? Click here to sign in</Link>
-                                    </p> */}
-                                    </div>
+            <div>            
+                <div class="container">
+                    <br /><br /><br />
+                    <br /><br /><br />
+                    <br /><br /><br />
+                    <div class="d-flex justify-content-center h-100">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Sign Up</h3>
+                                <div class="d-flex justify-content-end social_icon">
+                                    {/* <span><i class="fab fa-facebook-square"></i></span>
+                                    <span><i class="fab fa-google-plus-square"></i></span>
+                                    <span><i class="fab fa-twitter-square"></i></span> */}
                                 </div>
-                        </form>
-
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="input-group form-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Create account with Email" />
+                                
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                        </div>
+                                        <input type="password" class="form-control" placeholder="Password" />
+                                    </div>
+                                    <div class="row align-items-center remember">
+                                        <input type="checkbox"/>Remember Me
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Continue with Email" class="float-right login_btn" />
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer">
+                                <div class="acc">
+                                    Already have an account? 
+                                    {/* <a href="#">Sign In</a> */}
+                                    {/* <Link to='/'>   Sign In</Link> */}
+                                    <button type="button" onClick={this.showModal}>Sign In</button>
+                                </div>
+                                {/* <div class="d-flex justify-content-center">
+                                    <a href="#">Forgot your password?</a>
+                                </div> */}
+                            </div>
+                        </div>
                     </div>
-                    
                 </div>
-                
-                {/* <div class="restaurant-form"> <RestaurantsLogin /></div> */}
+                <div class="post-jobs">
+                    Are you hiring? <a href="#">Post Jobs</a>
+                </div>
             </div>
+
+            // {/* // <div>
+            // //     <br />
+            // //     <br />
+
+                
+            // //  <div class="container"></div>
+            // // <div class="container"> 
+            // //     {redirectVar}
+            // //     <div >
+            // //                 <div class="main-div">
+            // //                     <div class="panel">
+                            
+            // //                 <h2>Sign In</h2>
+            // //                 <p>Please enter your username and password</p>
+                            
+            // //             </div>
+            // //             <form onSubmit={this.submitLogin}>                        
+            // //                 <div class="form-group">
+            // //                     <input onChange = {this.cust_usernameChangeHandler} type="text" class="form-control" name="username" placeholder="Username" required/>
+            // //                 </div>
+            // //                 <div class="form-group">
+            // //                     <input onChange = {this.cust_passwordChangeHandler} type="password" class="form-control" name="password" placeholder="Password" required/>
+            // //                 </div>
+            // //                 <div style={{ color: "#ff0000" }}>{message}</div>
+            // //                 <button type="submit" class="btn btn-primary">Login</button>                 
+            // //                 <div class="signup-section">
+                                
+            // //                     <div>
+            // //                         <p>Don't have an account?
+            // //                             <Link to='/CustomersSignup'>   Signup here</Link>
+            // //                         </p>
+            // //                         
+            // //                         </div>
+            // //                     </div>
+            // //             </form>
+
+            // //         </div>
+                    
+            // //     </div>
+                
+            // //    // </div>
+            // // </div> */}
         )
     }
 }
