@@ -42,4 +42,35 @@
   border-color: rgb(221, 221, 222) !important;
   border-bottom: 4px solid rgb(77, 166, 79) !important;;
 }
+#root > div > div > div > div.row > div.col-6 > div > div > a.list-group-item.active.list-group-item-light.list-group-item-action {
+  color:black;
+  background-color: white !important;
+  border-color: rgb(221, 221, 222) !important;
+  border-bottom: 4px solid rgb(77, 166, 79) !important;;
+}
 
+#root > div > div > div > div.row > div.col-4.contri > div > div > a.list-group-item.active.list-group-item-light.list-group-item-action {
+  color:black;
+  background-color: white !important;
+  border-color: rgb(221, 221, 222) !important;
+  border-bottom: 4px solid rgb(77, 166, 79) !important;;
+}
+#root > div > div > div > div.row > div.col-4.contri > div > div{
+  box-shadow: 0.5px 1px 1px 0.5px rgba(158, 155, 155, 0.89);;
+}
+#root > div > div > div > div.row > div.col-8.contri > div{
+  box-shadow: 0.5px 1px 1px rgba(158, 155, 155, 0.89);;
+}
+
+.optionContainer li:hover, .optionContainer .highlight {
+  background: rgb(77, 166, 79) !important ;
+  color: white !important;
+  font-weight: lighter !important;
+}
+
+.optionContainer li, .optionContainer .highlight {
+  background: white !important ;
+  color: black !important;
+  font-weight: lighter !important;
+
+}

@@ -8,8 +8,11 @@ import profilePicture from '../images/studentPlaceholder.png'
 class StudentHome extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+
+        }
     }
+    
     render() {
         return (
             <div> 

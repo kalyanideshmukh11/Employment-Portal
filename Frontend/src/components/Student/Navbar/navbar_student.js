@@ -70,7 +70,7 @@ class StudentNavbar extends Component {
                         <NavDropdown.Item href="/student/jobPreference" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'jobPreference')}}>Job Preference</NavDropdown.Item>
                         <NavDropdown.Item href="/student/demographics" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'demographics')}}>Demographics</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item href="/student/contributions" style={{padding:"10px 15px 10px 15px"}} >Contributions</NavDropdown.Item>
+                        <NavDropdown.Item href="/student/contributions/salaries" style={{padding:"10px 15px 10px 15px"}} onClick={()=>{localStorage.setItem('contri-list', 'salaries')}}>Contributions</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={this.handleLogout} style={{padding:"10px 15px 10px 15px"}}>Logout</NavDropdown.Item>
                     </NavDropdown>
