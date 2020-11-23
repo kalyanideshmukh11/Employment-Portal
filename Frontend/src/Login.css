@@ -115,20 +115,11 @@ div[disabled]
   width: 80%
 }
 
-.login-class{
-    height: 100%;
-    background-image: url(https://www.glassdoor.com/app/static/img/home/vr.jpg);
-}
-
-
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
-html,body{
-background-image: url('https://www.glassdoor.com/app/static/img/home/vr.jpg');
-background-size: cover;
-background-repeat: no-repeat;
+html,body{ 
 height: 100%;
-font-family: 'Numans', sans-serif;
+margin: 0
 }
 
 .container{

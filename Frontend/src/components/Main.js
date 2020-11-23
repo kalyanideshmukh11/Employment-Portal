@@ -10,6 +10,7 @@ class Main extends Component {
     render() {
         return (
             <div>
+                <Route exact path="/" component={Login} />
                 <Route exact path="/student/home" component={StudentHome} />
                 <Route exact path="/student/profile" component={StudentProfile} />
                 <Route exact path="/student/resume" component={StudentResume} />
