@@ -36,10 +36,10 @@
     transform: rotate(360deg);
   }
 }
-#root > div > div > div > div.row > div.col-4 > div > div > a.list-group-item.active.list-group-item-light.list-group-item-action {
+/* #root > div > div > div > div.row > div.col-4 > div > div > a.list-group-item.active.list-group-item-light.list-group-item-action {
   color:black;
   background-color: white !important;
   border-color: rgb(221, 221, 222) !important;
   border-bottom: 4px solid rgb(77, 166, 79) !important;;
-}
+} */
 

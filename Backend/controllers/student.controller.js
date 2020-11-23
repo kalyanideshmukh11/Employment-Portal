@@ -54,7 +54,7 @@ exports.validate = (req, res) => {
           }
           else if (passwordHash.verify(pwd, data.dataValues.password)){
             message = {message: "SUCCESS", type: "company"}
-            // returnVal = Object.assign(message, data.dataValues)
+            returnVal = Object.assign(message, data.dataValues)
             res.status(200).send(message)
           }
           else{
