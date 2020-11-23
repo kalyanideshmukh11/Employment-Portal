@@ -1,4 +1,5 @@
 module.exports = {
+    secret: "glassdoor_passport",
     HOST: "glassdoor1.ct6wnyfm23fl.us-west-1.rds.amazonaws.com",
     USER: "admin",
     PASSWORD: "glassdoor273",

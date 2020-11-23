@@ -1,19 +1,18 @@
 import React, {Component} from 'react';
-import '../../../Login.css';
-import '../../../App.css';
+import '../../../Login.css'
+import '../../../App.css'
+import {Redirect} from 'react-router';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
-import { Link } from 'react-router-dom';
-import LoginNavbar from '../Navbar/navbar_login';
+import LoginNavbar from '../../Student/Navbar/navbar_login';
 
-class Login extends Component{
+class CompanyLogin extends Component{
     constructor(props){
         super(props);
         this.state = {
             email : "",
             password : "",
-            first_name: "",
-            last_name: "",
+            name: "",
             authFlag : false,
             err: "",
             error: null
@@ -36,24 +35,24 @@ class Login extends Component{
           return
         }
         const data = {
-          first_name: this.state.first_name,
-          last_name: this.state.last_name,
+          name: this.state.name,
           email : this.state.email,
           password : this.state.password
         }
         axios.defaults.withCredentials = true;
-        axios.post(`${backendServer}student/register`,data)
+        axios.post(`${backendServer}company/register`,data)
             .then(response => {
                 console.log(response.data)
                 console.log("Status Code : ",response.status);
                 if(response.status === 200){
                   alert("Signed Up successfully")
-                  this.openModal()
+                  this.setState({
+                    redirect: <Redirect to= "/login"/>
+                  })
                 }else{
                     this.setState({
-
-                        authFlag : false,
-                        invalid: true
+                      authFlag : false,
+                      invalid: true
                     })
                 }
             })
@@ -74,31 +73,21 @@ class Login extends Component{
             <div> 
                 {redirectVar}
                 <div class="container">
-                  <LoginNavbar></LoginNavbar>
+                    <LoginNavbar></LoginNavbar>
                     <br /><br /><br />
                     <div class="d-flex justify-content-center h-100">
                         <div class="card">
                             <div class="card-header">
-                                <h3>Sign Up</h3>
+                                <h3>Sign Up for employers</h3>
                             </div>
                             <div class="card-body">
                                 <form onSubmit={this.onSignUp}>
                                     <div class="input-group form-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
                                         </div>
-                                        <input required type="text" class="form-control" onChange = {this.changeHandler} name="first_name" placeholder="First Name" />
-                                
+                                        <input required type="text" class="form-control" onChange = {this.changeHandler} name="name" placeholder="Company Name" />
                                     </div>
-
-                                    <div class="input-group form-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                        </div>
-                                        <input required type="text" class="form-control" onChange = {this.changeHandler} name="last_name" placeholder="Last Name" />
-                                
-                                    </div>
-
                                     <div class="input-group form-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
@@ -121,12 +110,9 @@ class Login extends Component{
                         </div>
                     </div>
                 </div>
-                <div class="post-jobs">
-                  Are you hiring?<Link to="/company/login"> Post Jobs</Link>
-                </div>
             </div>
         )
     }
 }
 
-export default Login;
+export default CompanyLogin;

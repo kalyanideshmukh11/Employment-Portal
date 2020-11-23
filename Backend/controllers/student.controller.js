@@ -3,7 +3,10 @@ const student = db.student;
 const company = db.company;
 const Op = db.Sequelize.Op;
 const passwordHash = require('password-hash');
-
+const jwt = require('jsonwebtoken');
+const { secret } = require('../config/db.config');
+const { auth } = require("../config/passport");
+auth();
 
 exports.create = (req, res) => {
   if (!req.body.email) {
@@ -53,9 +56,11 @@ exports.validate = (req, res) => {
             });
           }
           else if (passwordHash.verify(pwd, data.dataValues.password)){
-            message = {message: "SUCCESS", type: "company"}
-            returnVal = Object.assign(message, data.dataValues)
-            res.status(200).send(message)
+            const payload = { id: data.id, email: data.email, name: data.name, type: "company"};
+            const token = jwt.sign(payload, secret, {
+                expiresIn: 1008000
+            });
+            res.status(200).send("JWT " + token);
           }
           else{
             res.status(401).send({
@@ -65,9 +70,11 @@ exports.validate = (req, res) => {
         })
       }
       else if (passwordHash.verify(pwd, data.dataValues.password)){
-        message = {message: "SUCCESS", type: "student"}
-        // returnVal = Object.assign(message, data.dataValues)
-        res.status(200).send(message)
+        const payload = { id: data.id, email: data.email, first_name: data.first_name, last_name: data.last_name, type: "student"};
+        const token = jwt.sign(payload, secret, {
+            expiresIn: 1008000
+        });
+        res.status(200).send("JWT " + token);
       }
       else{
         res.status(401).send({
