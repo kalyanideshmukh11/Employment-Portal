@@ -5,6 +5,8 @@ import StudentProfile from './Student/Profile/profile_student';
 import StudentResume from './Student/Resume/resume_student';
 import Login from './Student/Login/Login';
 import CompanyLogin from './Employer/Login/companyLogin';
+import companyProfile from './Employer/companyProfile';
+import updateCompany from './Employer/update';
 
 class Main extends Component {
     render() {
