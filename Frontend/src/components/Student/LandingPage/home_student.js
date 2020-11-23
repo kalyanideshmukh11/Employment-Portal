@@ -13,6 +13,11 @@ class StudentHome extends Component {
         }
     }
     
+    componentWillMount() {
+        
+
+    }
+
     render() {
         return (
             <div> 
