@@ -5,6 +5,7 @@ import axios from 'axios';
 import backendServer from '../../../webConfig';
 import { Link } from 'react-router-dom';
 import LoginNavbar from '../Navbar/navbar_login';
+import {Button} from 'react-bootstrap';
 
 class Login extends Component{
     constructor(props){
@@ -48,7 +49,7 @@ class Login extends Component{
                 console.log("Status Code : ",response.status);
                 if(response.status === 200){
                   alert("Signed Up successfully")
-                  this.openModal()
+                 
                 }else{
                     this.setState({
 
@@ -114,7 +115,7 @@ class Login extends Component{
                                     </div>
                                     <div style={{ color: "#ff0000" }}>{this.state.message}</div>
                                     <div class="form-group">
-                                        <input type="submit" value="Continue with Email" class="float-right login_btn" />
+                                        <Button type="submit" variant="success" className="float-right"> Continue with Email </Button>
                                     </div>
                                 </form>
                             </div>

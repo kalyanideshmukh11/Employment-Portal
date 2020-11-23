@@ -5,6 +5,7 @@ import {Redirect} from 'react-router';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
 import LoginNavbar from '../../Student/Navbar/navbar_login';
+import { Button } from 'react-bootstrap';
 
 class CompanyLogin extends Component{
     constructor(props){
@@ -47,7 +48,7 @@ class CompanyLogin extends Component{
                 if(response.status === 200){
                   alert("Signed Up successfully")
                   this.setState({
-                    redirect: <Redirect to= "/login"/>
+                    redirect: <Redirect to= "/student/login"/>
                   })
                 }else{
                     this.setState({
@@ -103,7 +104,7 @@ class CompanyLogin extends Component{
                                     </div>
                                     <div style={{ color: "#ff0000" }}>{this.state.message}</div>
                                     <div class="form-group">
-                                        <input type="submit" value="Continue with Email" class="float-right login_btn" />
+                                    <Button type="submit" variant="success" className="float-right"> Continue with Email </Button>
                                     </div>
                                 </form>
                             </div>
