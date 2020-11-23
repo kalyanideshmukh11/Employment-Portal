@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Navbar from '../Student/Navbar/navbar_student';
+import Navbar from '../../Student/Navbar/navbar_student';
 import { Link } from 'react-router-dom';
 import { Form, Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { insertNewJobDetails } from '../../store/actions/companyJobsAction';
+import { insertNewJobDetails } from '../../../store/actions/companyJobsAction';
 
 class AddJob extends Component {
   constructor(props) {
@@ -82,6 +82,8 @@ class AddJob extends Component {
                     <strong>Description</strong>
                   </Form.Label>
                   <Form.Control
+                    as='textarea'
+                    aria-label='With textarea'
                     required={true}
                     type='text'
                     name='description'
@@ -92,6 +94,8 @@ class AddJob extends Component {
                     <strong>Responsibilities</strong>
                   </Form.Label>
                   <Form.Control
+                    as='textarea'
+                    aria-label='With textarea'
                     required={true}
                     type='text'
                     name='responsibilities'
@@ -102,6 +106,8 @@ class AddJob extends Component {
                     <strong>Qualification</strong>
                   </Form.Label>
                   <Form.Control
+                    as='textarea'
+                    aria-label='With textarea'
                     required={true}
                     type='text'
                     name='qualification'
