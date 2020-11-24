@@ -1,11 +1,12 @@
-var connection = new require("./kafka/connection");
+var connection = new require('./kafka/connection');
 
 // topic files
-var companyProfileTopic = require("./services/companyProfile_topic");
-var reviewTopic = require("./services/review_topic");
+var companyProfileTopic = require('./services/companyProfile_topic');
+var reviewTopic = require('./services/review_topic');
+var jobsTopic = require('./services/jobs_topic');
 
-const mongoose = require("mongoose");
-const { mongoDBURI } = require("./config/config");
+const mongoose = require('mongoose');
+const { mongoDBURI } = require('./config/config');
 
 const options = {
   useNewUrlParser: true,
@@ -26,20 +27,26 @@ mongoose.connect(mongoDBURI, options, (err, res) => {
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
-  console.log("server is running");
-  consumer.on("message", function (message) {
-    console.log("message received for " + topic_name + " ", fname);
+  console.log('server is running');
+  consumer.on('message', function (message) {
+    console.log('message received for ' + topic_name + ' ', fname);
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
     switch (topic_name) {
-      case "companyProfile_topic":
+      case 'companyProfile_topic':
         fname.companyProfileService(data.data, function (err, res) {
           response(data, res, producer);
           return;
         });
         break;
-      case "review_topic":
+      case 'review_topic':
         fname.reviewService(data.data, function (err, res) {
+          response(data, res, producer);
+          return;
+        });
+        break;
+      case 'jobs_topic':
+        fname.jobsService(data.data, function (err, res) {
           response(data, res, producer);
           return;
         });
@@ -49,7 +56,7 @@ function handleTopicRequest(topic_name, fname) {
 }
 
 function response(data, res, producer) {
-  console.log("after handle", res);
+  console.log('after handle', res);
   var payloads = [
     {
       topic: data.replyTo,
@@ -61,7 +68,7 @@ function response(data, res, producer) {
     },
   ];
   producer.send(payloads, function (err, data) {
-    console.log("producer send");
+    console.log('producer send');
   });
   return;
 }
@@ -70,5 +77,6 @@ function response(data, res, producer) {
 // first argument is topic name
 // second argument is a function that will handle this topic request
 
-handleTopicRequest("companyProfile_topic", companyProfileTopic);
-handleTopicRequest("review_topic", reviewTopic);
+handleTopicRequest('companyProfile_topic', companyProfileTopic);
+handleTopicRequest('review_topic', reviewTopic);
+handleTopicRequest('jobs_topic', jobsTopic);
