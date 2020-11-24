@@ -127,13 +127,22 @@ height: 100%;
 align-content: center;
 }
 
+#root > div > div > div > div:nth-child(1) > div.d-flex.justify-content-center.h-100 > div{
+    height: 400px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 450px;
+    background-color: rgba(0,0,0,0.5) !important;
+
+}
+/* 
 .card{
 height: 400px;
 margin-top: auto;
 margin-bottom: auto;
 width: 450px;
 background-color: rgba(0,0,0,0.5) !important;
-}
+} */
 
 .social_icon span{
 font-size: 60px;

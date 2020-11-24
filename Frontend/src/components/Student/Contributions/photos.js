@@ -14,7 +14,6 @@ class PhotosContribution extends Component{
      return(
         <div>
             <StudentNavbar />
-            <br />
        
         <div className='row' style={{background: "#eaeaea"}}>
         <div class="col-4 contri" style={{paddingLeft:"5cm"}}> 

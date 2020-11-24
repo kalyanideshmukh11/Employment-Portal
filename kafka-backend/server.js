@@ -3,6 +3,7 @@ var connection = new require("./kafka/connection");
 // topic files
 var companyProfileTopic = require("./services/companyProfile_topic");
 var reviewTopic = require("./services/review_topic");
+var studentProfileTopic = require("./services/studentProfile_topic")
 
 const mongoose = require("mongoose");
 const { mongoDBURI } = require("./config/config");
@@ -23,6 +24,8 @@ mongoose.connect(mongoDBURI, options, (err, res) => {
   }
 });
 
+
+
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
@@ -40,6 +43,12 @@ function handleTopicRequest(topic_name, fname) {
         break;
       case "review_topic":
         fname.reviewService(data.data, function (err, res) {
+          response(data, res, producer);
+          return;
+        });
+        break;
+      case "studentProfile_topic":
+        fname.studentProfileTopic(data.data, function (err, res) {
           response(data, res, producer);
           return;
         });
@@ -72,3 +81,4 @@ function response(data, res, producer) {
 
 handleTopicRequest("companyProfile_topic", companyProfileTopic);
 handleTopicRequest("review_topic", reviewTopic);
+handleTopicRequest("studentProfile_topic", studentProfileTopic)
