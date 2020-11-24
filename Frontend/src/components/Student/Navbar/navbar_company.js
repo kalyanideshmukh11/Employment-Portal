@@ -57,9 +57,10 @@ class StudentNavbar extends Component {
                     <Button variant="success">Search</Button>
                     </Form>
                     <Nav>
+                    <Button onClick={this.handleSearch} style = {{marginLeft: "10mm", height:"50px", background: "transparent", color: "#555555", border: "none"}} type="submit"> <i class="fas fa-briefcase"></i> Jobs </Button>
                     <NavDropdown 
                     style={{marginLeft:"1cm"}} 
-                    title= {<FontAwesomeIcon style={{color:"black", marginLeft:"2.2cm"}} icon={faUserCircle} size="2x"/> } 
+                    title= {<FontAwesomeIcon style={{color:"black"}} icon={faUserCircle} size="2x"/> } 
                     onMouseEnter = { this.handleOpen }
                     onMouseLeave = { this.handleClose }
                     show={ this.state.isOpen }
@@ -70,7 +71,7 @@ class StudentNavbar extends Component {
                         <NavDropdown.Item href="/student/jobPreference" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'jobPreference')}}>Job Preference</NavDropdown.Item>
                         <NavDropdown.Item href="/student/demographics" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'demographics')}}>Demographics</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item href="/student/contributions/salaries" style={{padding:"10px 15px 10px 15px"}} onClick={()=>{localStorage.setItem('contri-list', 'salaries')}}>Contributions</NavDropdown.Item>
+                        <NavDropdown.Item href="/student/contributions" style={{padding:"10px 15px 10px 15px"}} >Contributions</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={this.handleLogout} style={{padding:"10px 15px 10px 15px"}}>Logout</NavDropdown.Item>
                     </NavDropdown>

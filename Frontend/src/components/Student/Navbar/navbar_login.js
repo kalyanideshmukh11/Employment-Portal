@@ -70,12 +70,15 @@ class LoginNavbar extends Component {
         console.log("Localstorage data", decoded.type+decoded.id)
         if(localStorage.getItem("type") === "student"){
           localStorage.setItem("sql_student_id", decoded.id);
+          localStorage.setItem("first_name", decoded.first_name);
+          localStorage.setItem("last_name", decoded.last_name);
           this.setState({
             redirect: <Redirect to= "/student/home"/>
           })
         }
         if(localStorage.getItem("type") === "company"){
           localStorage.setItem("sql_company_id", decoded.id);
+          localStorage.setItem("name", decoded.name);
           // TODO: change to company landing page 
           this.setState({
             redirect: <Redirect to= "/student/login"/>
