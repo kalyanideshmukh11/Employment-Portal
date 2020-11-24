@@ -13,8 +13,8 @@ class Main extends Component {
         <Route exact path='/student/home' component={StudentHome} />
         <Route exact path='/student/profile' component={StudentProfile} />
         <Route exact path='/student/resume' component={StudentResume} />
-        <Route exact path='/employer/addjob' component={AddJob} />
-        <Route exact path='/employer/jobs' component={Jobs} />
+        <Route exact path='/company/addjob' component={AddJob} />
+        <Route exact path='/company/jobs' component={Jobs} />
       </div>
     );
   }
