@@ -11,11 +11,14 @@ import PhotosContribution from './Student/Contributions/photos';
 import InterviewContribution from './Student/Contributions/interviews';
 import Login from './Student/Login/Login';
 import CompanyLogin from './Employer/Login/companyLogin';
+import companyProfile from './Employer/companyProfile';
+import updateCompany from './Employer/update';
 
 class Main extends Component {
     render() {
         return (
             <div>
+                <Route exact path="/" component={Login} />
                 <Route exact path="/student/home" component={StudentHome} />
                 <Route exact path="/student/profile" component={StudentProfile} />
                 <Route exact path="/student/resume" component={StudentResume} />
@@ -33,6 +36,8 @@ class Main extends Component {
 
                 <Route exact path="/student/login" component={Login} />
                 <Route exact path="/company/login" component={CompanyLogin} />
+                <Route exact path="/company/home" component={companyProfile} />
+                <Route exact path="/company/profileUpdate" component={updateCompany} />
             </div>
         )
     }

@@ -21,6 +21,12 @@ class Login extends Component{
         }
         this.changeHandler = this.changeHandler.bind(this);
         this.onSignUp = this.onSignUp.bind(this);
+        this.divStyle = {
+            width: '100%',
+            height: '900px',
+            backgroundImage: `url(https://www.glassdoor.com/app/static/img/home/vr.jpg)`,
+            backgroundSize: 'cover'
+        };
     }
 
     changeHandler = (e) => {
@@ -72,9 +78,9 @@ class Login extends Component{
             redirectVar = this.state.redirect
         }
         return(
-            <div> 
+            <div style={this.divStyle}> 
                 {redirectVar}
-                <div class="container">
+                <div>
                   <LoginNavbar></LoginNavbar>
                     <br /><br /><br />
                     <div class="d-flex justify-content-center h-100">
