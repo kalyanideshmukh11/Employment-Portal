@@ -81,7 +81,7 @@ class LoginNavbar extends Component {
           localStorage.setItem("name", decoded.name);
           // TODO: change to company landing page 
           this.setState({
-            redirect: <Redirect to= "/student/login"/>
+            redirect: <Redirect to= "/company/home"/>
           })
         } 
       }

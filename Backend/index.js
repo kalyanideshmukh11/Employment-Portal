@@ -3,10 +3,12 @@ const app = require('./app');
 const images = require('./routes/Student/images')
 const studentRouter = require("./routes/Student/student");
 const companyRouter = require("./routes/Employer/company");
+const companyProfileRouter = require("./routes/Employer/profile");
 
 app.use("/images", images)
 app.use("/student", studentRouter);
 app.use("/company", companyRouter);
+app.use("/company/profile", companyProfileRouter);
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {

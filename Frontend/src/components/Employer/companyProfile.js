@@ -15,7 +15,7 @@ class companyProfile extends Component {
 }
 
 componentWillMount() {
-    axios.get(`${backendServer}/glassdoor/company/${localStorage.getItem("user_id")}`)
+    axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`)
     .then(res => {
         this.setState({ user: res.data });
     });

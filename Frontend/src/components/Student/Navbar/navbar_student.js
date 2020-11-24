@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 //import yelpLoginImage from './images/yelp_logo.jpg';
-import {Button, Nav, FormControl, Dropdown} from 'react-bootstrap';
+import {Button, Nav, FormControl, Dropdown, Navbar, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import glassdorNavIco from '../images/glassdoor-logotype-rgb.png'
 //import { Redirect} from 'react-router';
 //import { Link } from 'react-router-dom';
 
@@ -70,7 +71,9 @@ return (
         <Nav class="navbar navbar-expand-md bg-light">
             <div>
                 <form class="form-inline mx-auto">
-                <h3 style={{fontWeight: "bolder", color: "green", marginLeft: "30px", marginRight:"40px", fontSize: "40px"}}> glassdoor</h3>
+                <Navbar.Brand href="/student/home">
+                        <Image src={glassdorNavIco} style={{width:"200px"}} />
+                    </Navbar.Brand>
                 <br />
                 <FormControl style={{width:"400px", marginRight: "5px" }} type="search" placeholder="Companies" autoComplete='on' onChange={this.searchChangeHandler}/>
                     <select
@@ -89,11 +92,11 @@ return (
                         <Dropdown.Toggle style={{fontSize: "25px",backgroundColor: "transparent", color: "#555555", border: "none", marginLeft: "60px"}}id="dropdown-basic"> <i class="far fa-user-circle"></i></Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item style={{background: "none"}}onClick={this.handleClick}>Profile</Dropdown.Item>
-                            <Dropdown.Item onClick={this.handleLogout}>Resumes</Dropdown.Item>
-                            <Dropdown.Item onClick={this.handleLogout}>Job Preferences</Dropdown.Item>
-                            <Dropdown.Item onClick={this.handleLogout}>Demographics</Dropdown.Item>
+                            <Dropdown.Item >Resumes</Dropdown.Item>
+                            <Dropdown.Item >Job Preferences</Dropdown.Item>
+                            <Dropdown.Item >Demographics</Dropdown.Item>
                             <hr />
-                            <Dropdown.Item onClick={this.handleLogout}>Contributions</Dropdown.Item>
+                            <Dropdown.Item >Contributions</Dropdown.Item>
                             <Dropdown.Item onClick={this.handleLogout}>Company Follows</Dropdown.Item>
                             <Dropdown.Item onClick={this.handleLogout}>Emails & Alerts</Dropdown.Item>
                             <hr />
