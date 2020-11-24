@@ -3,7 +3,7 @@ const express = require("express");
 const app = express.Router();
 const student = require("../../controllers/student.controller.js");
 var { checkAuth } = require('../../config/passport')
-var kafka = require('../kafka/client');
+var kafka = require('../../kafka/client');
 
 app.post('/register', student.create)
 app.post('/login', student.validate)

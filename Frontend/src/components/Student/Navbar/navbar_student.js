@@ -80,7 +80,7 @@ class StudentNavbar extends Component {
                         <NavDropdown.Item href="/student/jobPreference" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'jobPreference')}}>Job Preference</NavDropdown.Item>
                         <NavDropdown.Item href="/student/demographics" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'demographics')}}>Demographics</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item href="/student/contributions" style={{padding:"15px 15px 15px 15px"}} >Contributions</NavDropdown.Item>
+                        <NavDropdown.Item href="/student/contributions/salaries" style={{padding:"15px 15px 15px 15px"}} >Contributions</NavDropdown.Item>
                         <NavDropdown.Item href="" style={{padding:"15px 15px 15px 15px"}} >Company Follows</NavDropdown.Item>
                         <NavDropdown.Item href="" style={{padding:"15px 15px 15px 15px"}} >Emails & Alerts</NavDropdown.Item>
                         <NavDropdown.Divider />

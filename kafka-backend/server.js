@@ -49,7 +49,7 @@ function handleTopicRequest(topic_name, fname) {
         });
         break;
       case "studentProfile_topic":
-        fname.studentProfileTopic(data.data, function (err, res) {
+        fname.studentProfileServices(data.data, function (err, res) {
           response(data, res, producer)
           return
         });
