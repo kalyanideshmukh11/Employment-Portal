@@ -11,22 +11,22 @@ import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
 
 class Main extends Component {
-    render() {
-        return (
-            <div>
-                <Route exact path="/" component={Login} />
-                <Route exact path="/student/home" component={StudentHome} />
-                <Route exact path="/student/profile" component={StudentProfile} />
-                <Route exact path="/student/resume" component={StudentResume} />
-                <Route exact path="/student/login" component={Login} />
-                <Route exact path="/company/login" component={CompanyLogin} />
-                <Route exact path="/company/home" component={companyProfile} />
-                <Route exact path="/company/profileUpdate" component={updateCompany} />
-                <Route exact path='/company/addjob' component={AddJob} />
-                <Route exact path='/company/jobs' component={Jobs} />
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <Route exact path='/' component={Login} />
+        <Route exact path='/student/home' component={StudentHome} />
+        <Route exact path='/student/profile' component={StudentProfile} />
+        <Route exact path='/student/resume' component={StudentResume} />
+        <Route exact path='/student/login' component={Login} />
+        <Route exact path='/company/login' component={CompanyLogin} />
+        <Route exact path='/company/home' component={companyProfile} />
+        <Route exact path='/company/profileUpdate' component={updateCompany} />
+        <Route exact path='/company/addjob' component={AddJob} />
+        <Route exact path='/company/jobs' component={Jobs} />
+      </div>
+    );
+  }
 }
 
 export default Main;
