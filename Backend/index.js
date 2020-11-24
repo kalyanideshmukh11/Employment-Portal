@@ -1,16 +1,14 @@
 const app = require('./app');
 
-app.use('/images', images);
-app.use('/glassdoor/jobs', jobs);
 const images = require('./routes/Student/images');
 const studentRouter = require('./routes/Student/student');
 const companyRouter = require('./routes/Employer/company');
-const images = require('./routes/Student/images');
 const jobs = require('./routes/Employer/jobs');
 
 app.use('/images', images);
 app.use('/student', studentRouter);
 app.use('/company', companyRouter);
+app.use('/glassdoor/jobs', jobs);
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {
