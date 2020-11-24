@@ -4,21 +4,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBriefcase, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons'
 import {Card, Image} from 'react-bootstrap'
 import profilePicture from '../images/studentPlaceholder.png'
+import axios from 'axios'
+import backendServer from "../../../webConfig"
+
 
 class StudentHome extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            studentHome_data: {}
 
         }
     }
     
     componentWillMount() {
-        
+        axios.get(`${backendServer}student/home/${localStorage.getItem("sql_student_id")}`, 
+        {headers: { Authorization: `${localStorage.getItem("token")}` }
+        })
+        .then(response => {
+            this.setState({
+                studentHome_data: response.data
+            })
+        })
 
     }
 
     render() {
+        console.log(this.state.studentHome_data)
         return (
             <div> 
                 <StudentNavbar />

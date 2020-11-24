@@ -9,8 +9,6 @@ import SalaryContribution from './Student/Contributions/salaries';
 import ReviewContribution from './Student/Contributions/reviews';
 import PhotosContribution from './Student/Contributions/photos';
 import InterviewContribution from './Student/Contributions/interviews';
-
-import StudentResume from './Student/Resume/resume_student';
 import Login from './Student/Login/Login';
 import CompanyLogin from './Employer/Login/companyLogin';
 
