@@ -1,0 +1,210 @@
+import React, { Component } from 'react';
+import Navbar from '../../Student/Navbar/navbar_student';
+import { Link } from 'react-router-dom';
+import { Form, Button, ButtonGroup } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { insertNewJobDetails } from '../../../store/actions/companyJobsAction';
+
+class AddJob extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.changeHandler = this.changeHandler.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  changeHandler = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  handleCheckboxChange(e) {
+    this.setState({ workType: e.target.value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const jobData = {
+      companyName: this.state.companyName,
+      title: this.state.title,
+      description: this.state.description,
+      responsibilities: this.state.responsibilities,
+      qualification: this.state.qualification,
+      industry: this.state.industry,
+      country: this.state.country,
+      workType: this.state.workType,
+      address: this.state.address,
+      city: this.state.city,
+      state: this.state.state,
+      zipcode: this.state.zipcode,
+      sql_company_id: 1,
+    };
+    console.log(jobData);
+    this.props.insertNewJobDetails(jobData);
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <Navbar />
+        <div className='container'>
+          <div className='row'>
+            <div className='col-md-5 ml-5 mb-5 mt-3'>
+              <h4 style={{ color: '#3BB143', float: 'left' }}>Add New Job</h4>
+              <br />
+              <hr className='mb-3'></hr>
+              <Form onSubmit={this.handleSubmit}>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Company Name</strong>
+                  </Form.Label>
+                  <Form.Control
+                    required={true}
+                    type='text'
+                    name='companyName'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Job Title</strong>
+                  </Form.Label>
+                  <Form.Control
+                    required={true}
+                    type='text'
+                    name='title'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Description</strong>
+                  </Form.Label>
+                  <Form.Control
+                    as='textarea'
+                    aria-label='With textarea'
+                    required={true}
+                    type='text'
+                    name='description'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Responsibilities</strong>
+                  </Form.Label>
+                  <Form.Control
+                    as='textarea'
+                    aria-label='With textarea'
+                    required={true}
+                    type='text'
+                    name='responsibilities'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Qualification</strong>
+                  </Form.Label>
+                  <Form.Control
+                    as='textarea'
+                    aria-label='With textarea'
+                    required={true}
+                    type='text'
+                    name='qualification'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Industry</strong>
+                  </Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='industry'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Country</strong>
+                  </Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='country'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Check
+                    name='remote'
+                    label='Remote'
+                    value='Remote'
+                    onChange={this.handleCheckboxChange}
+                  />
+                  <Form.Check
+                    name='In Person'
+                    label='In Person'
+                    value='In Person'
+                    onChange={this.handleCheckboxChange}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Street Address</strong>
+                  </Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='address'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>City</strong>
+                  </Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='city'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>State</strong>
+                  </Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='state'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
+                    <strong>Zipcode</strong>
+                  </Form.Label>
+                  <Form.Control
+                    type='text'
+                    name='zipcode'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <ButtonGroup aria-label='First group' className='mt-2'>
+                  <Button variant='success' type='submit'>
+                    Save Changes
+                  </Button>
+                </ButtonGroup>
+                <Link to={{}}>
+                  <a style={{ marginLeft: '15px' }}>Cancel</a>
+                </Link>
+              </Form>
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+AddJob.propTypes = {
+  insertNewJobDetails: PropTypes.func.isRequired,
+  status: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  status: state.jobs.status,
+});
+
+export default connect(mapStateToProps, { insertNewJobDetails })(AddJob);

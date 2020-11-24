@@ -1,6 +1,6 @@
-import { Reducers } from 'redux';
+import { combineReducers } from 'redux';
+import companyJobsReducer from './companyJobsReducer';
 
-
-export default Reducers({
-
+export default combineReducers({
+  jobs: companyJobsReducer,
 });
