@@ -27,8 +27,13 @@ class AddJob extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    const id = localStorage.getItem('sql_company_id');
+    const name = localStorage.getItem('name');
+    var today = new Date();
+    var current_date =
+      today.getMonth() + 1 + '/' + today.getDate() + '/' + today.getFullYear();
     const jobData = {
-      companyName: this.state.companyName,
+      companyName: name,
       title: this.state.title,
       description: this.state.description,
       responsibilities: this.state.responsibilities,
@@ -40,7 +45,8 @@ class AddJob extends Component {
       city: this.state.city,
       state: this.state.state,
       zipcode: this.state.zipcode,
-      sql_company_id: 1,
+      posted_date: current_date,
+      sql_company_id: id,
     };
     console.log(jobData);
     this.props.insertNewJobDetails(jobData);
@@ -53,7 +59,7 @@ class AddJob extends Component {
         <div className='container'>
           <div className='row'>
             <div className='col-md-5 ml-5 mb-5 mt-3'>
-              <h4 style={{ color: '#3BB143', float: 'left' }}>Add New Job</h4>
+              <h4 style={{ color: '#028A0F', float: 'left' }}>Add New Job</h4>
               <br />
               <hr className='mb-3'></hr>
               <Form onSubmit={this.handleSubmit}>
@@ -65,6 +71,7 @@ class AddJob extends Component {
                     required={true}
                     type='text'
                     name='companyName'
+                    defaultValue={localStorage.getItem('name')}
                     onChange={this.changeHandler}></Form.Control>
                 </Form.Group>
                 <Form.Group>
@@ -186,7 +193,7 @@ class AddJob extends Component {
                     Save Changes
                   </Button>
                 </ButtonGroup>
-                <Link to={{}}>
+                <Link to={{ pathname: '/company/jobs' }}>
                   <a style={{ marginLeft: '15px' }}>Cancel</a>
                 </Link>
               </Form>
