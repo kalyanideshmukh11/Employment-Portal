@@ -79,9 +79,8 @@ class LoginNavbar extends Component {
         if(localStorage.getItem("type") === "company"){
           localStorage.setItem("sql_company_id", decoded.id);
           localStorage.setItem("name", decoded.name);
-          // TODO: change to company landing page 
           this.setState({
-            redirect: <Redirect to= "/student/login"/>
+            redirect: <Redirect to= "/company/home"/>
           })
         } 
       }
