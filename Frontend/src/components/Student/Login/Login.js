@@ -84,7 +84,7 @@ class Login extends Component{
                   <LoginNavbar></LoginNavbar>
                     <br /><br /><br />
                     <div class="d-flex justify-content-center h-100">
-                        <div class="card">
+                        <div class="login-card">
                             <div class="card-header">
                                 <h3>Sign Up</h3>
                             </div>

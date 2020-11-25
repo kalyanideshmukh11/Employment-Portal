@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const insertNewJobDetails = (jobData) => (dispatch) => {
   axios
-    .post(`${backendServer}/glassdoor/jobs/`, jobData)
+    .post(`${backendServer}glassdoor/jobs/`, jobData)
     .then((response) =>
       dispatch({
         type: NEW_JOB_POSTING,

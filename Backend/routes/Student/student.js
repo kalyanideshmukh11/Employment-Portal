@@ -5,4 +5,5 @@ const student = require("../../controllers/student.controller.js");
 app.post('/register', student.create)
 app.post('/login', student.validate)
 
+
 module.exports = app;
