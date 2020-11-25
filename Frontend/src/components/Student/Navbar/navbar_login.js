@@ -52,29 +52,24 @@ class LoginNavbar extends Component {
         password: password,
       };
 
-    onLoginSuccess(method, response) {
-      if (this.state.token.length > 0) {
-        localStorage.setItem("token", this.state.token);
-
-        var decoded = jwt_decode(this.state.token.split(' ')[1]);
-        localStorage.setItem("type", decoded.type);
-        console.log("Localstorage data", decoded.type+decoded.id)
-        if(localStorage.getItem("type") === "student"){
-          localStorage.setItem("sql_student_id", decoded.id);
-          localStorage.setItem("first_name", decoded.first_name);
-          localStorage.setItem("last_name", decoded.last_name);
+      axios
+        .post(`${backendServer}student/login`, login_data)
+        .then((response) => {
+          console.log(response.data);
           this.setState({
-            redirect: <Redirect to= "/student/home"/>
-          })
-        }
-        if(localStorage.getItem("type") === "company"){
-          localStorage.setItem("sql_company_id", decoded.id);
-          localStorage.setItem("name", decoded.name);
-          this.setState({
-            redirect: <Redirect to= "/company/home"/>
-          })
-        } 
-      }
+            token: response.data,
+            authFlag: true,
+          });
+          if (response.status === 200) {
+            this.onLoginSuccess(response.data);
+          } else {
+            this.onLoginFail('form');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.onLoginFail('form');
+        });
     }
   }
 
@@ -96,7 +91,6 @@ class LoginNavbar extends Component {
       if (localStorage.getItem('type') === 'company') {
         localStorage.setItem('sql_company_id', decoded.id);
         localStorage.setItem('name', decoded.name);
-        // TODO: change to company landing page
         this.setState({
           redirect: <Redirect to='/company/home' />,
         });
