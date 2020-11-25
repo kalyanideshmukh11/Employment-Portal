@@ -1,0 +1,2 @@
+export const NEW_JOB_POSTING = 'NEW_JOB_POSTING';
+export const NEW_REVIEW_POSTING = 'NEW_REVIEW_POSTING';
