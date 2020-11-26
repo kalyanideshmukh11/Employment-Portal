@@ -69,6 +69,12 @@ module.exports = (sequelize, Sequelize) => {
       },
       veteran_status: {
         type: Sequelize.STRING
+      },
+      phone_number: {
+        type: Sequelize.STRING
+      }, 
+      website: {
+        type: Sequelize.STRING
       }
     });
     return student;
