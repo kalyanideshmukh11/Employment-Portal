@@ -229,6 +229,7 @@ class StudentProfile extends Component {
                         {experience}
 
                     <br />
+                    <br />
                         <h4 style={{fontFamily:"helvetica", fontWeight:"bold"}}> Skills  
                         <Button variant='link' style={{textDecoration: 'none'}} onClick={this.handleSkillsModalShow}>
                         <FontAwesomeIcon icon={faPlusCircle} />

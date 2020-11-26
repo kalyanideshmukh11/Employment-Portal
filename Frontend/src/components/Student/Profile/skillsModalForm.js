@@ -28,10 +28,10 @@ class SkillsModalForm extends Component{
           var react_tags = this.props.studentProfile_data.skills.map(function(elm) {
               return { id: elm.skill, text: elm.skill};
            });
-          }
-          this.setState({
+           this.setState({
             tags: react_tags
           })
+          }
         }, 800);
     }
 
