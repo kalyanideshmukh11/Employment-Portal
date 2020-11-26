@@ -85,14 +85,14 @@ class LoginNavbar extends Component {
         localStorage.setItem("first_name", decoded.first_name);
         localStorage.setItem("last_name", decoded.last_name);
         this.setState({
-          redirect: <Redirect to="/student/home" />,
+          redirect: <Redirect to='/student/home' />,
         });
       }
       if (localStorage.getItem("type") === "company") {
         localStorage.setItem("sql_company_id", decoded.id);
         localStorage.setItem("name", decoded.name);
         this.setState({
-          redirect: <Redirect to="/company/home" />,
+          redirect: <Redirect to='/company/home' />,
         });
       }
     }
@@ -147,12 +147,12 @@ class LoginNavbar extends Component {
     return (
       <div>
         {redirectVar}
-        <Navbar bg="transparent" expand="lg">
-          <Navbar.Brand href="/student/home">
+        <Navbar bg='transparent' expand='lg'>
+          <Navbar.Brand href='/student/home'>
             <Image src={glassdorNavIco} style={{ width: "200px" }} />
           </Navbar.Brand>
-          <Nav className="ml-auto">
-            <Button onClick={() => this.openModal()} variant="success">
+          <Nav className='ml-auto'>
+            <Button onClick={() => this.openModal()} variant='success'>
               Sign In
             </Button>
           </Nav>
