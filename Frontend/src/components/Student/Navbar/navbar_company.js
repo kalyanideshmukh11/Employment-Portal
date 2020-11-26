@@ -38,11 +38,12 @@ class StudentNavbar extends Component {
                         <Image src={glassdorNavIco} style={{width:"200px"}} />
                     </Navbar.Brand>
                     <Form inline>
-                    <FormControl type="text" placeholder="Job Title, Keywords, or Company" className="mr-sm-3" style={{width: "10cm"}} />
+                    <FormControl type="text" placeholder="Job Title, Keywords, or Company" className="mr-sm-3" style={{width: "10cm"}} onChange/>
                     
                     <InputGroup>
-                        <FormControl type="text" placeholder="What?" className="mr-xs-10" value={this.state.SearchType} />
+                        <FormControl type="text" placeholder="What?" className="mr-xs-10" value={this.state.SearchType} onChange/>
                         <DropdownButton as={InputGroup.Append} variant="light"
+                        title=''
                         name='searchType'
                         menuAlign="right" style={{marginLeft:"0.1mm"}}
                         onSelect={ this.SearchType }>
@@ -53,18 +54,17 @@ class StudentNavbar extends Component {
                         </DropdownButton>
                     </InputGroup>
 
-                    <FormControl style={{marginLeft:"5mm"}} type="text" placeholder="Location" className="mr-sm-4" />
+                    <FormControl style={{marginLeft:"5mm"}} type="text" placeholder="Location" className="mr-sm-4" onChange/>
                     <Button variant="success">Search</Button>
                     </Form>
                     <Nav>
-                    <Button onClick={this.handleSearch} style = {{marginLeft: "10mm", height:"50px", background: "transparent", color: "#555555", border: "none"}} type="submit"> <i class="fas fa-briefcase"></i> Jobs </Button>
+                    <Button onClick={this.handleSearch} style = {{marginLeft: "5mm", height:"50px", background: "transparent", color: "#555555", border: "none"}} type="submit"> <i className="fas fa-briefcase"></i> Jobs </Button>
                     <NavDropdown 
                     style={{marginLeft:"1cm"}} 
-                    title= {<FontAwesomeIcon style={{color:"black"}} icon={faUserCircle} size="2x"/> } 
+                    title= {<FontAwesomeIcon style={{color:"black"}} icon={faUserCircle} size="2px"/> } 
                     onMouseEnter = { this.handleOpen }
                     onMouseLeave = { this.handleClose }
                     show={ this.state.isOpen }
-                    noCaret
                     action variant='light'>
                         <NavDropdown.Item href="/student/profile" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'profile')}}>Profile</NavDropdown.Item>
                         <NavDropdown.Item href="/student/resume" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'resume')}}>Resumes</NavDropdown.Item>
