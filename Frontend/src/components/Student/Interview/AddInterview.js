@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Navbar from "../../Student/Navbar/navbar_student";
-import { Link } from "react-router-dom";
-import { Form, Button, ButtonGroup } from "react-bootstrap";
-import backendServer from "../../../webConfig";
-import axios from "axios";
+import React, { Component } from 'react';
+import Navbar from '../../Student/Navbar/navbar_student';
+import { Link } from 'react-router-dom';
+import { Form, Button, ButtonGroup } from 'react-bootstrap';
+import backendServer from '../../../webConfig';
+import axios from 'axios';
 
 class AddInterview extends Component {
   constructor(props) {
@@ -26,47 +26,46 @@ class AddInterview extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const jobData = {
+    const interviewData = {
       companyName: this.state.companyName,
-      title: this.state.title,
+      overall_experience: this.state.overall_experience,
+      job_title: this.state.job_title,
       description: this.state.description,
-      responsibilities: this.state.responsibilities,
-      qualification: this.state.qualification,
-      industry: this.state.industry,
-      country: this.state.country,
-      workType: this.state.workType,
-      address: this.state.address,
-      city: this.state.city,
-      state: this.state.state,
-      zipcode: this.state.zipcode,
+      difficulty: this.state.difficulty,
+      offer_status: this.state.offer_status,
+      question: this.state.question,
+      answers: this.state.answers,
       sql_company_id: 1,
+      sql_student_id: 1,
     };
-    console.log(jobData);
-    /*axios
-    .post(`${backendServer}/glassdoor/jobs/`, jobData)
-    .then((response) =>
-      dispatch({
-        type: NEW_JOB_POSTING,
-        payload: response.data,
-      }),
-    )
-    .catch((error) => {
-      console.log(error);
-    });*/
+    console.log(interviewData);
+    axios
+      .post(`${backendServer}student/interview/add/`, interviewData)
+      .then((response) => {
+        console.log(response.data);
+        console.log('Status Code : ', response.status);
+        if (response.status === 200) {
+          alert('Interview added');
+        }
+      })
+      .catch((error) => {
+        console.log('error');
+        console.log(error);
+      });
   }
 
   render() {
     return (
       <React.Fragment>
         <Navbar />
-        <div className="container">
-          <div className="row">
-            <div className="col-md-5 ml-5 mb-5 mt-3">
-              <h4 style={{ color: "#3BB143", float: "left" }}>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-md-5 ml-5 mb-5 mt-3'>
+              <h4 style={{ color: '#3BB143', float: 'left' }}>
                 Tell us about a recent job interview
               </h4>
               <br />
-              <hr className="mb-3"></hr>
+              <hr className='mb-3'></hr>
               <Form onSubmit={this.handleSubmit}>
                 <Form.Group>
                   <Form.Label>
@@ -74,8 +73,8 @@ class AddInterview extends Component {
                   </Form.Label>
                   <Form.Control
                     required={true}
-                    type="text"
-                    name="companyName"
+                    type='text'
+                    name='companyName'
                     onChange={this.changeHandler}
                   ></Form.Control>
                 </Form.Group>
@@ -85,8 +84,8 @@ class AddInterview extends Component {
                   </Form.Label>
                   <Form.Control
                     required={true}
-                    type="text"
-                    name="overall_experience"
+                    type='text'
+                    name='overall_experience'
                     onChange={this.changeHandler}
                   ></Form.Control>
                 </Form.Group>
@@ -96,8 +95,8 @@ class AddInterview extends Component {
                   </Form.Label>
                   <Form.Control
                     required={true}
-                    type="text"
-                    name="job_title"
+                    type='text'
+                    name='job_title'
                     onChange={this.changeHandler}
                   ></Form.Control>
                 </Form.Group>
@@ -106,11 +105,11 @@ class AddInterview extends Component {
                     <strong>Describe the Interview Process *</strong>
                   </Form.Label>
                   <Form.Control
-                    as="textarea"
-                    aria-label="With textarea"
+                    as='textarea'
+                    aria-label='With textarea'
                     required={true}
-                    type="text"
-                    name="description"
+                    type='text'
+                    name='description'
                     onChange={this.changeHandler}
                   ></Form.Control>
                 </Form.Group>
@@ -119,11 +118,9 @@ class AddInterview extends Component {
                     <strong>Interview Difficulty *</strong>
                   </Form.Label>
                   <Form.Control
-                    as="textarea"
-                    aria-label="With textarea"
                     required={true}
-                    type="text"
-                    name="difficulty"
+                    type='text'
+                    name='difficulty'
                     onChange={this.changeHandler}
                   ></Form.Control>
                 </Form.Group>
@@ -132,9 +129,9 @@ class AddInterview extends Component {
                     <strong>Did you get an offer? *</strong>
                   </Form.Label>
                   <Form.Control
-                    type="text"
+                    type='text'
                     required={true}
-                    name="offer_status"
+                    name='offer_status'
                     onChange={this.changeHandler}
                   ></Form.Control>
                 </Form.Group>
@@ -143,31 +140,30 @@ class AddInterview extends Component {
                     <strong>Interview Questions *</strong>
                   </Form.Label>
                   <Form.Control
-                    as="textarea"
-                    aria-label="With textarea"
+                    as='textarea'
+                    aria-label='With textarea'
                     required={true}
-                    type="text"
-                    name="question"
+                    type='text'
+                    name='question'
                     onChange={this.changeHandler}
                   ></Form.Control>
                 </Form.Group>
                 <Form.Group>
                   <Form.Control
-                    as="textarea"
-                    aria-label="With textarea"
-                    required={true}
-                    type="text"
-                    name="answers"
+                    as='textarea'
+                    aria-label='With textarea'
+                    type='text'
+                    name='answers'
                     onChange={this.changeHandler}
                   ></Form.Control>
                 </Form.Group>
-                <ButtonGroup aria-label="First group" className="mt-2">
-                  <Button variant="success" type="submit">
+                <ButtonGroup aria-label='First group' className='mt-2'>
+                  <Button variant='success' type='submit'>
                     Submit
                   </Button>
                 </ButtonGroup>
                 <Link to={{}}>
-                  <a style={{ marginLeft: "15px" }}>Cancel</a>
+                  <a style={{ marginLeft: '15px' }}>Cancel</a>
                 </Link>
               </Form>
             </div>
