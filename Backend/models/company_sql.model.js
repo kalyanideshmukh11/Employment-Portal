@@ -11,7 +11,13 @@ module.exports = (sequelize, Sequelize) => {
       password: {
         type: Sequelize.STRING
       },
-      address: {
+      street: {
+        type: Sequelize.STRING
+      },
+      city: {
+        type: Sequelize.STRING
+      },
+      state: {
         type: Sequelize.STRING
       },
       cphoto_file_name: {

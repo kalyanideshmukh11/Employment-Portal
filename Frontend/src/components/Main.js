@@ -9,6 +9,7 @@ import companyProfile from './Employer/companyProfile';
 import updateCompany from './Employer/update';
 import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
+import companyReviews from './Employer/companyReviews';
 
 class Main extends Component {
   render() {
@@ -24,6 +25,7 @@ class Main extends Component {
         <Route exact path='/company/profileUpdate' component={updateCompany} />
         <Route exact path='/company/addjob' component={AddJob} />
         <Route exact path='/company/jobs' component={Jobs} />
+        <Route exact path='/company/reviews' component={companyReviews} />
       </div>
     );
   }

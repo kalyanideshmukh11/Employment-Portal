@@ -33,11 +33,11 @@ async function companyReviews(msg, callback) {
     // }
     else {
       console.log("fetching from mongoDb");
-      Review.find({ companyName: msg.body }, function (err, doc) {
+      Review.find({ company: msg.body }, function (err, doc) {
         if (err || !doc) {
           response.status = 400;
         } else {
-          redisClient.setex("allReviews", 36000, JSON.stringify(doc));
+          //redisClient.setex("allReviews", 36000, JSON.stringify(doc));
           response.status = 200;
           response.data = doc;
           //console.log(response)
