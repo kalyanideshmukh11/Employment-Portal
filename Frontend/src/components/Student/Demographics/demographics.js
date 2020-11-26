@@ -23,15 +23,15 @@ class StudentDemographics extends Component {
                 <br />
 
                 <div className='row'>
-                    <div class="col-4" style={{paddingLeft:"2cm", paddingRight:"1cm"}}> 
+                    <div className="col-4" style={{paddingLeft:"2cm", paddingRight:"1cm"}}> 
                     <SideBarStudent />
                     </div>
-                    <div class="col-8" style={{borderLeft:"1px solid #e6e6e6"}}>
+                    <div className="col-8" style={{borderLeft:"1px solid #e6e6e6"}}>
                     <h4 style={{fontFamily:"helvetica", fontWeight:"bold"}}> Demographics  </h4>
                     <hr />
                     <h6 style={{fontFamily:"helvetica", fontWeight:"bold"}}> Help End Inequality  </h6>
-                    <div class='row'>
-                    <div class='col-6'>
+                    <div className='row'>
+                    <div className='col-6'>
                         <span style={{fontSize: '12px'}}>
                     Shine a light on inequities in the workplace. Anonymously share your demographics to help pinpoint pay and diversity disparities.
                     Providing your demographic information is optional and, if provided, it will not be shared with employers. This information will be collected and used in accordance with our Privacy Policy.           
@@ -40,18 +40,18 @@ class StudentDemographics extends Component {
                     </div>
                     <br />
                     <br />
-                    <div class='row'>
-                        <div class="col">
+                    <div className='row'>
+                        <div className="col">
                         <h5 style={{fontFamily:"helvetica", fontWeight:"bold"}}> Race/Ethnicity  </h5>
                         </div>
-                        <div class='col'>
+                        <div className='col'>
                         <Button variant='link' onClick={this.handleShow} style={{float: 'right', marginRight: '5mm'}} size='sm'>
-                        <FontAwesomeIcon style={{color:"gray"}} icon={faPen} size='2mm' />
+                        <FontAwesomeIcon style={{color:"gray"}} icon={faPen} size='' />
                         </Button>
                         </div>
                         </div>
                     <hr />
-                    <div class='col col-md-3'>
+                    <div className='col col-md-3'>
                             <Button variant='link' style={{textDecoration: 'none'}}>
                             <FontAwesomeIcon icon={faPlusCircle} />
                             <span style={{marginLeft:"1mm"}}>
@@ -62,18 +62,18 @@ class StudentDemographics extends Component {
                         <br />
                         <br />
                     
-                        <div class='row'>
-                        <div class="col">
+                        <div className='row'>
+                        <div className="col">
                         <h5 style={{fontFamily:"helvetica", fontWeight:"bold"}}> Gender  </h5>
                         </div>
-                        <div class='col'>
+                        <div className='col'>
                         <Button variant='link' onClick={this.handleShow} style={{float: 'right', marginRight: '5mm'}} size='sm'>
                         <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="s" />
                         </Button>
                         </div>
                         </div>
                     <hr />
-                    <div class='col col-md-3'>
+                    <div className='col col-md-3'>
                             <Button variant='link' style={{textDecoration: 'none'}}>
                             <FontAwesomeIcon icon={faPlusCircle} />
                             <span style={{marginLeft:"1mm"}}>
@@ -85,18 +85,18 @@ class StudentDemographics extends Component {
                         <br />
 
 
-                        <div class='row'>
-                        <div class="col">
+                        <div className='row'>
+                        <div className="col">
                         <h5 style={{fontFamily:"helvetica", fontWeight:"bold"}}> Sexual Orientation  </h5>
                         </div>
-                        <div class='col'>
+                        <div className='col'>
                         <Button variant='link' onClick={this.handleShow} style={{float: 'right', marginRight: '5mm'}} size='sm'>
-                        <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="s" />
+                        <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="sm" />
                         </Button>
                         </div>
                         </div>
                     <hr />
-                    <div class='col col-md-4'>
+                    <div className='col col-md-4'>
                             <Button variant='link' style={{textDecoration: 'none'}}>
                             <FontAwesomeIcon icon={faPlusCircle} />
                             <span style={{marginLeft:"1mm"}}>
@@ -114,7 +114,7 @@ class StudentDemographics extends Component {
                         </div>
                         <div class='col'>
                         <Button variant='link' onClick={this.handleShow} style={{float: 'right', marginRight: '5mm'}} size='sm'>
-                        <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="s" />
+                        <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="sm" />
                         </Button>
                         </div>
                         </div>
@@ -137,7 +137,7 @@ class StudentDemographics extends Component {
                         </div>
                         <div class='col'>
                         <Button variant='link' onClick={this.handleShow} style={{float: 'right', marginRight: '5mm'}} size='sm'>
-                        <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="s" />
+                        <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="sm" />
                         </Button>
                         </div>
                         </div>
@@ -159,7 +159,7 @@ class StudentDemographics extends Component {
                         </div>
                         <div class='col'>
                         <Button variant='link' onClick={this.handleShow} style={{float: 'right', marginRight: '5mm'}} size='sm'>
-                        <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="s" />
+                        <FontAwesomeIcon style={{marginTop:"", color:"gray"}} icon={faPen} size="sm" />
                         </Button>
                         </div>
                         </div>

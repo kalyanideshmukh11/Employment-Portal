@@ -16,11 +16,11 @@ class PhotosContribution extends Component{
             <StudentNavbar />
        
         <div className='row' style={{background: "#eaeaea"}}>
-        <div class="col-4 contri" style={{paddingLeft:"5cm"}}> 
+        <div className="col-4 contri" style={{paddingLeft:"5cm"}}> 
         <ContributionsSidebar />
         </div>
-        <div class="col-8 contri" style={{padding:"28px 20px 0px 20px"}}>  
-        <Card  style={{ width: '44rem', padding:"10px 20px 0px 10px" }}>
+        <div className="col-8 contri" style={{padding:"28px 20px 0px 20px"}}>  
+        <Card style={{ width: '44rem', padding:"10px 20px 0px 10px" }}>
         <Card.Body>
             <Card.Title>
                 Photos

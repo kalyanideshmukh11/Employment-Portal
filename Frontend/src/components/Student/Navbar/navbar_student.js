@@ -53,6 +53,7 @@ class StudentNavbar extends Component {
                     <InputGroup>
                         <FormControl type="text" placeholder="What?" className="mr-xs-10" value={this.state.SearchType} />
                         <DropdownButton as={InputGroup.Append} variant="light"
+                        title=''
                         name='searchType'
                         menuAlign="right" style={{marginLeft:"0.1mm"}}
                         onSelect={ this.SearchType }>
@@ -69,11 +70,10 @@ class StudentNavbar extends Component {
                     <Nav>
                     <NavDropdown 
                     style={{marginLeft:"1cm"}} 
-                    title= {<i class="far fa-user-circle" style={{fontSize: '30px'}}></i>} 
+                    title= {<i className="far fa-user-circle" style={{fontSize: '30px'}}></i>} 
                     onMouseEnter = { this.handleOpen }
                     onMouseLeave = { this.handleClose }
                     show={ this.state.isOpen }
-                    noCaret
                     action variant='light'>
                         <NavDropdown.Item href="/student/profile" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'profile')}}>Profile</NavDropdown.Item>
                         <NavDropdown.Item href="/student/resume" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'resume')}}>Resumes</NavDropdown.Item>

@@ -101,11 +101,12 @@ class StudentJobPreferences extends Component {
                                 <br />
                                 <label style={{fontSize:"12px", fontWeight:'lighter'}}> Select Job Search Status</label> 
                                 <InputGroup>
-                                <FormControl type="text" placeholder="Select" className='col-sm-6' value={this.state.jobSearchStatus} />
+                                <FormControl type="text" placeholder="Select" className='col-sm-6' value={this.state.jobSearchStatus} onChange />
                                 <DropdownButton as={InputGroup.Append} variant="light"
                                 name='jobSearchStatus'
                                 menuAlign="right" style={{marginLeft:"0.01mm"}}
                                 onSelect={ this.jobSearchStatus }
+                                title=""
                                 show={ this.state.isOpen }>
                                 <Dropdown.Item eventKey="Not Looking" onClick={this.updateJSS}>Not looking </Dropdown.Item>
                                 <Dropdown.Item eventKey="Not Looking, but open" onClick={this.updateJSS}>Not looking, but open</Dropdown.Item>

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Navbar, Nav, NavDropdown, Form, FormControl, Button, Image, DropdownButton, Dropdown, InputGroup} from 'react-bootstrap'
+import {Navbar, Nav, Button, Image} from 'react-bootstrap'
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
 import {Redirect} from 'react-router';
 import ReactModalLogin from "react-modal-login";
@@ -70,8 +70,6 @@ class LoginNavbar extends Component {
         console.log("Localstorage data", decoded.type+decoded.id)
         if(localStorage.getItem("type") === "student"){
           localStorage.setItem("sql_student_id", decoded.id);
-          localStorage.setItem("first_name", decoded.first_name);
-          localStorage.setItem("last_name", decoded.last_name);
           this.setState({
             redirect: <Redirect to= "/student/home"/>
           })

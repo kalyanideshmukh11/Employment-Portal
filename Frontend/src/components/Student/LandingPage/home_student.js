@@ -23,14 +23,28 @@ class StudentHome extends Component {
         })
         .then(response => {
             this.setState({
-                studentHome_data: response.data
+                studentHome_data: response.data[0]
             })
         })
 
     }
 
     render() {
-        console.log(this.state.studentHome_data)
+        let details = this.state.studentHome_data
+        let job_title, location
+        if(details.job_title === null){
+            job_title = (<a style={{marginLeft:"8px", textDecoration: "none"}} 
+            href='/student/profile' onClick={localStorage.setItem('active-list', 'profile')}>Add Job Title</a>)
+        } else {
+            job_title = (<a style={{marginLeft:"8px", textDecoration: "none"}}>{details.job_title}</a>)
+        }
+        if(details.city === null){
+            location = (<a style={{marginLeft:"11px", textDecoration: "none"}} 
+            href='/student/profile' onClick={localStorage.setItem('active-list', 'profile')}>Add Location</a>)
+
+        } else {
+            location = (<a style={{marginLeft:"11px", textDecoration: "none"}}>{details.city}</a>)
+        }
         return (
             <div> 
                 <StudentNavbar />
@@ -46,17 +60,17 @@ class StudentHome extends Component {
                     <br />
 
                     <Card.Title>
-                         <span style={{textTransform:"uppercase", fontWeight: "bolder", fontFamily:"helvetica"}}> FirstName LastName </span>
+                         <span style={{textTransform:"uppercase", fontWeight: "bolder", fontFamily:"helvetica"}}> {details.first_name} {details.last_name} </span>
                     </Card.Title>
 
                     <Card.Text>
                         <FontAwesomeIcon icon={faBriefcase} /> 
-                        <a style={{marginLeft:"8px", textDecoration: "none"}} href='/student/profile/basic' onClick={localStorage.setItem('active-list', 'profile')}>Add Job Title</a>
+                        {job_title}
                     </Card.Text>
 
                     <Card.Text>
                         <FontAwesomeIcon icon={faMapMarkerAlt} /> 
-                        <a style={{marginLeft:"11px", textDecoration: "none"}} href='/student/profile/basic' onClick={localStorage.setItem('active-list', 'profile')}>Add Location</a>
+                        {location}
                     </Card.Text>
                     <hr />
                     </Card.Body>
