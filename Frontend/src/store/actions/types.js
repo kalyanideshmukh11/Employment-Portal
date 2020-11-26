@@ -1,2 +1,5 @@
 export const NEW_JOB_POSTING = 'NEW_JOB_POSTING';
 export const NEW_REVIEW_POSTING = 'NEW_REVIEW_POSTING';
+export const NEW_SALARY_POSTING = 'NEW_SALARY_POSTING';
+export const GET_SALARY = 'GET_SALARY';
+
