@@ -44,6 +44,7 @@ class AddJob extends Component {
     };
     console.log(jobData);
     this.props.insertNewJobDetails(jobData);
+   
   }
 
   render() {
