@@ -32,7 +32,7 @@ getReview=() =>{
          
             if(res.status === 200){
                 if(res.data){
-                    
+                    console.log(res.data)
                     this.props.saveReview(res.data)
                    
                     //this.props.saveEvents(res.data);
@@ -42,7 +42,7 @@ getReview=() =>{
 };
 
 getAverageRating=() =>{
-  console.log(this.props.reviews)
+  console.log(this.props.review)
 }
 
 createElements(n) {
@@ -108,7 +108,7 @@ createElements(n) {
         </Col>
               <React.Fragment>
 <div>
-<ReviewList reviewList = { this.props.reviews } ></ReviewList>   
+<ReviewList reviewList = { this.props.review } ></ReviewList>   
  </div>
  </React.Fragment>
  
@@ -129,7 +129,7 @@ ReviewTab.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  reviews: state.reviews,
+  review: state.review,
 });
 const mapDispatchToProps = (dispatch) => {
   return {

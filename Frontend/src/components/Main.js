@@ -5,17 +5,21 @@ import StudentProfile from './Student/Profile/profile_student';
 import StudentResume from './Student/Resume/resume_student';
 import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
-<<<<<<< Updated upstream
-import AddReview from './Employer/Reviews/AddReview';
-import AddSalary from './Employer/Salary/AddSalary';
-=======
 import AddInterview from './Student/Interview/AddInterview';
 import AddReview from './Student/Reviews/AddReview';
 import AddSalary from './Student/Salary/AddSalary';
 import ReviewTab from './Student/Reviews/ReviewTab';
 import companyReviews from './Employer/companyReviews';
-
->>>>>>> Stashed changes
+import StudentJobPreferences from './Student/JobPreferences/jobpreferences';
+import StudentDemographics from './Student/Demographics/demographics';
+import SalaryContribution from './Student/Contributions/salaries';
+import ReviewContribution from './Student/Contributions/reviews';
+import PhotosContribution from './Student/Contributions/photos';
+import InterviewContribution from './Student/Contributions/interviews';
+import Login from './Student/Login/Login';
+import CompanyLogin from './Employer/Login/companyLogin';
+import companyProfile from './Employer/companyProfile';
+import updateCompany from './Employer/update';
 
 class Main extends Component {
   render() {
@@ -24,12 +28,8 @@ class Main extends Component {
         <Route exact path='/student/home' component={StudentHome} />
         <Route exact path='/student/profile' component={StudentProfile} />
         <Route exact path='/student/resume' component={StudentResume} />
-<<<<<<< Updated upstream
         <Route exact path='/employer/addjob' component={AddJob} />
         <Route exact path='/employer/jobs' component={Jobs} />
-        <Route exact path='/company/review' component={AddReview} />
-        <Route exact path='/company/salary' component={AddSalary} />
-=======
         <Route
           exact
           path='/student/jobPreference'
@@ -71,7 +71,6 @@ class Main extends Component {
         <Route exact path='/company/review' component={ReviewTab} />
         <Route exact path='/company/salary' component={AddSalary} />
         <Route exact path='/company/reviews' component={companyReviews} />
->>>>>>> Stashed changes
       </div>
     );
   }

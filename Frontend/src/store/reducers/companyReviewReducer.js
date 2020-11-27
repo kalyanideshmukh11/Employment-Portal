@@ -2,6 +2,7 @@ import { NEW_REVIEW_POSTING } from '../actions/types';
 
 const initialState = {
   status: {},
+  review:[]
 };
 
 export default function (state = initialState, action) {

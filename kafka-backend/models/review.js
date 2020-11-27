@@ -2,13 +2,9 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 var reviewSchema = new schema(
-<<<<<<< Updated upstream
-  {rating: {
-=======
   {
     //sql_company_id: { type: String, required: true },
     rating: {
->>>>>>> Stashed changes
     type: mongoose.Schema.Types.Number,
     min: 1,
     max: 5,
@@ -22,7 +18,6 @@ var reviewSchema = new schema(
   ceo_rating:{ type: mongoose.Schema.Types.Boolean}, 
   recommended:{ type: mongoose.Schema.Types.Boolean},
   company:{type: mongoose.Schema.Types.String, required: true},
-<<<<<<< Updated upstream
   student:{type: mongoose.Schema.Types.String, required: true},
   date: { type: mongoose.Schema.Types.Date, default: Date.now() },
 //   company: {
@@ -38,10 +33,6 @@ var reviewSchema = new schema(
 //     name: { type: mongoose.Schema.Types.String, required: true },
 //     email: { type: mongoose.Schema.Types.String, required: true }
 //   },
-=======
-  //student:{type: mongoose.Schema.Types.String, required: true},
-  date: { type: mongoose.Schema.Types.Date, default: Date.now() },
->>>>>>> Stashed changes
 //Employer related
 featured:{ type: mongoose.Schema.Types.Boolean, default: false},
 favorite:{ type: mongoose.Schema.Types.Boolean, default: false}, 

@@ -13,7 +13,7 @@ export const ReviewList = (props) => {
         }
         return elements;
       } 
-    let reviewList = props.reviewList.reviews;
+    let reviewList = props.reviewList.review;
     console.log(reviewList)
     const list = Object.keys(reviewList).map(key =>
         <div>

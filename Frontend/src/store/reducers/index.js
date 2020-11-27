@@ -1,12 +1,6 @@
 import { combineReducers } from 'redux';
 import companyJobsReducer from './companyJobsReducer';
-<<<<<<< Updated upstream
 import companyReviewReducer from './companyReviewReducer';
-
-export default combineReducers({
-  jobs: companyJobsReducer,
-  reviews:companyReviewReducer
-=======
 import studentProfileReducer from './studentProfileReducer';
 import studentReviewReducer from './studentReviewReducer';
 import studentSalaryReducer from './studentSalaryReducer';
@@ -14,8 +8,8 @@ import studentSalaryReducer from './studentSalaryReducer';
 
 export default combineReducers({
   jobs: companyJobsReducer,
+  reviews:companyReviewReducer,
   studentProfile: studentProfileReducer,
-  reviews: studentReviewReducer,
+  review: studentReviewReducer,
   salary: studentSalaryReducer,
->>>>>>> Stashed changes
 });

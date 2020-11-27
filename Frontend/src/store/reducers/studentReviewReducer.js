@@ -1,7 +1,7 @@
 import { NEW_REVIEW_POSTING } from '../actions/types';
 import { GET_REVIEW } from '../actions/types';
 const initialState = {
-  reviews: [],
+  review: [],
   status: {},
  
 };
@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
     case GET_REVIEW:
         return { 
           ...state, 
-          reviews: action.payload 
+          review: action.payload 
         };
     default:
       return state;

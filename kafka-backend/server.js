@@ -4,13 +4,9 @@ var connection = new require('./kafka/connection');
 var companyProfileTopic = require('./services/companyProfile_topic');
 var reviewTopic = require('./services/review_topic');
 var jobsTopic = require('./services/jobs_topic');
-<<<<<<< Updated upstream
-var salaryTopic = require('./services/salary_topic');
-
-=======
 var interviewTopic = require('./services/interview_topic');
 var salaryTopic= require('./services/salary_topic'); 
->>>>>>> Stashed changes
+
 const mongoose = require('mongoose');
 const { mongoDBURI } = require('./config/config');
 
@@ -58,9 +54,6 @@ function handleTopicRequest(topic_name, fname) {
           return;
         });
         break;
-<<<<<<< Updated upstream
-        case 'salary_topic':
-=======
       case 'interview_topic':
         fname.interviewService(data.data, function (err, res) {
           response(data, res, producer);
@@ -68,7 +61,6 @@ function handleTopicRequest(topic_name, fname) {
         });
         break;
       case 'salary_topic':
->>>>>>> Stashed changes
           fname.salaryService(data.data, function (err, res) {
             response(data, res, producer);
             return;
@@ -105,9 +97,6 @@ function response(data, res, producer) {
 handleTopicRequest('companyProfile_topic', companyProfileTopic);
 handleTopicRequest('review_topic', reviewTopic);
 handleTopicRequest('jobs_topic', jobsTopic);
-<<<<<<< Updated upstream
 handleTopicRequest('salary_topic', salaryTopic);
-=======
 handleTopicRequest('interview_topic', interviewTopic);
-handleTopicRequest('salary_topic',salaryTopic);
->>>>>>> Stashed changes
+
