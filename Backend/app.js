@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
 var passport = require("passport");
-require("./passport");
+require("./config/passport");
 
 app.use(bodyParser.json());
 app.use(cookieParser());

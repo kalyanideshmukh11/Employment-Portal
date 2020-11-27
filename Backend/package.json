@@ -18,9 +18,12 @@
     "jsonwebtoken": "^8.5.1",
     "kafka-node": "^3.0.1",
     "nodemon": "^2.0.6",
+    "mysql2": "^2.2.5",
+    "path": "^0.12.7",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "path": "^0.12.7"
+    "password-hash": "^1.2.2",
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {},
   "description": ""
