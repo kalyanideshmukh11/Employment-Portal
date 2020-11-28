@@ -50,7 +50,8 @@ var educationSchema = new Schema({
 
 
 var resumeSchema = new Schema({
-    resume: {type: String, required:true}
+    resume: {type: String, required:true},
+    is_primary: {type: Boolean, required:true}
 },
 
 {

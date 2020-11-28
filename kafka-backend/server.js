@@ -3,12 +3,14 @@ var connection = new require('./kafka/connection');
 // topic files
 var companyProfileTopic = require("./services/companyProfile_topic");
 var reviewTopic = require("./services/review_topic");
-var studentProfileTopic = require("./services/studentProfile_topic")
+var studentProfileTopic = require("./services/studentProfile_topic");
+var studentResumeTopic = require('./services/studentResume_topic');
 var jobsTopic = require('./services/jobs_topic');
 var interviewTopic = require('./services/interview_topic');
 
 const mongoose = require('mongoose');
 const { mongoDBURI } = require('./config/config');
+const { studentResumeServices } = require("./services/studentResume_topic");
 
 const options = {
   useNewUrlParser: true,
@@ -55,6 +57,12 @@ function handleTopicRequest(topic_name, fname) {
           return
         });
         break;
+      case "studentResume_topic":
+        fname.studentResumeServices(data.data, function (err, res) {
+          response(data, res, producer)
+          return
+        });
+          break;
       case 'jobs_topic':
         fname.jobsService(data.data, function (err, res) {
           response(data, res, producer);
@@ -96,5 +104,6 @@ function response(data, res, producer) {
 handleTopicRequest("companyProfile_topic", companyProfileTopic);
 handleTopicRequest("review_topic", reviewTopic);
 handleTopicRequest("studentProfile_topic", studentProfileTopic)
+handleTopicRequest("studentResume_topic", studentResumeTopic)
 handleTopicRequest('jobs_topic', jobsTopic);
 handleTopicRequest('interview_topic', interviewTopic);

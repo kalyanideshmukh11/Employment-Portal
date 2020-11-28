@@ -131,3 +131,13 @@ button:focus, button:active {
   background-color:rgb(100, 190, 101) ;
   border-radius: 3%;
 }
+body > div.fade.modal.show > div > div > div.modal-body > form > div > label > span.MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1{
+  margin-top: 1mm !important ;
+  margin-left: 0 !important;
+}
+body > div.fade.modal.show > div > div > div.modal-body > form > div > label{
+  margin: 0 !important ;
+}  
+.dropdown-toggle.btn.btn-link::after{
+  display: none ;
+}
