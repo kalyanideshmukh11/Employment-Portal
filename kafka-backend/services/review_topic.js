@@ -1,44 +1,26 @@
 "use strict";
 
-const Reviews = require("../models/review");
-
+const Review = require("../models/review");
 const redisClient = require("../config/redisConfig");
 
-module.exports.reviewService = function (msg, callback) {
+exports.reviewService = function (msg, callback) {
   console.log("In reviewService - path:", msg.path);
   switch (msg.path) {
-    case "insertReviewDetails":
-      insertReviewDetails(msg, callback); 
+    case "companyReviews":
+      companyReviews(msg, callback);
       break;
-    case "getReviewDetails":
-      getReviewDetails(msg,callback);
+
+    case "updateFavFeatured":
+      updateFavFeatured(msg, callback); 
       break;
+
   }
 };
 
-
-async function insertReviewDetails(msg, callback) {
+async function companyReviews(msg, callback) {
   let err = {};
   let response = {};
-  console.log('In post review  topic service. Msg: ', msg);
-  console.log(msg.body);
-  await Reviews.create(msg.body)
-    .then((data) => {
-      response.status = 200;
-      response.message = 'Inserted Successfully';
-      response.data = data;
-      return callback(null, response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-
-async function getReviewDetails(msg, callback) {
-  let err = {};
-  let response = {};
-  console.log("In getReviewDetails service. Msg: ", msg);
+  console.log("In companyReviews service. Msg: ", msg);
   console.log(msg.body);
 
   redisClient.get("allReviews", function (err, data) {
@@ -55,11 +37,11 @@ async function getReviewDetails(msg, callback) {
     // }
     else {
       console.log("fetching from mongoDb");
-      Reviews.find({ company: msg.body }, function (err, doc) {
+      Review.find({ company: msg.body }, function (err, doc) {
         if (err || !doc) {
           response.status = 400;
         } else {
-          redisClient.setex("allReviews", 36000, JSON.stringify(doc));
+          //redisClient.setex("allReviews", 36000, JSON.stringify(doc));
           response.status = 200;
           response.data = doc;
           //console.log(response)
@@ -70,3 +52,44 @@ async function getReviewDetails(msg, callback) {
   });
 }
 
+
+async function updateFavFeatured(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log("In updateCompanyDetails service. Msg: ", msg);
+  
+  if(msg.colValue == 'favourite') {
+    await Review.findByIdAndUpdate(
+          { _id: msg.id },
+          { favorite: true },
+          { safe: true, new: true, useFindAndModify: false }
+        )
+          .then((user) => {
+            console.log(user);
+            console.log("Review marks as favourite");
+            response.status = 200;
+            response.message = "REVIEW_UPDATED";
+            return callback(null, response);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+  } else {
+    await Review.findByIdAndUpdate(
+      { _id: msg.id },
+      { featured: true },
+      { safe: true, new: true, useFindAndModify: false }
+    )
+      .then((user) => {
+        console.log(user);
+        console.log("Review marks as featured");
+        response.status = 200;
+        response.message = "REVIEW_UPDATED";
+        return callback(null, response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+  

@@ -15,16 +15,17 @@ class companyProfile extends Component {
 }
 
 componentWillMount() {
-    axios.get(`${backendServer}/glassdoor/company/${localStorage.getItem("user_id")}`)
+    axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`)
     .then(res => {
         this.setState({ user: res.data });
     });
 }
 
 render() {
-    console.log(this.props.user);
-    //var fileName = this.props.user.fileName
-    //var imgSrc = `${backendServer}/yelp/upload/restaurant/${fileName}`
+    console.log(this.state.user)
+    //console.log(this.props.user);
+    var fileName = this.state.user.cphoto_file_name
+    var imgSrc = `${backendServer}company/imageUpload/${fileName}`
     return (
         <React.Fragment>
         <Navigationbar />
@@ -33,17 +34,17 @@ render() {
                 <div class='row'>
                     <div class='col-xs-3 card profilePic' style={{position:"absolute"}}>
                         <card>
-                            <CardImg style={{height: "250px", width: "175px"}} className='profileImg'/>
+                            <CardImg style={{height: "200px", width: "175px"}} src={imgSrc} className='profileImg'/>
                         </card>
                     </div>
                     <div class='col-xs-4 profileName' style={{marginLeft: "200px"}}>
-                        <h1>Google</h1>
-                        <h6> Googleplex, 1600 Amphitheatre Parkway,</h6>
-                        <h6> Mountain View, CA</h6>
+                        <h1>{this.state.user.name}</h1>
+                        <h6> {this.state.user.street}</h6>
+                        <h6> {this.state.user.city}, {this.state.user.state}</h6>
                         <br />
                         <Button href = '/company' style={{backgroundColor: "transparent", color: "green", border: "none", fontSize: "25px" }}> Overview </Button>
                         <Button style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Jobs </Button>
-                        <Button href = '/companyReviews' style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Reviews </Button>
+                        <Button href = '/company/reviews' style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Reviews </Button>
                         <Button style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Applicants </Button>
                         <Button href = '/company/profileUpdate' style={{float: "right", marginLeft: "500px", backgroundColor: "green", border: "green"}}> Update profile details</Button>
                     </div>
@@ -51,34 +52,34 @@ render() {
         </div>
         <div class='row' style={{ marginLeft:"10px"}}>
             <div class='col-xs-12' style={{marginLeft: "15%"}}>
-                <h3 style={{color:'green'}}> Google overview</h3>
+                <h3 style={{color:'green'}}> {this.state.user.name} overview</h3>
                 <hr />
                 <h5 style={{margin:"0px"}}> Website</h5>
-                <p> www.google.com </p>
+                <p> {this.state.user.website} </p>
                 <h5 style={{margin:"0px"}}> Company Size </h5>
-                <p> 10000+ Employees </p>
+                <p> {this.state.user.company_size} </p>
                 <h5 style={{margin:"0px"}}> Company Type</h5>
-                <p> Company - Public </p>
+                <p> {this.state.user.company_type} </p>
                 <h5 style={{margin:"0px"}}> Revenue </h5>
-                <p> $10+ billion (USD) </p>
+                <p> {this.state.user.revenue} </p>
             </div>
             <div class='col-xs-3' style={{textAlign: "left", height: "100%", marginLeft: "40%", marginTop: "5%"}}>
                 <div style={{marginLeft: "10px"}}>
                     <h5 style={{margin:"0px"}}> Headquarters </h5>
-                    <p> Mountain View, CA</p>
+                    <p> {this.state.user.headquarters}</p>
                     <h5 style={{margin:"0px"}}> Industry </h5>
-                    <p> Internet </p>
+                    <p> {this.state.user.industry} </p>
                     <h5 style={{margin:"0px"}}> Founded </h5>
-                    <p> 1998 </p>
+                    <p> {this.state.user.founded} </p>
                     <h5 style={{margin:"0px"}}> CEO Name</h5>
-                    <p> Sundar Pichai </p>
+                    <p> {this.state.user.ceo_name} </p>
                 </div>
             </div>
             <hr />
             <div class='col-xs-3' style={{marginLeft: "15%"}}>
                 <br />
                 <h5 style={{margin:"0px"}}> Mission </h5>
-                <p>Google’s mission is to organize the world’s information and make it universally accessible and useful. </p>
+                <p>{this.state.user.mission}</p>
             </div>
             </div>
          </div>
