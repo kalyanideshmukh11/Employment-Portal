@@ -43,6 +43,12 @@ class StudentNavbar extends Component {
         redirectVar: <Redirect to={url} />,
       });
     }
+    if (this.state.SearchType === 'Interviews') {
+      let url = '/student/search/interview/' + this.state.searchKeyword;
+      this.setState({
+        redirectVar: <Redirect to={url} />,
+      });
+    }
   };
 
   handleOpen = () => {

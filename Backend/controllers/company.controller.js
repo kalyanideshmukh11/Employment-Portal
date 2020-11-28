@@ -97,11 +97,7 @@ exports.searchInterview = (req, res) => {
           } else {
             console.log(results);
             // res.writeHead(200, { 'Content-Type': 'aplication/json' });
-            // res.send(results);
-            res.json({
-              updatedList: results,
-            });
-            res.end();
+            res.send(results);
           }
         }
       );

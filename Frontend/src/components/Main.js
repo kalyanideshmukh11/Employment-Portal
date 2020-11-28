@@ -77,7 +77,7 @@ class Main extends Component {
         />
         <Route
           exact
-          path='/student/search/interview'
+          path='/student/search/interview/:keyword'
           component={SearchInterview}
         />
       </div>

@@ -11,11 +11,11 @@ class SearchJob extends Component {
     this.state = {
       searchResults: '',
     };
-    this.searchResults();
+    this.searchResults(this.props.match.params.keyword);
   }
-  searchResults = () => {
+  searchResults = (param) => {
     const data = {
-      job_title: this.props.match.params.keyword,
+      job_title: param,
     };
     axios
       .post(`${backendServer}glassdoor/jobs/search/job`, data)
@@ -31,9 +31,22 @@ class SearchJob extends Component {
       });
   };
 
+  componentWillReceiveProps(nextProp) {
+    console.log('next:', nextProp);
+    this.searchResults(nextProp.match.params.keyword);
+  }
+
   render() {
-    let renderOutput = [];
-    if (this.state.searchResults && this.state.searchResults.length > 0) {
+    let renderOutput = (
+      <h3>
+        <b>No results found</b>
+      </h3>
+    );
+    if (
+      this.state.searchResults &&
+      Object.keys(this.state.searchResults).length > 0
+    ) {
+      renderOutput = [];
       console.log('search results:', this.state.searchResults);
       for (var i = 0; i < this.state.searchResults.length; i++) {
         renderOutput.push(
