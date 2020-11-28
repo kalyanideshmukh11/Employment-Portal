@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
-import Navbar from '../../Student/Navbar/navbar_student';
+import Navbar from '../../Student/Navbar/navbar_company';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAllJobs } from '../../../store/actions/companyJobsAction';
@@ -40,6 +40,7 @@ class Jobs extends Component {
     if (this.props && this.props.jobs && this.props.jobs.length > 0) {
       for (var i = 0; i < this.props.jobs.length; i++) {
         const job_id = this.props.jobs[i]._id;
+
         renderOutput.push(
           <div className='container' style={{ paddingRight: '60%' }}>
             <div className='col-md-12'>
@@ -56,7 +57,6 @@ class Jobs extends Component {
                   {this.state.jobdata && (
                     <Card.Title style={{ marginLeft: '15px' }}>
                       {this.state.jobdata.title}
-                      <span>2</span>
                     </Card.Title>
                   )}
                   <Card.Body>
@@ -134,12 +134,23 @@ class Jobs extends Component {
                   </button>
                 </Modal>
                 <Card.Body>
-                  <h6>
-                    <a href='#' style={{ color: 'black' }}>
-                      No of Applicants
-                    </a>{' '}
-                    - 2
-                  </h6>
+                  {this.props.jobs[i].applied_students && (
+                    <Link
+                      to={{
+                        pathname: '/company/jobs/applicantdetails',
+                        state: {
+                          job_id: this.props.jobs[i]._id,
+                        },
+                      }}>
+                      <h6>
+                        <a href='#' style={{ color: 'black' }}>
+                          No of Applicants -{' '}
+                          {this.props.jobs[i].applied_students.length}
+                        </a>{' '}
+                      </h6>
+                    </Link>
+                  )}
+
                   {this.props.jobs[i].industry && (
                     <h6>Industry - {this.props.jobs[i].industry}</h6>
                   )}
