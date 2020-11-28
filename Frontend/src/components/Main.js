@@ -16,6 +16,9 @@ import updateCompany from './Employer/update';
 import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
 import AddInterview from './Student/Interview/AddInterview';
+import SearchJob from './Student/Search/search_jobs';
+import SearchCompany from './Student/Search/search_company';
+import SearchInterview from './Student/Search/search_interview';
 
 class Main extends Component {
   render() {
@@ -62,6 +65,21 @@ class Main extends Component {
         <Route exact path='/company/addjob' component={AddJob} />
         <Route exact path='/company/jobs' component={Jobs} />
         <Route exact path='/student/interview/add' component={AddInterview} />
+        <Route
+          exact
+          path='/student/search/job/:keyword'
+          component={SearchJob}
+        />
+        <Route
+          exact
+          path='/student/search/company/:keyword'
+          component={SearchCompany}
+        />
+        <Route
+          exact
+          path='/student/search/interview'
+          component={SearchInterview}
+        />
       </div>
     );
   }

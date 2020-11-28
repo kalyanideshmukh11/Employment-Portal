@@ -16,12 +16,34 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Redirect } from 'react-router';
 
 class StudentNavbar extends Component {
   constructor(props) {
     super(props);
-    this.state = { isShow: false, SearchType: 'Jobs', searchKeyword: '' };
+    this.state = {
+      isShow: false,
+      SearchType: 'Jobs',
+      searchKeyword: '',
+      redirectVar: null,
+    };
+    this.search = this.search.bind(this);
   }
+
+  search = () => {
+    if (this.state.SearchType === 'Jobs') {
+      let url = '/student/search/job/' + this.state.searchKeyword;
+      this.setState({
+        redirectVar: <Redirect to={url} />,
+      });
+    }
+    if (this.state.SearchType === 'Companies') {
+      let url = '/student/search/company/' + this.state.searchKeyword;
+      this.setState({
+        redirectVar: <Redirect to={url} />,
+      });
+    }
+  };
 
   handleOpen = () => {
     this.setState({ isOpen: true });
@@ -33,13 +55,16 @@ class StudentNavbar extends Component {
 
   handleLogout = () => {};
   searchChangeHandler = (e) => {
+    console.log('Search keyword:', e);
     e.preventDefault();
     this.setState({
       searchKeyword: e.target.value,
     });
+    console.log('keyword:', this.state.searchKeyword);
   };
 
   SearchType = (e) => {
+    console.log('searchType:', e);
     this.setState({
       SearchType: e,
     });
@@ -48,6 +73,7 @@ class StudentNavbar extends Component {
   render() {
     return (
       <div>
+        {this.state.redirectVar}
         <Navbar bg='light' expand='lg'>
           <Navbar.Brand href='/student/home'>
             <Image src={glassdorNavIco} style={{ width: '200px' }} />
@@ -90,7 +116,9 @@ class StudentNavbar extends Component {
               placeholder='Location'
               className='mr-sm-4'
             />
-            <Button variant='success'>Search</Button>
+            <Button onClick={this.search} variant='success'>
+              Search
+            </Button>
           </Form>
           <Nav>
             <NavDropdown

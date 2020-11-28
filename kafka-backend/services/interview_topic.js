@@ -8,6 +8,9 @@ module.exports.interviewService = function (msg, callback) {
       break;
     case 'get_all_interviews':
       getAllInterviews(msg, callback);
+    case 'searchByInterview':
+      searchByCompanyInterview(msg, callback);
+      break;
   }
 };
 
@@ -49,4 +52,38 @@ async function getAllInterviews(msg, callback) {
     err.data = 'Error in Data';
     return callback(err, null);
   }
+}
+async function searchByCompanyInterview(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In search by interview for a company: ');
+  console.log(Object.keys(msg.body));
+  let ids = Object.keys(msg.body);
+  await Interview.aggregate(
+    [
+      {
+        $match: { sql_company_id: { $in: ids } },
+      },
+      {
+        $group: {
+          _id: '$sql_company_id',
+          interviews: { $sum: 1 },
+          rating: { $avg: '$difficulty' },
+        },
+      },
+    ],
+    function (err, results) {
+      console.log('Results:', results);
+      for (each of results) {
+        msg.body[each._id].interviews = each.interviews;
+        msg.body[each._id].rating = each.rating;
+      }
+    }
+  );
+
+  callback(null, msg.body);
+  // .find({ sql_company_id: { $in: ids } }, function (err, result) {
+  //   console.log("reviews list:", result);
+  //   callback(null, result);
+  // });
 }

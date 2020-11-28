@@ -1,28 +1,28 @@
-const Jobs = require("../models/jobs");
+const Jobs = require('../models/jobs');
 
 module.exports.jobsService = function (msg, callback) {
-  console.log("In jobs service path", msg.path);
+  console.log('In jobs service path', msg.path);
   switch (msg.path) {
-    case "insertJobDetails":
+    case 'insertJobDetails':
       insertJobDetails(msg, callback);
       break;
-    case "getAllJobs":
+    case 'getAllJobs':
       getAllCompanyJobs(msg, callback);
       break;
-    case "searchJob":
-      searchJobs(msg, callback);
+    case 'searchJob':
+      searchJobTitle(msg, callback);
   }
 };
 
 async function insertJobDetails(msg, callback) {
   let err = {};
   let response = {};
-  console.log("In post job details topic service. Msg: ", msg);
+  console.log('In post job details topic service. Msg: ', msg);
   console.log(msg.body);
   await Jobs.create(msg.body)
     .then((data) => {
       response.status = 200;
-      response.message = "Inserted Successfully";
+      response.message = 'Inserted Successfully';
       response.data = data;
       return callback(null, response);
     })
@@ -34,9 +34,9 @@ async function insertJobDetails(msg, callback) {
 async function getAllCompanyJobs(msg, callback) {
   let err = {};
   let response = {};
-  console.log("In get job details topic. Msg: ", msg);
+  console.log('In get job details topic. Msg: ', msg);
   console.log(msg.body);
-  await Jobs.find({ companyName: { $regex: msg.body, $options: "i" } })
+  await Jobs.find({ companyName: { $regex: msg.body, $options: 'i' } })
     .then((data) => {
       response.status = 200;
       response.data = data;
@@ -47,12 +47,12 @@ async function getAllCompanyJobs(msg, callback) {
     });
 }
 
-async function searchJobs(msg, callback) {
+async function searchJobTitle(msg, callback) {
   let err = {};
   let response = {};
-  console.log("In get job search details topic. Msg: ", msg);
+  console.log('In get job search details topic. Msg: ', msg);
   console.log(msg.body);
-  await Jobs.find({ title: { $regex: msg.body.job_title, $options: "i" } })
+  await Jobs.find({ title: { $regex: msg.body.job_title, $options: 'i' } })
     .then((data) => {
       response.status = 200;
       response.data = data;

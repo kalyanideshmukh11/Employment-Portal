@@ -1,9 +1,10 @@
-const review = require("../models/review");
+const review = require('../models/review');
+const interview = require('../models/interview');
 
 module.exports.searchService = function (msg, callback) {
-  console.log("In review service path", msg.path);
+  console.log('In review service path', msg.path);
   switch (msg.path) {
-    case "searchByCompany":
+    case 'searchByCompany':
       searchByCompany(msg, callback);
       break;
   }
@@ -12,7 +13,7 @@ module.exports.searchService = function (msg, callback) {
 async function searchByCompany(msg, callback) {
   let err = {};
   let response = {};
-  console.log("In search by company details topic service. Msg: ");
+  console.log('In search by company details topic service. Msg: ');
   console.log(Object.keys(msg.body));
   let ids = Object.keys(msg.body);
   await review.aggregate(
@@ -22,15 +23,34 @@ async function searchByCompany(msg, callback) {
       },
       {
         $group: {
-          _id: "$sql_company_id",
+          _id: '$sql_company_id',
           reviews: { $sum: 1 },
         },
       },
     ],
     function (err, results) {
-      console.log("Results:", results);
+      console.log('Results:', results);
       for (each of results) {
         msg.body[each._id].reviews = each.reviews;
+      }
+    }
+  );
+  await interview.aggregate(
+    [
+      {
+        $match: { sql_company_id: { $in: ids } },
+      },
+      {
+        $group: {
+          _id: '$sql_company_id',
+          interviews: { $sum: 1 },
+        },
+      },
+    ],
+    function (err, results) {
+      console.log('Results:', results);
+      for (each of results) {
+        msg.body[each._id].interviews = each.interviews;
       }
     }
   );
