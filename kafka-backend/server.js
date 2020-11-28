@@ -1,9 +1,11 @@
 var connection = new require('./kafka/connection');
 
 // topic files
-var companyProfileTopic = require('./services/companyProfile_topic');
-var reviewTopic = require('./services/review_topic');
+var companyProfileTopic = require("./services/companyProfile_topic");
+var reviewTopic = require("./services/review_topic");
+var studentProfileTopic = require("./services/studentProfile_topic")
 var jobsTopic = require('./services/jobs_topic');
+var interviewTopic = require('./services/interview_topic');
 
 const mongoose = require('mongoose');
 const { mongoDBURI } = require('./config/config');
@@ -23,6 +25,8 @@ mongoose.connect(mongoDBURI, options, (err, res) => {
     console.log(`MongoDB Connected`);
   }
 });
+
+
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -45,8 +49,20 @@ function handleTopicRequest(topic_name, fname) {
           return;
         });
         break;
+      case "studentProfile_topic":
+        fname.studentProfileServices(data.data, function (err, res) {
+          response(data, res, producer)
+          return
+        });
+        break;
       case 'jobs_topic':
         fname.jobsService(data.data, function (err, res) {
+          response(data, res, producer);
+          return;
+        });
+        break;
+      case 'interview_topic':
+        fname.interviewService(data.data, function (err, res) {
           response(data, res, producer);
           return;
         });
@@ -77,6 +93,8 @@ function response(data, res, producer) {
 // first argument is topic name
 // second argument is a function that will handle this topic request
 
-handleTopicRequest('companyProfile_topic', companyProfileTopic);
-handleTopicRequest('review_topic', reviewTopic);
+handleTopicRequest("companyProfile_topic", companyProfileTopic);
+handleTopicRequest("review_topic", reviewTopic);
+handleTopicRequest("studentProfile_topic", studentProfileTopic)
 handleTopicRequest('jobs_topic', jobsTopic);
+handleTopicRequest('interview_topic', interviewTopic);
