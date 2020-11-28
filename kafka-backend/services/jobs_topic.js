@@ -25,3 +25,19 @@ async function insertJobDetails(msg, callback) {
       console.log(err);
     });
 }
+
+async function getAllCompanyJobs(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In get job details topic. Msg: ', msg);
+  console.log(msg.body);
+  await Jobs.find({ companyName: { $regex: msg.body, $options: 'i' } })
+    .then((data) => {
+      response.status = 200;
+      response.data = data;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
