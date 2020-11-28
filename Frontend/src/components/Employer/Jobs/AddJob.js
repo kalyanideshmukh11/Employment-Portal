@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navbar from '../../Student/Navbar/navbar_student';
+import Navbar from '../../Student/Navbar/navbar_company';
 import { Link } from 'react-router-dom';
 import { Form, Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';

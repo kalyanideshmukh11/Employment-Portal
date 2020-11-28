@@ -1,5 +1,9 @@
-import { NEW_JOB_POSTING } from '../actions/types';
-import { GET_ALL_JOBS } from '../actions/types';
+import {
+  NEW_JOB_POSTING,
+  GET_ALL_JOBS,
+  GET_JOB_APPLICANT_DETAILS,
+  UPDATE_APPLICANT_STATUS,
+} from '../actions/types';
 
 const initialState = {
   status: {},
@@ -12,6 +16,10 @@ export default function (state = initialState, action) {
       return { ...state, status: action.payload };
     case GET_ALL_JOBS:
       return { ...state, jobs: action.payload };
+    case GET_JOB_APPLICANT_DETAILS:
+      return { ...state, jobs: action.payload };
+    case UPDATE_APPLICANT_STATUS:
+      return { ...state, status: action.payload };
     default:
       return state;
   }

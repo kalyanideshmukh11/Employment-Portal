@@ -1,4 +1,9 @@
-import { NEW_JOB_POSTING, GET_ALL_JOBS } from './types';
+import {
+  NEW_JOB_POSTING,
+  GET_ALL_JOBS,
+  GET_JOB_APPLICANT_DETAILS,
+  UPDATE_APPLICANT_STATUS,
+} from './types';
 import backendServer from '../../webConfig';
 import axios from 'axios';
 
@@ -22,6 +27,34 @@ export const getAllJobs = (args) => (dispatch) => {
     .then((response) =>
       dispatch({
         type: GET_ALL_JOBS,
+        payload: response.data,
+      }),
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const getJobApplicantDetails = (args) => (dispatch) => {
+  axios
+    .get(`${backendServer}glassdoor/jobs/${args}/applicantdetails/`)
+    .then((response) =>
+      dispatch({
+        type: GET_JOB_APPLICANT_DETAILS,
+        payload: response.data,
+      }),
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const updateApplicantStatus = (args) => (dispatch) => {
+  axios
+    .post(`${backendServer}glassdoor/jobs/applicantstatus/update`, args)
+    .then((response) =>
+      dispatch({
+        type: UPDATE_APPLICANT_STATUS,
         payload: response.data,
       }),
     )
