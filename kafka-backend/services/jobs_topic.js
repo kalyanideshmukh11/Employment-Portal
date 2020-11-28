@@ -6,9 +6,6 @@ module.exports.jobsService = function (msg, callback) {
     case 'insertJobDetails':
       insertJobDetails(msg, callback);
       break;
-    case 'getAllJobs':
-      getAllCompanyJobs(msg, callback);
-      break;
   }
 };
 
