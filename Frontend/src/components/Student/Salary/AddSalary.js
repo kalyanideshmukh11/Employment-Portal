@@ -25,7 +25,7 @@ class AddSalary extends Component {
   }
 getSalary=() =>{
   console.log("running")
-  axios.get(`${backendServer}company/salary/Facebook`)
+  axios.get(`${backendServer}student/salary/Facebook`)
         .then(res => {
           //console.log(res)
             if(res.status === 200){
