@@ -15,6 +15,7 @@ import companyProfile from './Employer/companyProfile';
 import updateCompany from './Employer/update';
 import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
+import companyReviews from './Employer/companyReviews';
 import AddInterview from './Student/Interview/AddInterview';
 
 class Main extends Component {
@@ -61,6 +62,7 @@ class Main extends Component {
         <Route exact path='/company/profileUpdate' component={updateCompany} />
         <Route exact path='/company/addjob' component={AddJob} />
         <Route exact path='/company/jobs' component={Jobs} />
+        <Route exact path='/company/reviews' component={companyReviews} />
         <Route exact path='/student/interview/add' component={AddInterview} />
       </div>
     );
