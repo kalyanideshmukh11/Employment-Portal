@@ -4,7 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
-/public
+/public/uploads/student/resumes
+/public/uploads/student/profile_pictures
+
 
 # testing
 /coverage
