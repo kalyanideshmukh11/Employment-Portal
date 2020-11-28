@@ -2,13 +2,13 @@ const express = require('express');
 const kafka = require('../../kafka/client');
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  console.log('In company profile jobs route');
+router.post('/add', (req, res) => {
+  console.log('In interview route');
   console.log(req.body);
   kafka.make_request(
-    'jobs_topic',
+    'interview_topic',
     {
-      path: 'insertJobDetails',
+      path: 'add_interview',
       body: req.body,
     },
     function (err, results) {
@@ -22,27 +22,32 @@ router.post('/', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(results.message);
       }
-    },
+    }
   );
 });
 
-router.get('/:companyname/fetchjobs', (req, res) => {
-  console.log('In company profile jobs route');
+router.get('/get/:company_id', (req, res) => {
+  console.log(req.params.user_id);
   kafka.make_request(
-    'jobs_topic',
-    { path: 'getAllJobs', body: req.params.companyname },
+    'interview_topic',
+    { path: 'get_all_interviews', body: req.params },
     function (err, results) {
       if (err) {
-        console.log('Inside err');
+        console.log('error');
         console.log(err);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('Some error has occured');
+        res.writeHead(err.status, {
+          'Content-Type': 'text/plain',
+        });
+        res.end(err.data);
       } else {
-        console.log(results);
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(JSON.stringify(results.data));
+        console.log('done');
+        res.writeHead(results.status, {
+          'Content-Type': 'text/plain',
+        });
+        res.end(results.data);
       }
-    },
+    }
   );
 });
+
 module.exports = router;

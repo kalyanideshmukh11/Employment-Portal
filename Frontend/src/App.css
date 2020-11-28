@@ -36,10 +36,98 @@
     transform: rotate(360deg);
   }
 }
-/* #root > div > div > div > div.row > div.col-4 > div > div > a.list-group-item.active.list-group-item-light.list-group-item-action {
+#root > div > div > div > div > div.row > div.col-4 > div > div > a.list-group-item.active.list-group-item-light.list-group-item-action {
   color:black;
   background-color: white !important;
   border-color: rgb(221, 221, 222) !important;
   border-bottom: 4px solid rgb(77, 166, 79) !important;;
-} */
+}
 
+#root > div > div > div > div.row > div.col-6 > div > div > a.list-group-item.active.list-group-item-light.list-group-item-action {
+  color:black;
+  background-color: white !important;
+  border-color: rgb(221, 221, 222) !important;
+  border-bottom: 4px solid rgb(77, 166, 79) !important;;
+}
+
+#root > div > div > div > div.row > div.col-4.contri > div > div > a.list-group-item.active.list-group-item-light.list-group-item-action {
+  color:black;
+  background-color: white !important;
+  border-color: rgb(221, 221, 222) !important;
+  border-bottom: 4px solid rgb(77, 166, 79) !important;;
+}
+#root > div > div > div > div.row > div.col-4.contri > div > div{
+  box-shadow: 0.5px 1px 1px 0.5px rgba(158, 155, 155, 0.89);;
+}
+#root > div > div > div > div.row > div.col-8.contri > div{
+  box-shadow: 0.5px 1px 1px rgba(158, 155, 155, 0.89);;
+}
+
+.optionContainer li:hover, .optionContainer .highlight {
+  background: rgb(77, 166, 79) !important ;
+  color: white !important;
+  font-weight: lighter !important;
+}
+
+.optionContainer li, .optionContainer .highlight {
+  background: white !important ;
+  color: black !important;
+  font-weight: lighter !important;
+}
+
+div.ReactTags__tagInput {
+  width: 200px !important;
+  border-radius: 2px !important;
+  display: inline-block !important;
+  margin-top: 10px !important ;
+}
+div.ReactTags__tagInput input.ReactTags__tagInputField,
+div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+  height: 40px !important;
+  margin: 0 !important;
+  font-size: 15px !important;
+  width: 150% !important;
+  border: 1px solid rgb(219, 218, 218) !important;
+  padding: 0 4px !important;
+}
+
+div.ReactTags__selected span.ReactTags__tag {
+  border: 1px solid #ddd !important;
+  background: #eeeeee !important;
+  font-size: 15px !important;
+  display: inline-block !important;
+  padding: 5px 5px 5px 5px !important;
+  margin: 0 5px !important;
+  cursor: move;
+  border-radius: 2px !important;
+  margin-bottom: 3mm !important;
+
+}
+div.ReactTags__selected a.ReactTags__remove {
+  color: #aaa !important;
+  margin-left: 5px !important;
+  cursor: pointer !important;
+  margin-bottom: 3mm !important;
+}
+.btn.btn-link:focus,.btn.btn-link:active,.btn.btn-link:visited  {
+  outline: none !important;
+  box-shadow: none;
+}
+
+button:focus, button:active {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+}
+
+.skill {
+  border:1px solid rgb(101, 182, 102);
+  padding: 5px 5px 5px 0px;
+  text-align: center;
+  margin-left: 3mm;
+  width:10%;
+  position: relative;
+  display: inline-block;
+  height: auto;
+  background-color:rgb(100, 190, 101) ;
+  border-radius: 3%;
+}

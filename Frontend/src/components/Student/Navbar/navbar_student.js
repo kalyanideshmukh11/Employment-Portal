@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 //import yelpLoginImage from './images/yelp_logo.jpg';
 import {Button, Nav, FormControl, Dropdown, Navbar, Image } from 'react-bootstrap';
@@ -8,63 +9,75 @@ import glassdorNavIco from '../images/glassdoor-logotype-rgb.png'
 //import { Link } from 'react-router-dom';
 
 class navigationBar extends Component {
+=======
+import React,{Component} from 'react';
+import {Navbar, Nav, NavDropdown, Form, FormControl, Button, Image, DropdownButton, Dropdown, InputGroup} from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import glassdorNavIco from '../images/glassdoor-logotype-rgb.png'
+import 'bootstrap/dist/css/bootstrap.css'
+import '@fortawesome/fontawesome-free/css/all.min.css';
+>>>>>>> origin/master
 
+class StudentNavbar extends Component {
     constructor(props) {
-
-        super(props); 
-            this.state = {
-                searchKeyword: "",
-                searchCategory: 0,
-                searchBar: 'False'
-            }
-}
-
-
-searchChangeHandler = (e) => {
-    e.preventDefault();
-    console.log(e.target.value)
-    this.setState({
-        searchKeyword: e.target.value
-    })
-}
-
-handleClick = (e) => {
-    if (localStorage.getItem("user") === 'False')
-    {
-        window.location = "/restaurant";
-    } else {
-        window.location = "/userProfile";
+        super(props)
+        this.state = { isShow: false,
+        SearchType: 'Jobs',
+        searchKeyword: "",
+        }
     }
-}
 
-handleOrder = (e) => {
-    if (localStorage.getItem("user") === 'False')
-    {
-        window.location = '/restOrders';
-    } else {
-        window.location = '/user/orders'
+    handleOpen = () => {
+        this.setState({ isOpen: true })
+      }
+    
+    handleClose = () => {
+         this.setState({ isOpen: false })
+      }
+
+    handleLogout = () => {
+
     }
-}
+    searchChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({
+            searchKeyword: e.target.value
+        })
+    }
+    
 
-handleInputChange = (e) => {
-    console.log(e.target.value)
-    this.setState({
-        searchCategory: e.target.value
-    })
-}
+    SearchType = (e) => {
+        this.setState({
+            SearchType: e
+        })
+    }
 
-handleLogout = () => {
-    window.localStorage.clear();
-    window.location ='/'
-  };
+    render() {
+        return (
+            <div> 
+                <Navbar bg="light" expand="lg">
+                    <Navbar.Brand href="/student/home">
+                        <Image src={glassdorNavIco} style={{width:"200px"}} />
+                    </Navbar.Brand>
+                    <Form inline>
+                    <FormControl type="text" placeholder="Job Title, Keywords, or Company" className="mr-sm-3" style={{width: "10cm"}} onChange={this.searchChangeHandler}/>
+                    
+                    <InputGroup>
+                        <FormControl type="text" placeholder="What?" className="mr-xs-10" value={this.state.SearchType} />
+                        <DropdownButton as={InputGroup.Append} variant="light"
+                        title=''
+                        name='searchType'
+                        menuAlign="right" style={{marginLeft:"0.1mm"}}
+                        onSelect={ this.SearchType }>
+                        <Dropdown.Item eventKey="Jobs">Jobs</Dropdown.Item>
+                        <Dropdown.Item eventKey="Companies">Companies</Dropdown.Item>
+                        <Dropdown.Item eventKey="Salaries">Salaries</Dropdown.Item>
+                        <Dropdown.Item eventKey="Interviews">Interviews</Dropdown.Item>
+                        </DropdownButton>
+                    </InputGroup>
 
-handleSearch = (e) => {
-    e.preventDefault();
-    this.setState({searchBar: 'True'})
-};
-
-
-
+<<<<<<< HEAD
 render() {
 return (
     <React.Fragment>
@@ -111,33 +124,64 @@ return (
             </Nav>
             <Nav class="navbar navbar-expand-md bg-light" style={{borderTop: "0.5px solid #a9a9a9"}}>
             <div>
+=======
+                    <FormControl style={{marginLeft:"5mm"}} type="text" placeholder="Location" className="mr-sm-4" />
+                    <Button variant="success">Search</Button>
+                    </Form>
+                    <Nav>
+                    <NavDropdown 
+                    style={{marginLeft:"1cm"}} 
+                    title= {<i className="far fa-user-circle" style={{fontSize: '30px'}}></i>} 
+                    onMouseEnter = { this.handleOpen }
+                    onMouseLeave = { this.handleClose }
+                    show={ this.state.isOpen }
+                    action variant='light'>
+                        <NavDropdown.Item href="/student/profile" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'profile')}}>Profile</NavDropdown.Item>
+                        <NavDropdown.Item href="/student/resume" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'resume')}}>Resumes</NavDropdown.Item>
+                        <NavDropdown.Item href="/student/jobPreference" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'jobPreference')}}>Job Preference</NavDropdown.Item>
+                        <NavDropdown.Item href="/student/demographics" style={{padding:"15px 15px 15px 15px"}} onClick={()=>{localStorage.setItem('active-list', 'demographics')}}>Demographics</NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item href="/student/contributions/salaries" style={{padding:"15px 15px 15px 15px"}} >Contributions</NavDropdown.Item>
+                        <NavDropdown.Item href="" style={{padding:"15px 15px 15px 15px"}} >Company Follows</NavDropdown.Item>
+                        <NavDropdown.Item href="" style={{padding:"15px 15px 15px 15px"}} >Emails & Alerts</NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item href="" style={{padding:"10px 15px 10px 15px"}} >Account Settings</NavDropdown.Item>
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item href="" style={{padding:"15px 15px 15px 15px"}} >Help Center</NavDropdown.Item>
+                        <NavDropdown.Item onClick={this.handleLogout} style={{padding:"15px 15px 15px 15px"}}>Logout</NavDropdown.Item>
+                    </NavDropdown>
+                    </Nav>    
+                </Navbar>
+                <Nav class="navbar navbar-expand-md bg-light" style={{borderTop: "0.5px solid #a9a9a9"}}>
+                <div>
+>>>>>>> origin/master
                 <form class="form-inline mx-auto">
                         <Dropdown>
                                 <Dropdown.Toggle style={{fontSize: "15px",backgroundColor: "transparent", color: "#555555", border: "none", marginLeft: "5px"}}id="dropdown-basic"> <i class="fas fa-briefcase"></i> Jobs</Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item style={{background: "none"}}onClick={this.handleClick}>Recent Activity</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Career Insights</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Job Alerts</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Saved</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Applications</Dropdown.Item>
+                                    <Dropdown.Item style={{background: "none"}}>Recent Activity</Dropdown.Item>
+                                    <Dropdown.Item >Career Insights</Dropdown.Item>
+                                    <Dropdown.Item >Job Alerts</Dropdown.Item>
+                                    <Dropdown.Item >Saved</Dropdown.Item>
+                                    <Dropdown.Item >Applications</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                             <Dropdown>
                                 <Dropdown.Toggle style={{fontSize: "15px",backgroundColor: "transparent", color: "#555555", border: "none", marginLeft: "5px"}}id="dropdown-basic"> <i class="far fa-building"></i> Companies</Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item style={{background: "none"}}onClick={this.handleClick}>Discover companies</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Compare Companies </Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Suggested Follows</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Write a Review</Dropdown.Item>
+                                    <Dropdown.Item style={{background: "none"}}>Discover companies</Dropdown.Item>
+                                    <Dropdown.Item>Compare Companies </Dropdown.Item>
+                                    <Dropdown.Item>Suggested Follows</Dropdown.Item>
+                                    <Dropdown.Item>Write a Review</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                             <Dropdown>
                                 <Dropdown.Toggle style={{fontSize: "15px",backgroundColor: "transparent", color: "#555555", border: "none", marginLeft: "5px"}}id="dropdown-basic"> <i class="fas fa-money-bill"></i> Salaries</Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item style={{background: "none"}}onClick={this.handleClick}>Discover salary</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Salary Calculator </Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Analyze Offer</Dropdown.Item>
-                                    <Dropdown.Item onClick={this.handleLogout}>Add a Salary</Dropdown.Item>
+                                    <Dropdown.Item style={{background: "none"}}>Discover salary</Dropdown.Item>
+                                    <Dropdown.Item>Salary Calculator </Dropdown.Item>
+                                    <Dropdown.Item >Analyze Offer</Dropdown.Item>
+                                    <Dropdown.Item >Add a Salary</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                             <Dropdown>
@@ -147,12 +191,14 @@ return (
                                     <Dropdown.Item onClick={this.handleLogout}>Add an Interview</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
-                    <Button onClick={this.handleSearch} style = {{ marginLeft: "750px", marginRight: "40px", height:"38px", background: "transparent", color: "#555555", border: "none", cursor: "pointer"}} type="submit"> <i class="fas fa-briefcase"></i> Post Jobs </Button>
                 </form>
                 </div>
             </Nav>
-        </React.Fragment>
-       )
+            </div>
+            
+        )
+    }
+
 }
-}
-export default navigationBar;
+
+export default StudentNavbar
