@@ -10,15 +10,29 @@ class companyReview extends Component {
         super(props); 
             this.state = {
                 reviews: [],
+                fileText: ''
             }
 }
 
 componentWillMount() {
-    console.log("Hi, I am in component will mount");
     axios.get(`${backendServer}company/reviews/${localStorage.getItem("name")}`)
     .then(res => {
         this.setState({ reviews: res.data });
     });
+}
+
+handleOnClick = (e) => {
+    const data = {
+        id: e.target.parentElement.id,
+        value: e.target.parentElement.value
+    }
+    console.log(data);
+    axios.post(`${backendServer}company/reviews/favourite`, data)
+    .then(response => {     
+        if(response.status === 200) {
+            window.location = '/company/reviews'
+        }
+    })
 }
 
 createElements(n) {
@@ -32,10 +46,30 @@ createElements(n) {
   }
 
 render() {
+    
     console.log(this.state.reviews)
     let renderReviews;
     if (this.state.reviews) {
         renderReviews = this.state.reviews.map( rev => {
+            let favourite = <i class="far fa-heart"></i>;
+            let featured = <i class="far fa-flag"></i>
+            let button1;
+            let button2;
+
+            if (rev.favorite ==='true' && rev.featured === 'true') {
+                button1 = <button id = {rev._id} style={{backgroundColor: "transparent", border: "none", color: "red", fontSize: "25px"}} onClick={this.handleOnClick} value='favourite'> <i class="fas fa-heart"></i> </button>
+                button2 = <button id = {rev._id} style={{backgroundColor: "transparent", border: "none", color: "red", fontSize: "25px"}} onClick={this.handleOnClick} value='featured'> <i class="fas fa-flag"></i> </button>
+            }
+            else if(rev.favorite === 'true') {
+                button1 = <button id = {rev._id} style={{backgroundColor: "transparent", border: "none", color: "red", fontSize: "25px"}} onClick={this.handleOnClick} value='favourite'> <i class="fas fa-heart"></i> </button>
+                button2 = <button id = {rev._id} style={{backgroundColor: "transparent", border: "none", color: "grey", fontSize: "25px"}} onClick={this.handleOnClick} value='featured'> {featured} </button>
+            } else if (rev.featured === 'true') {
+                button1 = <button id = {rev._id} style={{backgroundColor: "transparent", border: "none", color: "grey", fontSize: "25px"}} onClick={this.handleOnClick} value='favourite'> {favourite} </button>
+                button2 = <button id = {rev._id} style={{backgroundColor: "transparent", border: "none", color: "red", fontSize: "25px"}} onClick={this.handleOnClick} value='featured'> <i class="fas fa-flag"></i> </button>
+            } else {
+                button1 = <button id = {rev._id} style={{backgroundColor: "transparent", border: "none", color: "grey", fontSize: "25px"}} onClick={this.handleOnClick} value='favourite'> {favourite} </button>
+                button2 = <button id = {rev._id} style={{backgroundColor: "transparent", border: "none", color: "grey", fontSize: "25px"}} onClick={this.handleOnClick} value='featured'> {featured} </button>
+            }
             return (
             <div>
                 <hr />
@@ -51,8 +85,8 @@ render() {
                             <Button style={{marginLeft: "10px", backgroundColor: "green", border: "green"}}> Reply </Button>
                         </div>
                         <div>
-                            <Button style={{backgroundColor: "transparent", border: "none", color: "grey", fontSize: "25px"}}><i class="far fa-heart"></i></Button> 
-                            <Button style={{backgroundColor: "transparent", border: "none", color: "grey", fontSize: "25px"}}><i class="far fa-flag"></i></Button>
+                            {button1}
+                            {button2}
                         </div>
                     </div>
             </div>

@@ -66,6 +66,9 @@ async function updateCompanyDetails(msg, callback) {
     });
 }
 
+
+
+
 //   await User.findByIdAndUpdate(
 //     { _id: msg.userId },
 //     { $set: msg.body },

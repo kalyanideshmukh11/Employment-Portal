@@ -63,4 +63,25 @@ router.get('/:companyName', (req, res) => {
   })
 })
 
+router.post('/favourite', (req, res) => {
+  console.log(req.body)
+kafka.make_request("review_topic", { "path": "updateFavFeatured", "id": req.body.id, "colValue": req.body.value }, function (err, results) {
+  console.log(results);
+  console.log("In make request call back", results);
+  if (err) {
+    console.log("Inside err");
+    console.log(err);
+    return res.status(err.status).send(err.message);
+  } else {
+    //console.log("Inside else", results);
+    if (results.data) {
+      return res.send(results.data);
+    } else {
+      return res.status(results.status).send(results.errors);
+    }
+  }
+})
+})
+
+
 module.exports=router;
