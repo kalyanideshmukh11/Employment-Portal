@@ -6,6 +6,7 @@ var reviewTopic = require('./services/review_topic');
 var jobsTopic = require('./services/jobs_topic');
 var interviewTopic = require('./services/interview_topic');
 var salaryTopic= require('./services/salary_topic'); 
+var studentProfileTopic = require('./services/studentProfile_topic')
 
 const mongoose = require('mongoose');
 const { mongoDBURI } = require('./config/config');
@@ -66,6 +67,13 @@ function handleTopicRequest(topic_name, fname) {
             return;
           });
           break;
+      case "studentProfile_topic":
+            fname.studentProfileServices(data.data, function (err, res) {
+              response(data, res, producer)
+              return
+            });
+            break;
+    
     }
   });
 }
@@ -99,4 +107,4 @@ handleTopicRequest('review_topic', reviewTopic);
 handleTopicRequest('jobs_topic', jobsTopic);
 handleTopicRequest('salary_topic', salaryTopic);
 handleTopicRequest('interview_topic', interviewTopic);
-
+handleTopicRequest('studentProfile_topic',studentProfileTopic)
