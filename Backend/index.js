@@ -5,24 +5,18 @@ const studentRouter = require("./routes/Student/student");
 const companyRouter = require("./routes/Employer/company");
 const companyProfileRouter = require("./routes/Employer/profile");
 const jobs = require('./routes/Employer/jobs');
-<<<<<<< HEAD
 const imageUpload = require('./routes/Employer/imageUpload');
 const reviewRouter = require('./routes/Employer/reviews');
-=======
 const interviewRouter = require('./routes/Student/interview');
->>>>>>> origin/master
 
 app.use("/images", images)
 app.use("/student", studentRouter);
 app.use("/company", companyRouter);
 app.use("/company/profile", companyProfileRouter);
 app.use('/glassdoor/jobs', jobs);
-<<<<<<< HEAD
 app.use('/company/imageUpload', imageUpload);
 app.use('/company/reviews', reviewRouter);
-=======
 app.use('/student/interview', interviewRouter);
->>>>>>> origin/master
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {

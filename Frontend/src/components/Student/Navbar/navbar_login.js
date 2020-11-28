@@ -57,12 +57,6 @@ class LoginNavbar extends Component {
         .then((response) => {
           console.log(response.data);
           this.setState({
-<<<<<<< HEAD
-            redirect: <Redirect to= "/company/home"/>
-          })
-        } 
-      }
-=======
             token: response.data,
             authFlag: true,
           });
@@ -76,7 +70,6 @@ class LoginNavbar extends Component {
           console.log(err);
           this.onLoginFail('form');
         });
->>>>>>> origin/master
     }
   }
 

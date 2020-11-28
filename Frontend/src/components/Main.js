@@ -15,11 +15,8 @@ import companyProfile from './Employer/companyProfile';
 import updateCompany from './Employer/update';
 import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
-<<<<<<< HEAD
 import companyReviews from './Employer/companyReviews';
-=======
 import AddInterview from './Student/Interview/AddInterview';
->>>>>>> origin/master
 
 class Main extends Component {
   render() {
@@ -65,11 +62,8 @@ class Main extends Component {
         <Route exact path='/company/profileUpdate' component={updateCompany} />
         <Route exact path='/company/addjob' component={AddJob} />
         <Route exact path='/company/jobs' component={Jobs} />
-<<<<<<< HEAD
         <Route exact path='/company/reviews' component={companyReviews} />
-=======
         <Route exact path='/student/interview/add' component={AddInterview} />
->>>>>>> origin/master
       </div>
     );
   }
