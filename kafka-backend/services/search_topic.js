@@ -34,7 +34,7 @@ async function searchByCompany(msg, callback) {
 
       for (each of results) {
         msg.body[each._id].reviews = each.reviews;
-        msg.body[each._id].rating = each.rating;
+        msg.body[each._id].rating = each.rating.toFixed(1);
       }
     }
   );
