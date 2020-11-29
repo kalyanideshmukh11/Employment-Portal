@@ -8,6 +8,7 @@ const jobs = require('./routes/Employer/jobs');
 const imageUpload = require('./routes/Employer/imageUpload');
 const reviewRouter = require('./routes/Employer/reviews');
 const interviewRouter = require('./routes/Student/interview');
+const salaryRouter = require('./routes/Student/salary');
 
 app.use("/images", images)
 app.use("/student", studentRouter);
@@ -17,6 +18,7 @@ app.use('/glassdoor/jobs', jobs);
 app.use('/company/imageUpload', imageUpload);
 app.use('/company/reviews', reviewRouter);
 app.use('/student/interview', interviewRouter);
+app.use('/student/salary',salaryRouter);
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {

@@ -1,11 +1,12 @@
 var connection = new require('./kafka/connection');
 
 // topic files
-var companyProfileTopic = require("./services/companyProfile_topic");
-var reviewTopic = require("./services/review_topic");
-var studentProfileTopic = require("./services/studentProfile_topic")
+var companyProfileTopic = require('./services/companyProfile_topic');
+var reviewTopic = require('./services/review_topic');
 var jobsTopic = require('./services/jobs_topic');
 var interviewTopic = require('./services/interview_topic');
+var salaryTopic= require('./services/salary_topic'); 
+var studentProfileTopic = require('./services/studentProfile_topic')
 
 const mongoose = require('mongoose');
 const { mongoDBURI } = require('./config/config');
@@ -24,9 +25,7 @@ mongoose.connect(mongoDBURI, options, (err, res) => {
   } else {
     console.log(`MongoDB Connected`);
   }
-});
-
-
+}); 
 
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
@@ -44,15 +43,10 @@ function handleTopicRequest(topic_name, fname) {
         });
         break;
       case 'review_topic':
+        console.log("got it")
         fname.reviewService(data.data, function (err, res) {
           response(data, res, producer);
           return;
-        });
-        break;
-      case "studentProfile_topic":
-        fname.studentProfileServices(data.data, function (err, res) {
-          response(data, res, producer)
-          return
         });
         break;
       case 'jobs_topic':
@@ -67,6 +61,19 @@ function handleTopicRequest(topic_name, fname) {
           return;
         });
         break;
+      case 'salary_topic':
+          fname.salaryService(data.data, function (err, res) {
+            response(data, res, producer);
+            return;
+          });
+          break;
+      case "studentProfile_topic":
+            fname.studentProfileServices(data.data, function (err, res) {
+              response(data, res, producer)
+              return
+            });
+            break;
+    
     }
   });
 }
@@ -85,6 +92,8 @@ function response(data, res, producer) {
   ];
   producer.send(payloads, function (err, data) {
     console.log('producer send');
+    console.log(data)
+    console.log(payloads)
   });
   return;
 }
@@ -93,8 +102,9 @@ function response(data, res, producer) {
 // first argument is topic name
 // second argument is a function that will handle this topic request
 
-handleTopicRequest("companyProfile_topic", companyProfileTopic);
-handleTopicRequest("review_topic", reviewTopic);
-handleTopicRequest("studentProfile_topic", studentProfileTopic)
+handleTopicRequest('companyProfile_topic', companyProfileTopic);
+handleTopicRequest('review_topic', reviewTopic);
 handleTopicRequest('jobs_topic', jobsTopic);
+handleTopicRequest('salary_topic', salaryTopic);
 handleTopicRequest('interview_topic', interviewTopic);
+handleTopicRequest('studentProfile_topic',studentProfileTopic)
