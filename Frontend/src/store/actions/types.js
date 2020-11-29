@@ -5,3 +5,5 @@ export const NEW_REVIEW_POSTING = 'NEW_REVIEW_POSTING';
 export const NEW_SALARY_POSTING = 'NEW_SALARY_POSTING';
 export const GET_SALARY = 'GET_SALARY';
 export const GET_REVIEW = 'GET_REVIEW';
+export const GET_COMPANY_OVERVIEW = 'GET_COMPANY_OVERVIEW';
+export const GET_JOBS = 'GET_JOBS';

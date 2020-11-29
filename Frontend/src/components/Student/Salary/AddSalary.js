@@ -13,6 +13,7 @@ class AddSalary extends Component {
   constructor(props) {
     super(props);
     this.state = {show:false};
+    this.routeParam = props.match.params.companyName;
     this.changeHandler = this.changeHandler.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,7 +26,7 @@ class AddSalary extends Component {
   }
 getSalary=() =>{
   console.log("running")
-  axios.get(`${backendServer}student/salary/Facebook`)
+  axios.get(`${backendServer}student/salary/${this.routeParam}`)
         .then(res => {
           //console.log(res)
             if(res.status === 200){

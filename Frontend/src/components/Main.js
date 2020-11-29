@@ -20,7 +20,8 @@ import AddInterview from './Student/Interview/AddInterview';
 import ReviewTab from './Student/Reviews/ReviewTab';
 import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
-
+import CompanyOverview from './Student/CompanyOverview/companyOverview';
+import JobsTab from './Student/Jobs/jobsTab';
 class Main extends Component {
   render() {
     return (
@@ -67,9 +68,11 @@ class Main extends Component {
         <Route exact path='/company/jobs' component={Jobs} />
         <Route exact path='/company/reviews' component={companyReviews} />
         <Route exact path='/student/interview/add' component={AddInterview} />
-        <Route exact path='/student/reviews' component={ReviewTab} />
+        <Route exact path='/student/reviews/:companyName' component={ReviewTab} />
         <Route exact path='/student/addreviews' component={AddReview} />
-        <Route exact path='/student/salary' component={SalaryTab} />
+        <Route exact path='/student/salary/:companyName' component={SalaryTab} />
+        <Route exact path='/student/companyoverview/:companyID' component={CompanyOverview} />
+        <Route exact path='/student/jobs/:companyName' component={JobsTab} />
       </div>
     );
   }

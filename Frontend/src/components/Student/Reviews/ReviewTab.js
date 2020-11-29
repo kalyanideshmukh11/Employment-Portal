@@ -15,7 +15,7 @@ import { MDBContainer } from "mdbreact";
 class ReviewTab extends Component {
   constructor(props) {
     super(props);
-    
+    this.routeParam = props.match.params.companyName;
     this.changeHandler = this.changeHandler.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     
@@ -27,7 +27,7 @@ class ReviewTab extends Component {
    this.getAverageRating();
   }
 getReview=() =>{
-  axios.get(`${backendServer}company/reviews/Twitter`)
+  axios.get(`${backendServer}company/reviews/${this.routeParam}`)
         .then(res => {
          
             if(res.status === 200){
