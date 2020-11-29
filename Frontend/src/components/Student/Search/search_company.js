@@ -93,34 +93,41 @@ class SearchCompany extends Component {
                   </div>
 
                   <div class='col-md-2'>
-                    <h4>
-                      {value.reviews && (
-                        <span>
-                          <b>{value.reviews}</b>
-                        </span>
-                      )}
-                    </h4>
-                    Reviews
+                    <Link to={`/student/reviews/${value.name}`}>
+                      <h4>
+                        {value.reviews && (
+                          <span>
+                            <b>{value.reviews}</b>
+                          </span>
+                        )}
+                      </h4>
+                      Reviews
+                    </Link>
                   </div>
                   <div class='col-md-2'>
-                    <h4>
-                      {value.reviews && (
-                        <span>
-                          <b>{value.reviews}</b>
-                        </span>
-                      )}
-                    </h4>
-                    Salaries
+                    <Link to={`/student/salary/${value.name}`}>
+                      <h4>
+                        {value.reviews && (
+                          <span>
+                            <b>{value.salaries}</b>
+                          </span>
+                        )}
+                      </h4>
+                      Salaries
+                    </Link>
                   </div>
                   <div class='col-md-2'>
-                    <h4>
-                      {value.reviews && (
-                        <span>
-                          <b>{value.interviews}</b>
-                        </span>
-                      )}
-                    </h4>
-                    Interviews
+                    {/* TODO Change to interview link */}
+                    <Link to={`/student/reviews/${value.name}`}>
+                      <h4>
+                        {value.reviews && (
+                          <span>
+                            <b>{value.interviews}</b>
+                          </span>
+                        )}
+                      </h4>
+                      Interviews
+                    </Link>
                   </div>
                 </div>
               </Card.Body>
