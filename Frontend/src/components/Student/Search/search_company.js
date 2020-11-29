@@ -68,9 +68,12 @@ class SearchCompany extends Component {
                   </div>
                   <div class='col-md-4'>
                     <Card.Title>
-                      <h4 className='ml-3' style={{ color: 'green' }}>
-                        <b>{value.name}</b>
-                      </h4>
+                      <Link to={`/student/companyoverview/${value.id}`}>
+                        <h4 className='ml-3' style={{ color: 'green' }}>
+                          <b>{value.name}</b>
+                        </h4>
+                      </Link>
+
                       <h6 className='ml-3'>
                         {value.rating && <span>{value.rating} </span>}
                         <img

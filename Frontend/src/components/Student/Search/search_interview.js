@@ -95,13 +95,15 @@ class SearchCompany extends Component {
                   </div>
                   <div class='col-md-8'>
                     <Card.Title>
-                      <h4 className='ml-3' style={{ color: 'green' }}>
-                        {value.name && (
-                          <span>
-                            <b>{value.name} Interviews</b>
-                          </span>
-                        )}
-                      </h4>
+                      <Link to={`/student/interview/${value.id}`}>
+                        <h4 className='ml-3' style={{ color: 'green' }}>
+                          {value.name && (
+                            <span>
+                              <b>{value.name} Interviews</b>
+                            </span>
+                          )}
+                        </h4>
+                      </Link>
                     </Card.Title>
                     <h5 className='ml-3' style={{ color: 'grey' }}>
                       {value.website && <span>{value.website} / </span>}
