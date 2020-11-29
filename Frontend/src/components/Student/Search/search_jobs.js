@@ -9,20 +9,27 @@ class SearchJob extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: '',
+      pager: {},
+      pageOfItems: [],
     };
-    this.searchResults(this.props.match.params.keyword);
   }
-  searchResults = (param) => {
+  componentDidMount() {
+    this.loadPage(this.props.match.params.keyword, this.props.location.search);
+  }
+
+  loadPage = (param, pageParam) => {
     const data = {
       job_title: param,
     };
+    const params = new URLSearchParams(pageParam);
+    const page = parseInt(params.get('page')) || 1;
     axios
-      .post(`${backendServer}glassdoor/jobs/search/job`, data)
+      .post(`${backendServer}glassdoor/jobs/search/job?page=${page}`, data)
       .then((response) => {
         console.log(response.data);
         this.setState({
-          searchResults: response.data,
+          pager: response.data.pager,
+          pageOfItems: response.data.items,
         });
       })
       .catch((error) => {
@@ -33,22 +40,22 @@ class SearchJob extends Component {
 
   componentWillReceiveProps(nextProp) {
     console.log('next:', nextProp);
-    this.searchResults(nextProp.match.params.keyword);
+    this.loadPage(nextProp.match.params.keyword, nextProp.location.search);
   }
 
   render() {
+    const { pager, pageOfItems } = this.state;
     let renderOutput = (
       <h3>
         <b>No results found</b>
       </h3>
     );
-    if (
-      this.state.searchResults &&
-      Object.keys(this.state.searchResults).length > 0
-    ) {
+    console.log('Page of items:', pageOfItems);
+
+    if (pageOfItems && pageOfItems.length > 0) {
       renderOutput = [];
-      console.log('search results:', this.state.searchResults);
-      for (var i = 0; i < this.state.searchResults.length; i++) {
+      console.log('search results:', pageOfItems);
+      for (var i = 0; i < pageOfItems.length; i++) {
         renderOutput.push(
           <div className='container' style={{ paddingRight: '40%' }}>
             <Card border-width='10px' style={{ width: '100%', color: 'black' }}>
@@ -64,31 +71,29 @@ class SearchJob extends Component {
                   <div class='pull-right'>
                     <Card.Title>
                       <h5 className='ml-3' style={{ color: 'green' }}>
-                        {this.state.searchResults[i].companyName}
+                        {pageOfItems[i].companyName}
                       </h5>
                       <h4 className='ml-3' style={{ color: 'black' }}>
-                        {/* <a href='#' onClick={() => this.handleOpenModal(job_id)}> */}
                         <Link
-                          to='/job/jobdetails'
-                          params={{ data: this.state.searchResults[i] }}
+                          to='student/job/jobdetails'
+                          params={{ data: pageOfItems[i] }}
                         >
-                          {this.state.searchResults[i].title}
+                          {pageOfItems[i].title}
                         </Link>
-                        {/* </a> */}
                       </h4>
                     </Card.Title>
 
-                    {this.state.searchResults[i].posted_date && (
+                    {this.state.pageOfItems[i].posted_date && (
                       <h6>
-                        Posted date - {this.state.searchResults[i].posted_date}
+                        Posted date - {this.state.pageOfItems[i].posted_date}
                       </h6>
                     )}
                     <h6 className='ml-3' style={{ color: 'grey' }}>
-                      {this.state.searchResults[i].city && (
-                        <span>{this.state.searchResults[i].city},</span>
+                      {this.state.pageOfItems[i].city && (
+                        <span>{this.state.pageOfItems[i].city},</span>
                       )}
-                      {this.state.searchResults[i].state && (
-                        <span> {this.state.searchResults[i].state}</span>
+                      {this.state.pageOfItems[i].state && (
+                        <span> {this.state.pageOfItems[i].state}</span>
                       )}
                     </h6>
                   </div>
@@ -113,6 +118,74 @@ class SearchJob extends Component {
               </h4>
             </div>
             {renderOutput}
+            <div className='card text-center m-3'>
+              <div className='card-footer pb-0 pt-3'>
+                {pager.pages && pager.pages.length && (
+                  <ul className='pagination'>
+                    <li
+                      className={`page-item first-item ${
+                        pager.currentPage === 1 ? 'disabled' : ''
+                      }`}
+                    >
+                      <Link to={{ search: `?page=1` }} className='page-link'>
+                        First
+                      </Link>
+                    </li>
+                    <li
+                      className={`page-item previous-item ${
+                        pager.currentPage === 1 ? 'disabled' : ''
+                      }`}
+                    >
+                      <Link
+                        to={{ search: `?page=${pager.currentPage - 1}` }}
+                        className='page-link'
+                      >
+                        Previous
+                      </Link>
+                    </li>
+                    {pager.pages.map((page) => (
+                      <li
+                        key={page}
+                        className={`page-item number-item ${
+                          pager.currentPage === page ? 'active' : ''
+                        }`}
+                      >
+                        <Link
+                          to={{ search: `?page=${page}` }}
+                          className='page-link'
+                        >
+                          {page}
+                        </Link>
+                      </li>
+                    ))}
+                    <li
+                      className={`page-item next-item ${
+                        pager.currentPage === pager.totalPages ? 'disabled' : ''
+                      }`}
+                    >
+                      <Link
+                        to={{ search: `?page=${pager.currentPage + 1}` }}
+                        className='page-link'
+                      >
+                        Next
+                      </Link>
+                    </li>
+                    <li
+                      className={`page-item last-item ${
+                        pager.currentPage === pager.totalPages ? 'disabled' : ''
+                      }`}
+                    >
+                      <Link
+                        to={{ search: `?page=${pager.totalPages}` }}
+                        className='page-link'
+                      >
+                        Last
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </React.Fragment>

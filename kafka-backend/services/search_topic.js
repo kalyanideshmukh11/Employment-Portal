@@ -1,5 +1,6 @@
 const review = require('../models/review');
 const interview = require('../models/interview');
+const paginate = require('jw-paginate');
 
 module.exports.searchService = function (msg, callback) {
   console.log('In review service path', msg.path);
@@ -11,11 +12,10 @@ module.exports.searchService = function (msg, callback) {
 };
 
 async function searchByCompany(msg, callback) {
-  let err = {};
-  let response = {};
   console.log('In search by company details topic service. Msg: ');
   console.log(Object.keys(msg.body));
   let ids = Object.keys(msg.body);
+  const page = parseInt(msg.page) || 1;
   await review.aggregate(
     [
       {
@@ -25,13 +25,16 @@ async function searchByCompany(msg, callback) {
         $group: {
           _id: '$sql_company_id',
           reviews: { $sum: 1 },
+          rating: { $avg: '$rating' },
         },
       },
     ],
     function (err, results) {
       console.log('Results:', results);
+
       for (each of results) {
         msg.body[each._id].reviews = each.reviews;
+        msg.body[each._id].rating = each.rating;
       }
     }
   );
@@ -52,10 +55,16 @@ async function searchByCompany(msg, callback) {
       for (each of results) {
         msg.body[each._id].interviews = each.interviews;
       }
+      console.log('msg.body:', msg.body);
+      const pager = paginate(ids.length, page, 1);
+      const pageOfItems = Object.keys(msg.body)
+        .slice(pager.startIndex, pager.endIndex + 1)
+        .map((key) => msg.body[key]);
+      final_result = { pager: pager, items: pageOfItems };
     }
   );
 
-  callback(null, msg.body);
+  callback(null, final_result);
   // .find({ sql_company_id: { $in: ids } }, function (err, result) {
   //   console.log("reviews list:", result);
   //   callback(null, result);

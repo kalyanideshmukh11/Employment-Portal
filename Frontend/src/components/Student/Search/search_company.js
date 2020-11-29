@@ -9,20 +9,28 @@ class SearchCompany extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: '',
+      pager: {},
+      pageOfItems: [],
     };
-    this.searchResults(this.props.match.params.keyword);
   }
-  searchResults = (param) => {
+
+  componentDidMount() {
+    this.loadPage(this.props.match.params.keyword, this.props.location.search);
+  }
+
+  loadPage = (param, pageParam) => {
     const data = {
       company_name: param,
     };
+    const params = new URLSearchParams(pageParam);
+    const page = parseInt(params.get('page')) || 1;
     axios
-      .post(`${backendServer}company/search/company`, data)
+      .post(`${backendServer}company/search/company?page=${page}`, data)
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
         this.setState({
-          searchResults: response.data,
+          pager: response.data.pager,
+          pageOfItems: response.data.items,
         });
       })
       .catch((error) => {
@@ -32,24 +40,20 @@ class SearchCompany extends Component {
   };
   componentWillReceiveProps(nextProp) {
     console.log('next:', nextProp);
-    this.searchResults(nextProp.match.params.keyword);
+    this.loadPage(nextProp.match.params.keyword, nextProp.location.search);
   }
   render() {
+    const { pager, pageOfItems } = this.state;
     let renderOutput = (
       <h3>
         <b>No results found</b>
       </h3>
     );
-    if (
-      this.state.searchResults &&
-      Object.keys(this.state.searchResults).length > 0
-    ) {
+    if (pageOfItems && pageOfItems.length > 0) {
       renderOutput = [];
-      for (var key of Object.keys(this.state.searchResults)) {
-        console.log('key:', key);
-
-        console.log('i value:', this.state.searchResults[key]);
-        let value = this.state.searchResults[key];
+      for (var i = 0; i < pageOfItems.length; i++) {
+        console.log('i value:', pageOfItems[i]);
+        let value = pageOfItems[i];
         renderOutput.push(
           <div className='container'>
             <Card border-width='10px' style={{ width: '100%', color: 'black' }}>
@@ -67,10 +71,21 @@ class SearchCompany extends Component {
                       <h4 className='ml-3' style={{ color: 'green' }}>
                         <b>{value.name}</b>
                       </h4>
+                      <h6 className='ml-3'>
+                        {value.rating && <span>{value.rating} </span>}
+                        <img
+                          height='16'
+                          width='16'
+                          src='https://upload.wikimedia.org/wikipedia/commons/1/1f/Green_star_41-108-41.svg'
+                        ></img>
+                      </h6>
                     </Card.Title>
-                    <h6>
+                    <h5 className='ml-3'>
                       {value.city && <span>{value.city},</span>}
                       {value.state && <span> {value.state}</span>}
+                    </h5>
+                    <h6 className='ml-3' style={{ color: 'grey' }}>
+                      {value.website && <span>{value.website}</span>}
                     </h6>
                   </div>
 
@@ -111,20 +126,89 @@ class SearchCompany extends Component {
         );
       }
     }
+
     return (
       <React.Fragment>
         <Navbar />
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-12 mt-5'>
-              <h3
+            <div className='col-md-12 mt-5'>
+              <h4
                 style={{ color: '#028A0F', textAlign: 'center' }}
                 className='pl-3'
               >
                 Showing Results for "{this.props.match.params.keyword}"
-              </h3>
+              </h4>
             </div>
             {renderOutput}
+            <div className='card text-center m-3'>
+              <div className='card-footer pb-0 pt-3'>
+                {pager.pages && pager.pages.length && (
+                  <ul className='pagination'>
+                    <li
+                      className={`page-item first-item ${
+                        pager.currentPage === 1 ? 'disabled' : ''
+                      }`}
+                    >
+                      <Link to={{ search: `?page=1` }} className='page-link'>
+                        First
+                      </Link>
+                    </li>
+                    <li
+                      className={`page-item previous-item ${
+                        pager.currentPage === 1 ? 'disabled' : ''
+                      }`}
+                    >
+                      <Link
+                        to={{ search: `?page=${pager.currentPage - 1}` }}
+                        className='page-link'
+                      >
+                        Previous
+                      </Link>
+                    </li>
+                    {pager.pages.map((page) => (
+                      <li
+                        key={page}
+                        className={`page-item number-item ${
+                          pager.currentPage === page ? 'active' : ''
+                        }`}
+                      >
+                        <Link
+                          to={{ search: `?page=${page}` }}
+                          className='page-link'
+                        >
+                          {page}
+                        </Link>
+                      </li>
+                    ))}
+                    <li
+                      className={`page-item next-item ${
+                        pager.currentPage === pager.totalPages ? 'disabled' : ''
+                      }`}
+                    >
+                      <Link
+                        to={{ search: `?page=${pager.currentPage + 1}` }}
+                        className='page-link'
+                      >
+                        Next
+                      </Link>
+                    </li>
+                    <li
+                      className={`page-item last-item ${
+                        pager.currentPage === pager.totalPages ? 'disabled' : ''
+                      }`}
+                    >
+                      <Link
+                        to={{ search: `?page=${pager.totalPages}` }}
+                        className='page-link'
+                      >
+                        Last
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </React.Fragment>

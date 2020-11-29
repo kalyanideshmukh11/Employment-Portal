@@ -48,6 +48,7 @@ exports.search = (req, res) => {
         {
           path: 'searchByCompany',
           body: dict,
+          page: req.query.page,
         },
         function (err, results) {
           if (err) {
@@ -87,6 +88,7 @@ exports.searchInterview = (req, res) => {
         {
           path: 'searchByInterview',
           body: dict,
+          page: req.query.page,
         },
         function (err, results) {
           if (err) {

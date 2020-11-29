@@ -1,4 +1,5 @@
 const Interview = require('../models/interview');
+const paginate = require('jw-paginate');
 
 module.exports.interviewService = function (msg, callback) {
   console.log('In jobs service path', msg.path);
@@ -54,11 +55,11 @@ async function getAllInterviews(msg, callback) {
   }
 }
 async function searchByCompanyInterview(msg, callback) {
-  let err = {};
-  let response = {};
   console.log('In search by interview for a company: ');
   console.log(Object.keys(msg.body));
   let ids = Object.keys(msg.body);
+  var final_result = {};
+  const page = parseInt(msg.page) || 1;
   await Interview.aggregate(
     [
       {
@@ -78,10 +79,16 @@ async function searchByCompanyInterview(msg, callback) {
         msg.body[each._id].interviews = each.interviews;
         msg.body[each._id].rating = each.rating;
       }
+      console.log('msg.body:', msg.body);
+      const pager = paginate(ids.length, page, 1);
+      const pageOfItems = Object.keys(msg.body)
+        .slice(pager.startIndex, pager.endIndex + 1)
+        .map((key) => msg.body[key]);
+      final_result = { pager: pager, items: pageOfItems };
     }
   );
 
-  callback(null, msg.body);
+  callback(null, final_result);
   // .find({ sql_company_id: { $in: ids } }, function (err, result) {
   //   console.log("reviews list:", result);
   //   callback(null, result);
