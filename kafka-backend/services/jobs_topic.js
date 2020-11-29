@@ -1,4 +1,5 @@
 const Jobs = require('../models/jobs');
+const paginate = require('jw-paginate');
 
 module.exports.jobsService = function (msg, callback) {
   console.log('In jobs service path', msg.path);
@@ -15,6 +16,8 @@ module.exports.jobsService = function (msg, callback) {
     case 'updateApplicantStatus':
       updateApplicantStatus(msg, callback);
       break;
+    case 'searchJob':
+      searchJobTitle(msg, callback);
   }
 };
 
@@ -84,6 +87,29 @@ async function updateApplicantStatus(msg, callback) {
     .then((data) => {
       response.status = 200;
       response.message = 'Updated';
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+async function searchJobTitle(msg, callback) {
+  let err = {};
+  let response = {};
+
+  console.log('In get job search details topic. Msg: ', msg);
+  console.log(msg.page);
+  const page = parseInt(msg.page) || 1;
+
+  await Jobs.find({ title: { $regex: msg.body.job_title, $options: 'i' } })
+    .then((items) => {
+      console.log('length:', items.length);
+      response.status = 200;
+      // response.data = data;
+      const pager = paginate(items.length, page, 2);
+      const pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+      response.data = { pager: pager, items: pageOfItems };
       return callback(null, response);
     })
     .catch((err) => {

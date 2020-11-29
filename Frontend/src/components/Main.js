@@ -18,9 +18,13 @@ import Jobs from './Employer/Jobs/Jobs';
 import companyReviews from './Employer/companyReviews';
 import AddInterview from './Student/Interview/AddInterview';
 import ApplicantDetails from './Employer/Jobs/ApplicantDetails';
+import SearchJob from './Student/Search/search_jobs';
+import SearchCompany from './Student/Search/search_company';
+import SearchInterview from './Student/Search/search_interview';
 import ReviewTab from './Student/Reviews/ReviewTab';
 import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
+import HomeTabs from './Student/Tabs/homeTabs';
 
 class Main extends Component {
   render() {
@@ -73,9 +77,25 @@ class Main extends Component {
         />
         <Route exact path='/company/reviews' component={companyReviews} />
         <Route exact path='/student/interview/add' component={AddInterview} />
+        <Route
+          exact
+          path='/student/search/job/:keyword'
+          component={SearchJob}
+        />
+        <Route
+          exact
+          path='/student/search/company/:keyword'
+          component={SearchCompany}
+        />
+        <Route
+          exact
+          path='/student/search/interview/:keyword'
+          component={SearchInterview}
+        />
         <Route exact path='/student/reviews' component={ReviewTab} />
         <Route exact path='/student/addreviews' component={AddReview} />
         <Route exact path='/student/salary' component={SalaryTab} />
+        <Route exact path='/student/tabs' component={HomeTabs} />
       </div>
     );
   }
