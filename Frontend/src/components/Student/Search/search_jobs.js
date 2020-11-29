@@ -63,28 +63,27 @@ class SearchJob extends Component {
                   </div>
                   <div class='pull-right'>
                     <Card.Title>
-                      <h4 className='ml-3' style={{ color: 'green' }}>
+                      <h5 className='ml-3' style={{ color: 'green' }}>
                         {this.state.searchResults[i].companyName}
+                      </h5>
+                      <h4 className='ml-3' style={{ color: 'black' }}>
+                        {/* <a href='#' onClick={() => this.handleOpenModal(job_id)}> */}
+                        <Link
+                          to='/job/jobdetails'
+                          params={{ data: this.state.searchResults[i] }}
+                        >
+                          {this.state.searchResults[i].title}
+                        </Link>
+                        {/* </a> */}
                       </h4>
-                      {/* <a href='#' onClick={() => this.handleOpenModal(job_id)}> */}
-                      {this.state.searchResults[i].title}
-                      {/* </a> */}
                     </Card.Title>
-                    <h6>
-                      <a href='#' style={{ color: 'black' }}>
-                        No of Applicants
-                      </a>{' '}
-                      - 2
-                    </h6>
-                    {this.state.searchResults[i].industry && (
-                      <h6>Industry - {this.state.searchResults[i].industry}</h6>
-                    )}
+
                     {this.state.searchResults[i].posted_date && (
                       <h6>
                         Posted date - {this.state.searchResults[i].posted_date}
                       </h6>
                     )}
-                    <h6>
+                    <h6 className='ml-3' style={{ color: 'grey' }}>
                       {this.state.searchResults[i].city && (
                         <span>{this.state.searchResults[i].city},</span>
                       )}
