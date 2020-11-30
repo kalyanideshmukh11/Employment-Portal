@@ -54,6 +54,7 @@ async function getAllInterviews(msg, callback) {
     return callback(err, null);
   }
 }
+
 async function searchByCompanyInterview(msg, callback) {
   console.log('In search by interview for a company: ');
   console.log(Object.keys(msg.body));
@@ -75,7 +76,7 @@ async function searchByCompanyInterview(msg, callback) {
     ],
     function (err, results) {
       console.log('Results:', results);
-      for (each of results) {
+      for (var each of results) {
         msg.body[each._id].interviews = each.interviews;
         msg.body[each._id].rating = each.rating;
       }
