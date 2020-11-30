@@ -75,7 +75,7 @@ class SearchJob extends Component {
                       </h5>
                       <h4 className='ml-3' style={{ color: 'black' }}>
                         <Link
-                          to='student/job/jobdetails'
+                          to={`/student/job/jobdetails`}
                           params={{ data: pageOfItems[i] }}
                         >
                           {pageOfItems[i].title}

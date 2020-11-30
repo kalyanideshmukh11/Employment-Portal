@@ -14,11 +14,12 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
+import { Redirect } from 'react-router';
 
 class StudentNavbar extends Component {
   constructor(props) {
     super(props);
-    this.state = { isShow: false, SearchType: 'Jobs' };
+    this.state = { isShow: false, SearchType: 'Jobs', redirectVar: null };
   }
 
   handleOpen = () => {
@@ -29,7 +30,14 @@ class StudentNavbar extends Component {
     this.setState({ isOpen: false });
   };
 
-  handleLogout = () => {};
+  handleLogout = () => {
+    localStorage.removeItem('sql_company_id');
+    localStorage.removeItem('name');
+    localStorage.removeItem('type');
+    this.setState({
+      redirectVar: <Redirect to='/student/login' />,
+    });
+  };
 
   SearchType = (e) => {
     this.setState({
@@ -40,6 +48,7 @@ class StudentNavbar extends Component {
   render() {
     return (
       <div>
+        {this.state.redirectVar}
         <Navbar bg='light' expand='lg'>
           <Navbar.Brand href='/student/home'>
             <Image src={glassdorNavIco} style={{ width: '200px' }} />
