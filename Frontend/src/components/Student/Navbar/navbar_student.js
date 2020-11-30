@@ -49,6 +49,12 @@ class StudentNavbar extends Component {
         redirectVar: <Redirect to={url} />,
       });
     }
+    if (this.state.SearchType === 'Salaries') {
+      let url = '/student/search/salary/' + this.state.searchKeyword;
+      this.setState({
+        redirectVar: <Redirect to={url} />,
+      });
+    }
   };
 
   handleOpen = () => {

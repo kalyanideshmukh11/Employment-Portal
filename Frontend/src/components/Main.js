@@ -24,6 +24,7 @@ import ReviewTab from './Student/Reviews/ReviewTab';
 import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
 import HomeTabs from './Student/Tabs/homeTabs';
+import SearchSalary from './Student/Search/search_salary';
 
 class Main extends Component {
   render() {
@@ -85,6 +86,11 @@ class Main extends Component {
           exact
           path='/student/search/interview/:keyword'
           component={SearchInterview}
+        />
+        <Route
+          exact
+          path='/student/search/salary/:keyword'
+          component={SearchSalary}
         />
         <Route exact path='/student/reviews' component={ReviewTab} />
         <Route exact path='/student/addreviews' component={AddReview} />

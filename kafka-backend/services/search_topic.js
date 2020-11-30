@@ -1,5 +1,6 @@
 const review = require('../models/review');
 const interview = require('../models/interview');
+const salary = require('../models/salary');
 const paginate = require('jw-paginate');
 
 module.exports.searchService = function (msg, callback) {
@@ -35,6 +36,26 @@ async function searchByCompany(msg, callback) {
       for (each of results) {
         msg.body[each._id].reviews = each.reviews;
         msg.body[each._id].rating = each.rating.toFixed(1);
+      }
+    }
+  );
+  await salary.aggregate(
+    [
+      {
+        $match: { sql_company_id: { $in: ids } },
+      },
+      {
+        $group: {
+          _id: '$sql_company_id',
+          salaries: { $sum: 1 },
+        },
+      },
+    ],
+    function (err, results) {
+      console.log('Results:', results);
+
+      for (each of results) {
+        msg.body[each._id].salaries = each.salaries;
       }
     }
   );
