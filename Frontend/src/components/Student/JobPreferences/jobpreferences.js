@@ -143,13 +143,12 @@ class StudentJobPreferences extends Component {
                     selected_job_search_status: [{value: this.props.studentProfile_data.job_preferences.job_search_status}],
                     tags: job_title,
                     select_job_types: job_type,
-                    from_salary: (this.props.studentProfile_data.job_preferences.to_salary),
-                    to_salary: (this.props.studentProfile_data.job_preferences.from_salary),
+                    from_salary: (this.props.studentProfile_data.job_preferences.from_salary),
+                    to_salary: (this.props.studentProfile_data.job_preferences.to_salary),
                     selected_pay_period: [{value: this.props.studentProfile_data.job_preferences.pay_period}]
                 })
 
             } if (this.props.studentProfile_data.company_preferences){
-                console.log("OKK")
                 var selected_locations = this.props.studentProfile_data.company_preferences.locations.map(function(elm) {
                     return {id: elm.place, text: elm.place};
                  });
@@ -500,7 +499,7 @@ class StudentJobPreferences extends Component {
                                       style={{borderRadius: '4px', border: '1px solid #cccccc', height:'10mm'}}
                                       prefix = '$'
                                       onChange = {this.fromCurrency}
-                                      defaultValue={this.state.from_salary}
+                                      value={this.state.from_salary}
 
                                     />
                                     </div>
@@ -514,7 +513,7 @@ class StudentJobPreferences extends Component {
                                       prefix = '$'
                                       style={{borderRadius: '4px', border: '1px solid #cccccc', height:'10mm'}}
                                       onChange = {this.toCurrency}
-                                      defaultValue={this.state.to_salary}
+                                      value={this.state.to_salary}
                                     />
 
                                     </div>
