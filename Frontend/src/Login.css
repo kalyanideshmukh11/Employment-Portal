@@ -1,7 +1,18 @@
-
-.form-heading { color:#fff; font-size:23px;}
-.panel h2{ color:#444444; font-size:18px; margin:0 0 8px 0;}
-.panel p { color:#777777; font-size:14px; margin-bottom:30px; line-height:24px;}
+.form-heading {
+  color: #fff;
+  font-size: 23px;
+}
+.panel h2 {
+  color: #444444;
+  font-size: 18px;
+  margin: 0 0 8px 0;
+}
+.panel p {
+  color: #777777;
+  font-size: 14px;
+  margin-bottom: 30px;
+  line-height: 24px;
+}
 .login-form .form-control {
   background: #f7f7f7 none repeat scroll 0 0;
   border: 1px solid #d4d4d4;
@@ -20,199 +31,216 @@
 }
 
 .login-form .form-group {
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
-.login-form{ text-align:center;}
+.login-form {
+  text-align: center;
+}
 .forgot a {
   color: #777777;
   font-size: 14px;
   text-decoration: underline;
 }
 .forgot {
-  text-align: left; margin-bottom:30px;
+  text-align: left;
+  margin-bottom: 30px;
 }
 .botto-text {
   color: #ffffff;
   font-size: 14px;
   margin: auto;
 }
-.back { text-align: left; margin-top:10px;}
-.back a {color: #444444; font-size: 13px;text-decoration: none;}
+.back {
+  text-align: left;
+  margin-top: 10px;
+}
+.back a {
+  color: #444444;
+  font-size: 13px;
+  text-decoration: none;
+}
 
 .customer-form {
-  float:left;
-  width:50%;
+  float: left;
+  width: 50%;
 }
 
 .restaurant-form {
   float: right;
-  width:50%;
+  width: 50%;
 }
 
-
-.login-comp{
-  display:flex; flex-direction:row;
+.login-comp {
+  display: flex;
+  flex-direction: row;
 }
 
-.review-form{
+.review-form {
   height: 70px;
   width: 200px;
-  
 }
 
-div[disabled]
-{
+div[disabled] {
   pointer-events: none;
   opacity: 0;
 }
 
-.profile-photo{
+.profile-photo {
   height: 150px;
   width: 130px;
 }
-.dish-image{
+.dish-image {
   height: 150px;
   width: 150px;
 }
-.logo{
+.logo {
   height: 60px;
   width: 80px;
 }
 
-.pad{
+.pad {
   margin: 1.5px;
 }
 
-.header_menu{
-  border-bottom:1px solid #CCC;
-  width:100%;
+.header_menu {
+  border-bottom: 1px solid #ccc;
+  width: 100%;
 }
 
-.links{
-  width:60%;
-  float:left;
-  text-align:left;
+.links {
+  width: 60%;
+  float: left;
+  text-align: left;
 }
-.social_media{
-  width:40%;
-  float:left;
-  text-align:right;
+.social_media {
+  width: 40%;
+  float: left;
+  text-align: right;
   position: relative;
 }
-.clearfix{
-  clear:both;
+.clearfix {
+  clear: both;
 }
 
 .eventtable {
   width: 50px;
 }
 
-.form-adjust{
+.form-adjust {
   width: 500px;
 }
 
-.Dropdown-root{
-  width: 80%
+.Dropdown-root {
+  width: 80%;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Numans');
 
-html,body{ 
-height: 100%;
-margin: 0
+html,
+body {
+  height: 100%;
+  margin: 0;
 }
 
-.container{
-height: 100%;
-align-content: center;
+.container {
+  height: 100%;
+  align-content: center;
 }
 
-/* #root > div > div > div > div > div:nth-child(1) > div.d-flex.justify-content-center.h-100 > div{
-    height: 400px;
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 450px;
-    background-color: rgba(0,0,0,0.5) !important;
-
-} */
-
-.login-card{
-height: 400px;
-margin-top: auto;
-margin-bottom: auto;
-width: 450px;
-background-color: rgba(0,0,0,0.5) !important;
-} 
-
-.social_icon span{
-font-size: 60px;
-margin-left: 10px;
-color: #0e2396;
+.login-card {
+  height: 400px;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 450px;
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
-.social_icon span:hover{
-color: white;
-cursor: pointer;
+.social_icon span {
+  font-size: 60px;
+  margin-left: 10px;
+  color: #0e2396;
 }
 
-.card-header h3{
-color: white;
+.social_icon span:hover {
+  color: white;
+  cursor: pointer;
 }
 
-.social_icon{
-position: absolute;
-right: 20px;
-top: -45px;
+.card-header h3 {
+  color: white;
 }
 
-.input-group-prepend span{
-width: 50px;
-background-color: #d4d4d4;
-color: black;
-border:0 !important;
+.social_icon {
+  position: absolute;
+  right: 20px;
+  top: -45px;
 }
 
-input:focus{
-outline: 0 0 0 0  !important;
-box-shadow: 0 0 0 0 !important;
+.input-group-prepend span {
+  width: 50px;
+  background-color: #d4d4d4;
+  color: black;
+  border: 0 !important;
 }
 
-.remember{
-color: white;
+.company-icon span {
+  width: 50px;
+  height: 70px;
+  background-color: #d4d4d4;
+  color: black;
+  border: 0 !important;
 }
 
-.remember input
-{
-width: 20px;
-height: 20px;
-margin-left: 15px;
-margin-right: 5px;
+input:focus {
+  outline: 0 0 0 0 !important;
+  box-shadow: 0 0 0 0 !important;
 }
 
-.login_btn{
-color: rgb(255, 249, 249);
-background-color: #2ba503;
-width: 160px;
+.remember {
+  color: white;
 }
 
-.login_btn:hover{
-color: black;
-background-color: white;
+.remember input {
+  width: 20px;
+  height: 20px;
+  margin-left: 15px;
+  margin-right: 5px;
 }
 
-.links{
-color: white;
+.login_btn {
+  color: rgb(255, 249, 249);
+  background-color: #2ba503;
+  width: 160px;
 }
 
-.links a{
-margin-left: 4px;
+.login_btn:hover {
+  color: black;
+  background-color: white;
 }
 
-.post-jobs{
+.links {
+  color: white;
+}
+
+.links a {
+  margin-left: 4px;
+}
+
+.post-jobs {
   text-align: center;
   font-size: 140%;
 }
 
-.acc{
+.acc {
   font-size: 130%;
+}
+
+.building-icon {
+  width: 150px;
+  height: 80px;
+  padding-right: 50px;
+}
+
+.count-block {
+  width: 100px;
 }
