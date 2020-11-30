@@ -178,15 +178,42 @@ app.post('/deleteResume/:id', checkAuth, (req, res) => {
   })
 })
 
-app.post('/openResume/', (req, res) => {
+app.post('/openResume', (req, res) => {
   var file_path = path.join(__dirname, '../..') + '/public/uploads/student/resumes/' + req.body.resume;
   if (fs.existsSync(file_path)) {
-      res.send(file_path);
+      res.contentType("application/pdf")
+      res.sendFile(file_path);
   }
   else {
       res.send("FILE DOES NOT EXISTS")
   }
 });
+
+app.post('/addJobPreferences/:id', checkAuth, (req, res) => {
+  kafka.make_request("studentProfile_topic", { "path": "addJobPreferences", "userId": req.params.id, "data": req.body }, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(err.status).send(err.message);
+      } else {
+          console.log("Inside Student profile data")
+          return res.status(results.status).send(results.data)
+      }
+    })
+})
+
+app.post('/addCompanyPreferences/:id', checkAuth, (req, res) => {
+  kafka.make_request("studentProfile_topic", { "path": "addCompanyPreferences", "userId": req.params.id, "data": req.body }, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(err.status).send(err.message);
+      } else {
+          console.log("Inside Student profile data")
+          return res.status(results.status).send(results.data)
+      }
+    })
+})
 
 
 module.exports = app;

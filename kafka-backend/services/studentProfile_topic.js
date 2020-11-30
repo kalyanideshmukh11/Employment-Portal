@@ -32,6 +32,14 @@ exports.studentProfileServices = function (msg, callback) {
     case "addStudentEducation":
       addStudentEducation(msg, callback);
       break;
+
+    case "addJobPreferences":
+      addJobPreferences(msg, callback);
+      break;
+
+    case "addCompanyPreferences":
+      addCompanyPreferences(msg, callback);
+      break;
   }
 };
 
@@ -258,4 +266,68 @@ async function addStudentEducation(msg, callback){
       }
     })
 
+}
+
+async function addJobPreferences (msg, callback) {
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  await studentModel.findOneAndUpdate({sql_student_id: msg.userId}, 
+    {job_preferences: msg.data}, (error1, result1) => {
+      if (error1) {
+        error.message = error1
+        error.status = 500
+        return callback(null, error);
+      } else if(result1) {
+        response.status = 200
+        response.message = 'ABOUT_ME'
+        response.data = "CHANGES_SAVED"
+        return callback(null, response)
+      } else if (!error1 && !result1){
+        studentModel.create({sql_student_id: msg.userId, 
+        job_preferences: msg.data}, (error2, result2) => {
+          if (error2) {
+            error.message = error2
+            error.status = 500
+            return callback(null, error);
+          } else {
+            response.status = 200
+            response.message = 'ABOUT_ME'
+            response.data = "CHANGES_SAVED"
+            return callback(null, response)
+          }
+        })
+      }
+    })
+}
+
+async function addCompanyPreferences (msg, callback) {
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  await studentModel.findOneAndUpdate({sql_student_id: msg.userId}, 
+    {company_preferences: msg.data}, (error1, result1) => {
+      if (error1) {
+        error.message = error1
+        error.status = 500
+        return callback(null, error);
+      } else if(result1) {
+        response.status = 200
+        response.message = 'ABOUT_ME'
+        response.data = "CHANGES_SAVED"
+        return callback(null, response)
+      } else if (!error1 && !result1){
+        studentModel.create({sql_student_id: msg.userId, 
+          company_preferences: msg.data}, (error2, result2) => {
+          if (error2) {
+            error.message = error2
+            error.status = 500
+            return callback(null, error);
+          } else {
+            response.status = 200
+            response.message = 'ABOUT_ME'
+            response.data = "CHANGES_SAVED"
+            return callback(null, response)
+          }
+        })
+      }
+    })
 }

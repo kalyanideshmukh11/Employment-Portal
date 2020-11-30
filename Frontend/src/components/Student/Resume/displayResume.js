@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Button } from 'react-bootstrap';
 import axios from 'axios';
 import backendServer from "../../../webConfig"
+import { Document, pdfjs, Page } from 'react-pdf';
+import pdf from './resume.pdf'
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
 class ResumeDisplay extends Component{
@@ -12,12 +15,12 @@ class ResumeDisplay extends Component{
         this.state= {
             dropdownOpen: false,
             data: this.props.resumes,
-            file_name: ''
         }
         this.toggle = this.toggle.bind(this);
         this.onMouseEnter = this.onMouseEnter.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
     }
+    
     toggle = () => {
         this.setState(prevState => ({
           dropdownOpen: !prevState.dropdownOpen
@@ -64,14 +67,27 @@ class ResumeDisplay extends Component{
           const resume_data = this.state.data
           axios.post(`${backendServer}student/openResume/`, resume_data)
           .then(response => {
-              console.log(response.data)
+            var file = new Blob([response.data], {type: 'application/pdf'});
+            var len = response.data.length;
+            var bytes = new Uint8Array( len );
+            for (var i = 0; i < len; i++){
+                bytes[i] = response.data.charCodeAt(i);
+            }
+            console.log(bytes)
+            let fileUrl = URL.createObjectURL(file);
+            console.log(fileUrl)
+            var pdf_file = {
+                url: fileUrl,
+                data: bytes.buffer
+            }
             this.setState({
-                file_name: response.data
+                file_name: pdf_file
             })
-          })
-          
+          })          
       }
+
     render(){
+        // console.log(this.state.file_name)    
         let error = {
             message: null
         }
@@ -104,9 +120,10 @@ class ResumeDisplay extends Component{
             <div>
             <div class='row'>
                 <div class='col-9'>
-                    <a href = "file:///Users/sughk/Documents/Distributed Systems/Assignments/Glassdoor/Backend/public/uploads/student/resumes/student2-resume-1606441897686!%%%!Skanda Bharadwaj Resume.pdf" target="_blank"  onClick={this.openResume} style={{textDecoration: 'none'}}>
+                    <Button variant='link'
+                    onClick={this.openResume} style={{textDecoration: 'none'}}>
                     <span style={{fontSize: "1.08rem", fontWeight: "420"}}> {this.props.resumes.resume.split("!%%%!")[1]}  </span>
-                    </a> {primary_tag}
+                    </Button> {primary_tag}
                 </div>
                 <div class='col-3'>
                 <Dropdown onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} show={this.state.dropdownOpen} toggle={this.toggle} style={{float: 'right', marginRight: "2mm"}}>
@@ -120,8 +137,14 @@ class ResumeDisplay extends Component{
                 </Dropdown.Menu>
                 </Dropdown>
                 </div>
-                
-            </div>
+
+        {/* <Document
+            file={this.state.file_name}
+            >
+            <Page pageNumber={1} />
+                </Document> */}
+        </div>
+
             <div>
             {error.message && <div style={{width: '80%', margin:"0 auto", marginBottom:"5mm", textAlign: 'center', padding: "10px 10px 10px 10px"}} className='alert alert-danger'>{error.message}</div>}
             {success.message && <div style={{width: '80%', margin:"0 auto", marginBottom:"5mm", textAlign: 'center', padding: "10px 10px 10px 10px"}} className='alert alert-success'>{success.message}</div>}
