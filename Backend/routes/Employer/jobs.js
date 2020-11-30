@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(results.message);
       }
-    }
+    },
   );
 });
 
@@ -42,7 +42,7 @@ router.get('/:companyname/fetchjobs', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(JSON.stringify(results.data));
       }
-    }
+    },
   );
 });
 
@@ -62,7 +62,7 @@ router.post('/search/job', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(results.data));
       }
-    }
+    },
   );
 });
 
@@ -110,4 +110,23 @@ router.post('/applicantstatus/update', (req, res) => {
   );
 });
 
+router.get('/:companyName/fetchStatistics', (req, res) => {
+  console.log('In company profile jobs route');
+  kafka.make_request(
+    'jobs_topic',
+    { path: 'getJobsStatistics', body: req.params.companyName },
+    function (err, results) {
+      if (err) {
+        console.log('Inside err');
+        console.log(err);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Some error has occured');
+      } else {
+        console.log(results);
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(JSON.stringify(results.data[0]));
+      }
+    },
+  );
+});
 module.exports = router;

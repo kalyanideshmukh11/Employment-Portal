@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Navbar from '../../Student/Navbar/navbar_company';
-import { Card, Dropdown } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   getJobApplicantDetails,
@@ -43,7 +44,18 @@ class ApplicantDetails extends Component {
           <div className='container' style={{ paddingRight: '60%' }}>
             <div className='col-md-12'>
               <Card.Title>
-                <a href='#'>Applicant Name - Person 1</a>
+                <Link
+                  to={{
+                    pathname: '/company/jobs/applicantdetails/viewapplicant',
+                    state: {
+                      student_id: applied_students[i].sql_student_id,
+                    },
+                  }}>
+                  <a href='#'>
+                    {applied_students[i].first_name}{' '}
+                    {applied_students[i].last_name}
+                  </a>
+                </Link>
                 <Card.Body>
                   {applied_students[i].resume_file_name && (
                     <h6>Resume - {applied_students[i].resume_file_name}</h6>
@@ -73,6 +85,7 @@ class ApplicantDetails extends Component {
                       </option>
                       <option value='Interviewing'>Interviewing</option>
                       <option value='Hired'>Hired</option>
+                      <option value='Rejected'>Rejected</option>
                     </select>
                   </h6>
                 </Card.Body>

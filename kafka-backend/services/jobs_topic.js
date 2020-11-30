@@ -18,6 +18,8 @@ module.exports.jobsService = function (msg, callback) {
       break;
     case 'searchJob':
       searchJobTitle(msg, callback);
+    case 'getJobsStatistics':
+      getJobsStatistics(msg, callback);
   }
 };
 
@@ -115,4 +117,44 @@ async function searchJobTitle(msg, callback) {
     .catch((err) => {
       console.log(err);
     });
+}
+
+async function getJobsStatistics(msg, callback) {
+  let err = {};
+  let response = {};
+  let start = new Date();
+  start.setDate(start.getDate() - 365);
+  start = start.toLocaleDateString();
+  console.log('In get job details topic. Msg: ', msg);
+  console.log(msg.body);
+  console.log(start);
+  let jobsCount = await Jobs.find({
+    companyName: 'Facebook',
+    posted_date: { $lt: '11/29/2019' },
+  }).count();
+  console.log(jobsCount);
+
+  let selectedCount = await Jobs.find({
+    companyName: 'Facebook',
+    posted_date: { $lt: '11/29/2019' },
+    'applied_students.application_status': 'Hired',
+  }).count();
+  console.log('Selected', selectedCount);
+
+  let rejectedCount = await Jobs.find({
+    companyName: 'Facebook',
+    // posted_date: { $lt: '11/29/2019' },
+    'applied_students.application_status': 'Rejected',
+  }).count();
+
+  console.log('Rejected', rejectedCount);
+  // .then((data) => {
+  //   console.log(data);
+  //   response.status = 200;
+  //   response.data = data;
+  //   return callback(null, response);
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  // });
 }
