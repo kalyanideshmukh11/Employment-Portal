@@ -11,15 +11,17 @@ import PhotosContribution from './Student/Contributions/photos';
 import InterviewContribution from './Student/Contributions/interviews';
 import Login from './Student/Login/Login';
 import CompanyLogin from './Employer/Login/companyLogin';
-import companyProfile from './Employer/companyProfile';
-import updateCompany from './Employer/update';
+import companyProfile from './Employer/Profile/companyProfile';
+import updateCompany from './Employer/Profile/profileUpdate';
 import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
-import companyReviews from './Employer/companyReviews';
+import companyReviews from './Employer/Reviews/companyReviews';
 import AddInterview from './Student/Interview/AddInterview';
 import ReviewTab from './Student/Reviews/ReviewTab';
 import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
+import companyReport from './Employer/companyReport';
+import adminCompanyProfile from './Admin/adminCompany';
 
 class Main extends Component {
   render() {
@@ -70,6 +72,8 @@ class Main extends Component {
         <Route exact path='/student/reviews' component={ReviewTab} />
         <Route exact path='/student/addreviews' component={AddReview} />
         <Route exact path='/student/salary' component={SalaryTab} />
+        <Route exact path='/company/report' component={companyReport}/>
+        <Route exact path='/admin/companyProfile' component ={adminCompanyProfile} />
       </div>
     );
   }

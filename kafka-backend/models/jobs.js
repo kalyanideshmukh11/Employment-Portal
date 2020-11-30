@@ -16,7 +16,7 @@ var jobsSchema = new Schema(
     city: { type: String, required: true },
     state: { type: String },
     zipcode: { type: String },
-    posted_date: { type: String },
+    posted_date: { type: Date },
   },
   {
     versionKey: false,

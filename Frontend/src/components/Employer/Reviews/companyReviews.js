@@ -1,8 +1,8 @@
-import Navigationbar from '../Student/Navbar/navbar_company';
+import Navigationbar from '../../Student/Navbar/navbar_company';
 import React, { Component } from 'react';
 import {Button} from 'react-bootstrap';
 import axios from 'axios';
-import backendServer from '../../webConfig';
+import backendServer from '../../../webConfig';
 
 class companyReview extends Component {
 
@@ -104,5 +104,7 @@ return(
 
 )}
 }
+
+
 
 export default companyReview;

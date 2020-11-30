@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from '../../Student/Navbar/navbar_student';
-import { Link } from 'react-router-dom';
+//port { Link } from 'react-router-dom';
 import {Container,Col,Row, Form, Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

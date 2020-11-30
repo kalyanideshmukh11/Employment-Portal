@@ -1,8 +1,8 @@
-import Navigationbar from '../Student/Navbar/navbar_company';
+import Navigationbar from '../../Student/Navbar/navbar_company';
 import React, { Component } from 'react';
 import {CardImg, Button } from 'react-bootstrap';
 import axios from 'axios';
-import backendServer from '../../webConfig';
+import backendServer from '../../../webConfig';
 
 
 class companyProfile extends Component {
