@@ -5,12 +5,15 @@ var companyProfileTopic = require("./services/companyProfile_topic");
 var reviewTopic = require("./services/review_topic");
 var studentProfileTopic = require("./services/studentProfile_topic");
 var studentResumeTopic = require('./services/studentResume_topic');
+var companyProfileTopic = require('./services/companyProfile_topic');
+var reviewTopic = require('./services/review_topic');
 var jobsTopic = require('./services/jobs_topic');
+var searchTopic = require('./services/search_topic');
 var interviewTopic = require('./services/interview_topic');
+var salaryTopic = require('./services/salary_topic');
 
 const mongoose = require('mongoose');
 const { mongoDBURI } = require('./config/config');
-const { studentResumeServices } = require("./services/studentResume_topic");
 
 const options = {
   useNewUrlParser: true,
@@ -28,8 +31,6 @@ mongoose.connect(mongoDBURI, options, (err, res) => {
   }
 });
 
-
-
 function handleTopicRequest(topic_name, fname) {
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
@@ -46,6 +47,7 @@ function handleTopicRequest(topic_name, fname) {
         });
         break;
       case 'review_topic':
+        console.log('got it');
         fname.reviewService(data.data, function (err, res) {
           response(data, res, producer);
           return;
@@ -69,8 +71,20 @@ function handleTopicRequest(topic_name, fname) {
           return;
         });
         break;
+      case 'search_topic':
+        fname.searchService(data.data, function (err, res) {
+          response(data, res, producer);
+          return;
+        });
+        break;
       case 'interview_topic':
         fname.interviewService(data.data, function (err, res) {
+          response(data, res, producer);
+          return;
+        });
+        break;
+      case 'salary_topic':
+        fname.salaryService(data.data, function (err, res) {
           response(data, res, producer);
           return;
         });
@@ -93,6 +107,8 @@ function response(data, res, producer) {
   ];
   producer.send(payloads, function (err, data) {
     console.log('producer send');
+    console.log(data);
+    console.log(payloads);
   });
   return;
 }
@@ -106,4 +122,6 @@ handleTopicRequest("review_topic", reviewTopic);
 handleTopicRequest("studentProfile_topic", studentProfileTopic)
 handleTopicRequest("studentResume_topic", studentResumeTopic)
 handleTopicRequest('jobs_topic', jobsTopic);
+handleTopicRequest('search_topic', searchTopic);
+handleTopicRequest('salary_topic', salaryTopic);
 handleTopicRequest('interview_topic', interviewTopic);

@@ -2,46 +2,37 @@ const express = require("express");
 const router = express.Router();
 //const passwordHash = require('password-hash');
 //const pool = require('../../pool');
-//var kafka = require('../kafka/client');
+var kafka = require('../../kafka/client');
 //const { checkAuth } = require('../Utils/passport');
-const Company = require('../../models/company_mongo.model');
+//const Company = require('../../models/company_mongo.model');
 
-router.get('/:user_id', (req, res) => {
-    console.log(req.params.user_id);
-    Company.find({ company: req.params.user_id },)
-    .then(comp => {
-        console.log("");
-        res.status = 200;
-        res.message = "USER_EXISTS";
-        res.data = comp
-        return callback(null, response);
+
+router.get('/:company_id', (req, res) => {
+    kafka.make_request("companyProfile_topic", { "path": "getCompanyDetails", "body": req.params.company_id}, function (err, results) {
+      console.log(results);
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        console.log(err);
+        return res.status(err.status).send(err.message);
+      } else {
+        //console.log("Inside else", results);
+        if (results.status === 200) {
+          return res.status(results.status).send(results.data);
+        } else {
+          return res.status(results.status).send(results.errors);
+        }
+      }
     })
-    .catch(err => {
-        console.log(err)
-    });
-    }
-)
-//     kafka.make_request("companyProfile_topic", { "path": "getCompanyDetails", "body": req.params.user_id}, function (err, results) {
-//       console.log(results);
-//       console.log("In make request call back", results);
-//       if (err) {
-//         console.log("Inside err");
-//         console.log(err);
-//         return res.status(err.status).send(err.message);
-//       } else {
-//         //console.log("Inside else", results);
-//         if (results.status === 200) {
-//           return res.status(results.status).send(results.data);
-//         } else {
-//           return res.status(results.status).send(results.errors);
-//         }
-//       }
-//     })
-//   })
+  })
 
-  router.post('/update/:user_id', (req, res) => {
-    console.log(req.params.user_id)
-    kafka.make_request("companyProfile_topic", { "path": "companyUpdate", "body": req.body, "userId": req.params.user_id }, function (err, results) {
+  router.post('/update/:company_id', (req, res) => {
+    console.log(req.params.company_id)
+    kafka.make_request("companyProfile_topic", { "path": "companyUpdate", "company_id": req.params.company_id, "street": req.body.street, "city": req.body.city,
+  "state": req.body.state, "website": req.body.website, "company_size": req.body.company_size, "company_type": req.body.company_type, "revenue": req.body.revenue,
+  "headquarters": req.body.headquarters, "industry": req.body.industry, "founded": req.body.founded, "mission": req.body.mission, 
+  "ceo_name": req.body.ceo_name, "cphoto_file_name": req.body.cphoto_file_name
+ }, function (err, results) {
       console.log(results);
       console.log("In make request call back", results);
       if (err) {
