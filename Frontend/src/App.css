@@ -66,13 +66,13 @@
 .optionContainer li:hover, .optionContainer .highlight {
   background: rgb(77, 166, 79) !important ;
   color: white !important;
-  font-weight: lighter !important;
+  /* font-weight: lighter !important; */
 }
 
 .optionContainer li, .optionContainer .highlight {
   background: white !important ;
   color: black !important;
-  font-weight: lighter !important;
+  /* font-weight: lighter !important; */
 }
 
 div.ReactTags__tagInput {

@@ -215,5 +215,47 @@ app.post('/addCompanyPreferences/:id', checkAuth, (req, res) => {
     })
 })
 
+app.post('/addDemographics/:id', checkAuth, (req, res) => {
+  kafka.make_request("studentProfile_topic", { "path": "addDemographics", "userId": req.params.id, "data": req.body }, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(err.status).send(err.message);
+      } else {
+          console.log("Inside Student profile data")
+          return res.status(results.status).send(results.data)
+      }
+    })
+})
+
+app.get('/getStudentDemographics/:id', checkAuth, (req, res) => {
+  kafka.make_request("studentProfile_topic", { "path": "getStudentDemographics", "userId": req.params.id }, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(err.status).send(err.message);
+      } else {
+          console.log("Inside Student profile data")
+          return res.status(results.status).send(results.data)
+      }
+    })
+})
+
+app.get('/deleteDemographics/:id', checkAuth, (req, res) => {
+  kafka.make_request("studentProfile_topic", { "path": "deleteDemographics", "userId": req.params.id }, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(err.status).send(err.message);
+      } else {
+          console.log("Inside Student profile data")
+          return res.status(results.status).send(results.data)
+      }
+    })
+})
+
+
+
+
 
 module.exports = app;
