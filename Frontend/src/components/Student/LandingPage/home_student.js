@@ -38,6 +38,7 @@ class StudentHome extends Component {
                 studentHome_data: response.data[0]
             })
         })
+        localStorage.setItem("contri-list", 'salaries')
     }
     
     getJobs=()=> {
