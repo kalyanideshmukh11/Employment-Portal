@@ -65,7 +65,9 @@ class StudentNavbar extends Component {
     this.setState({ isOpen: false });
   };
 
-  handleLogout = () => {};
+  handleLogout = () => {
+    localStorage.clear();
+  };
   searchChangeHandler = (e) => {
     console.log('Search keyword:', e);
     e.preventDefault();
@@ -322,7 +324,12 @@ class StudentNavbar extends Component {
                   >
                     Discover Interviews
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={this.handleLogout}>
+                  <Dropdown.Item
+                    href='/student/interview/add'
+                    onClick={() => {
+                      localStorage.setItem('active-list', 'add_interview');
+                    }}
+                  >
                     Add an Interview
                   </Dropdown.Item>
                 </Dropdown.Menu>

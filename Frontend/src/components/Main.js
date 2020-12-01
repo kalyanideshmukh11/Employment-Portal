@@ -25,6 +25,7 @@ import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
 import HomeTabs from './Student/Tabs/homeTabs';
 import SearchSalary from './Student/Search/search_salary';
+import JobDetails from './Student/Job/JobDetails';
 
 class Main extends Component {
   render() {
@@ -96,6 +97,7 @@ class Main extends Component {
         <Route exact path='/student/addreviews' component={AddReview} />
         <Route exact path='/student/salary' component={SalaryTab} />
         <Route exact path='/student/tabs' component={HomeTabs} />
+        <Route exact path='/student/job/jobdetails' component={JobDetails} />
       </div>
     );
   }
