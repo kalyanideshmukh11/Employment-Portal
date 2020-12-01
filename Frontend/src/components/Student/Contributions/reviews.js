@@ -36,7 +36,7 @@ class ReviewContribution extends Component{
                         <div>
                         <span style={{fontWeight: '600', fontSize: "15px", padding:"20px 10px 10px 10px"}}>{reviews.job_title}</span> <br />
                     <span style={{fontSize: '15px', fontWeight: '500', padding:"20px 10px 10px 10px"}}>{reviews.company} </span>
-                    <p style={{padding: "20px 10px 10px 10px"}}> <span style={{fontWeight: "600"}}><a href='' style={{textDecoration: 'none'}}> "{reviews.headline}" </a></span>  
+                    <p style={{padding: "20px 10px 10px 10px"}}> <span style={{fontWeight: "600"}}><a href='/student/reviews' style={{textDecoration: 'none'}}> "{reviews.headline}" </a></span>  
                     <span> 
                         <div class='row'>
                             <div class='col-3.5' style={{marginTop: "0.60mm", marginLeft: '25px'}}> Rating:  </div>
