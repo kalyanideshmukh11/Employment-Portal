@@ -29,7 +29,10 @@ class ReviewTab extends Component {
    this.getFeaturedReview();
   }
 getReview=() =>{
+<<<<<<< Updated upstream
   
+=======
+>>>>>>> Stashed changes
   axios.get(`${backendServer}student/reviews/${this.routeParam}`)
         .then(res => {
             if(res.status === 200){
@@ -157,7 +160,11 @@ createElements(n) {
       </React.Fragment>
         </Col>
         <Col sm={4} md={4} lg={4}>
+<<<<<<< Updated upstream
                 <Button variant="primary" href="/student/addreview">+ Add Reivew</Button>
+=======
+                <Button variant="primary" href="/student/addreviews">+ Add Reivew</Button>
+>>>>>>> Stashed changes
                 </Col>
                 </Row>
                 </React.Fragment> 

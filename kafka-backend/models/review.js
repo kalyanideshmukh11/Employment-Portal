@@ -19,6 +19,7 @@ var reviewSchema = new schema(
   ceo_rating:{ type: mongoose.Schema.Types.Number}, 
   recommended:{ type: mongoose.Schema.Types.Number},
   company:{type: mongoose.Schema.Types.String, required: true},
+  job_title:{type: mongoose.Schema.Types.String, required: true},
   date: { type: mongoose.Schema.Types.Date, default: Date.now() },
 featured:{ type: mongoose.Schema.Types.Boolean, default: false},
 favorite:{ type: mongoose.Schema.Types.Boolean, default: false}, 

@@ -12,4 +12,8 @@ export const GET_JOBS = 'GET_JOBS';
 export const GET_POSITIVE_REVIEW = 'GET_POSITIVE_REVIEW';
 export const GET_NEGATIVE_REVIEW = 'GET_NEGATIVE_REVIEW';
 export const GET_FEATURED_REVIEW = 'GET_FEATURED_REVIEW';
+<<<<<<< Updated upstream
 export const GET_AVERAGE_RATING = 'GET_AVERAGE_RATING';
+=======
+export const GET_AVERAGE_RATING = 'GET_AVERAGE_RATING';
+>>>>>>> Stashed changes

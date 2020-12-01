@@ -5,13 +5,15 @@ import {Container,Col,Row, Form, Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { insertNewReviewDetails } from '../../../store/actions/studentReviewAction';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faThumbsUp,faThumbsDown,faMinus} from '@fortawesome/free-solid-svg-icons';
 class AddReview extends Component {
   constructor(props) {
     super(props);
     this.state = {};
     this.changeHandler = this.changeHandler.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleCheckboxChange1 = this.handleCheckboxChange1.bind(this);
+    this.handleCheckboxChange2 = this.handleCheckboxChange2.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -21,37 +23,46 @@ class AddReview extends Component {
     });
   };
 
-  handleCheckboxChange(e) {
-    this.setState({ workType: e.target.value });
+  handleCheckboxChange1(e) {
+    this.setState({ ceo_rating: e.target.value });
   }
-
+  handleCheckboxChange2(e) {
+    this.setState({ recommended: e.target.value });
+  }
   handleSubmit(e) {
     e.preventDefault();
     const reviewData = {
+      sql_student_id: localStorage.getItem('sql_student_id'),
       company: this.state.company,
       rating: this.state.rating,
+      job_title: this.state.job_title,
       description: this.state.description,
       headline: this.state.headline,
       pros: this.state.pros,
       cons: this.state.cons,
-      helpfull: this.state.helpfull,
       ceo_rating: this.state.ceo_rating,
       recommended: this.state.recommended,
     };
     console.log(reviewData);
     this.props.insertNewReviewDetails(reviewData);
-    this.props.history.push('/company/reviews');
+    //fix redirection on submit
+    this.props.history.push('/student/contributions/reviews');
   }
 
   render() {
     return (
-        <Container className="mt-5 mb-5">                                           
-                    <Row>
-        <Navbar />
-        <Col sm={8} md={8} lg={8}>
-              <h4 style={{ color: '#3BB143', float: 'left' }}>Rate a Company</h4>
-              <br />
-              <hr className='mb-3'></hr>
+      <React.Fragment>
+      <Navbar />
+      <div className='container'>
+      <div className='row'>
+        <div className='col-md-5 ml-5 mb-5 mt-3'>
+          <h4 style={{ color: '#3BB143', float: 'left' }}>
+          Rate a Company
+          </h4>
+          <br />
+          <br />
+          <p>It only takes a minute! And your anonymous review will help other job seekers.</p>
+          <hr className='mb-3'></hr>
               <Form onSubmit={this.handleSubmit}>
                 <Form.Group>
                   <Form.Label>
@@ -71,6 +82,16 @@ class AddReview extends Component {
                     required={true}
                     type='text'
                     name='rating'
+                    onChange={this.changeHandler}></Form.Control>
+                </Form.Group>
+                <Form.Group> 
+                  <Form.Label>
+                    <strong>Your Job Title*</strong>
+                  </Form.Label>
+                  <Form.Control
+                    required={true}
+                    type='text'
+                    name='job_title'
                     onChange={this.changeHandler}></Form.Control>
                 </Form.Group>
                 <Form.Group> 
@@ -121,17 +142,18 @@ class AddReview extends Component {
                   </Form.Label>
                   <Form.Check
                     name='ceo_rating'
-                    label='Approve'
-                    value= {true}
-                    onChange={this.handleCheckboxChange}
+                    label='Positive'
+                    value= {1}
+                    onChange={this.handleCheckboxChange1}
                   />
                   <Form.Check
-                    name='ceo_rating'
-                    label='Disapprove'
-                    value={false}
-                    onChange={this.handleCheckboxChange}
+                    name='recommended'
+                    label='Negative'
+                    value={0}
+                    onChange={this.handleCheckboxChange1}
                   />
-                </Form.Group>
+                  <br></br>  
+                  </Form.Group>
                 <Form.Group>
                   <Form.Label>
                     <strong>Recommend to a friend?</strong>
@@ -142,13 +164,13 @@ class AddReview extends Component {
                     name='recommended'
                     label='Positive'
                     value= {1}
-                    onChange={this.handleCheckboxChange}
+                    onChange={this.handleCheckboxChange2}
                   />
                   <Form.Check
                     name='recommended'
                     label='Negative'
                     value={0}
-                    onChange={this.handleCheckboxChange}
+                    onChange={this.handleCheckboxChange2}
                   />
                   <br></br>
                   <Form.Check
@@ -160,29 +182,11 @@ class AddReview extends Component {
                     Submit Review
                   </Button>
                 </ButtonGroup>
-                <Link to={{ pathname: '/company/review' }}>
-                  <a style={{ marginLeft: '15px' }}>Cancel</a>
-                </Link>
               </Form>
-              
-              </Col>
-               
-                
-
-<Col sm={4} md={4} lg={4}>
-              <p><b>Keep it Real</b><br></br>
-Thank you for contributing to the community. Your opinion will help others make decisions about jobs and companies.
-<br></br>
-<b>Please stick to the Community Guidelines and do not post:</b><br></br>
-<ul>
-<li>Aggressive or discriminatory language</li>
-<li>Profanities</li>
-<li>Trade secrets/confidential information</li>
-</ul>
-Thank you for doing your part to keep Glassdoor the most trusted place to find a job and company you love. See the Community Guidelines for more details.</p>
-                </Col>
-                </Row>
-</Container>
+              </div>
+          </div>
+        </div>
+      </React.Fragment>
 
     );
   }

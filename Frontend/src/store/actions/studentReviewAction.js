@@ -15,6 +15,7 @@ export const insertNewReviewDetails = (reviewData) => (dispatch) => {
         type: NEW_REVIEW_POSTING,
         payload: response.data,
       }),
+      
     )
     .catch((error) => {
       console.log(error);

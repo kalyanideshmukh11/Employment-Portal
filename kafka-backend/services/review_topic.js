@@ -2,6 +2,7 @@
 
 const Review = require("../models/review");
 const redisClient = require("../config/redisConfig");
+const sqlDB = require('../config/sqlConfig');
 
 exports.reviewService = function (msg, callback) {
   console.log("In reviewService - path:", msg.path);
@@ -13,8 +14,11 @@ exports.reviewService = function (msg, callback) {
       updateFavFeatured(msg, callback); 
       break;
     case "insertReviewDetails":
-      companyReviews(msg, callback);
+      insertReviewDetails(msg, callback);
       break;
+    case "getReviewDetails":
+      getReviewDetails(msg, callback);
+        break;
     case "getFeaturedReview":
       getFeaturedReview(msg, callback);
       break;
@@ -32,6 +36,80 @@ exports.reviewService = function (msg, callback) {
             break; 
   }
 };
+
+async function insertReviewDetails(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In add review topic service. Msg: ', msg);
+  let companyId = '';
+  let sql = `Call get_sqlCompanyId('${msg.body.company}');`;
+  try {
+    sqlDB.query(sql, async (err, result) => {
+      if (err) {
+        error.message = err;
+        error.status = 500;
+        return callback(null, error);
+      } else {
+        companyId = result[0][0].id;
+        let iObj = new Review({
+          sql_company_id: companyId,
+          sql_student_id: msg.body.sql_student_id,
+          rating:msg.body.rating,
+          company: msg.body.company,
+          headline: msg.body.headline,
+          job_title: msg.body.job_title,
+          description: msg.body.description,
+          pros: msg.body.pros,
+          cons: msg.body.cons,
+          ceo_rating: msg.body.ceo_rating,
+          recommended: msg.body.recommended,          
+        });
+        let newReview = await iObj.save();
+        if (!newReview) {
+          response.status = 500;
+          response.data = 'Data error';
+          return callback(null, response);
+        } else {
+          response.status = 200;
+          response.message = 'Inserted Successfully';
+          response.data = JSON.stringify(newReview);
+          return callback(null, response);
+        }
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    err.status = 500;
+    err.data = 'Error in Data';
+    return callback(err, null);
+  }
+}
+
+async function getReviewDetails(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log("In getReviewDetails service. Msg: ", msg);
+  console.log(msg.body);
+
+  redisClient.get("allReviews", function (err, data) {
+    if (err) {
+      console.log("error");
+      response.status = 400;
+    }
+    else {
+      console.log("fetching from mongoDb");
+      Review.find({ company: msg.body,approvedstatus:"Approved" }, function (err, doc) {
+        if (err || !doc) {
+          response.status = 400;
+        } else {
+          response.status = 200;
+          response.data = doc;
+          return callback(null, response);
+        }
+      });
+    }
+  });
+}
 
 async function companyReviews(msg, callback) {
   let err = {};
