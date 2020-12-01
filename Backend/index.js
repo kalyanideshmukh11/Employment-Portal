@@ -9,6 +9,7 @@ const imageUpload = require('./routes/Employer/imageUpload');
 const reviewRouter = require('./routes/Employer/reviews');
 const interviewRouter = require('./routes/Student/interview');
 const salaryRouter = require('./routes/Student/salary');
+const adminCompanyRouter = require('./routes/Admin/adminCompany');
 
 app.use("/images", images)
 app.use("/student", studentRouter);
@@ -19,6 +20,8 @@ app.use('/company/imageUpload', imageUpload);
 app.use('/company/reviews', reviewRouter);
 app.use('/student/interview', interviewRouter);
 app.use('/student/salary',salaryRouter);
+app.use('/admin/company', adminCompanyRouter);
+
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {

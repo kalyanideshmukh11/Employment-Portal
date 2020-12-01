@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Navbar from '../Navbar/navbar_student';
+import Navbar from '../../Student/Navbar/navbar_admin';
 import backendServer from '../../../webConfig';
 import axios from 'axios';
 
-class SearchCompany extends Component {
+class searchAdminCompany extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,7 +68,7 @@ class SearchCompany extends Component {
                   </div>
                   <div class='col-md-5'>
                     <Card.Title>
-                      <Link to={`/student/companyoverview/${value.id}`}>
+                      <Link to={`/admin/companyReview/${value.name}`}>
                         <h4 className='ml-3' style={{ color: 'green' }}>
                           <b>{value.name}</b>
                         </h4>
@@ -93,7 +93,7 @@ class SearchCompany extends Component {
                     </h6>
                   </div>
 
-                  <div class='col-md-2'>
+                  {/* <div class='col-md-2'>
                     <h4>
                       {value.reviews && (
                         <span>
@@ -102,31 +102,7 @@ class SearchCompany extends Component {
                       )}
                     </h4>
                     <Link to={`/student/reviews/${value.name}`}>Reviews</Link>
-                  </div>
-                  <div class='col-md-2'>
-                    <h4>
-                      {value.salaries && (
-                        <span>
-                          <b>{value.salaries}</b>
-                        </span>
-                      )}
-                    </h4>
-                    <Link to={`/student/salary/${value.name}`}>Salaries</Link>
-                  </div>
-                  <div class='col-md-2'>
-                    {/* TODO Change to interview link */}
-
-                    <h4>
-                      {value.reviews && (
-                        <span>
-                          <b>{value.interviews}</b>
-                        </span>
-                      )}
-                    </h4>
-                    <Link to={`/student/reviews/${value.name}`}>
-                      Interviews
-                    </Link>
-                  </div>
+                  </div> */}
                 </div>
               </Card.Body>
             </Card>
@@ -224,4 +200,4 @@ class SearchCompany extends Component {
   }
 }
 
-export default SearchCompany;
+export default searchAdminCompany;

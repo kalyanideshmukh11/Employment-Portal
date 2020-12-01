@@ -7,18 +7,20 @@ import {
   FormControl,
   Button,
   Image,
-  DropdownButton,
-  Dropdown,
-  InputGroup,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
+import { Redirect } from 'react-router';
 
 class AdminNavbar extends Component {
   constructor(props) {
     super(props);
-    this.state = { isShow: false, SearchType: 'Jobs' };
+    this.state = { 
+        isShow: false, 
+        SearchType: 'Companies',
+        searchKeyword: '',
+        redirectVar: null, };
   }
 
   handleOpen = () => {
@@ -31,15 +33,29 @@ class AdminNavbar extends Component {
 
   handleLogout = () => {};
 
-  SearchType = (e) => {
+  searchChangeHandler = (e) => {
+    console.log('Search keyword:', e);
+    e.preventDefault();
     this.setState({
-      SearchType: e,
+      searchKeyword: e.target.value,
     });
+    console.log('keyword:', this.state.searchKeyword);
   };
+
+
+  search = () => {
+    if (this.state.SearchType === 'Companies') {
+      let url = '/admin/search/company/' + this.state.searchKeyword;
+      this.setState({
+        redirectVar: <Redirect to={url} />,
+      });
+    }
+  }
 
   render() {
     return (
       <div>
+        {this.state.redirectVar}
         <Navbar bg='light' expand='lg'>
           <Navbar.Brand href='/student/home'>
             <Image src={glassdorNavIco} style={{ width: '200px' }} />
@@ -47,12 +63,12 @@ class AdminNavbar extends Component {
           <Form inline>
             <FormControl
               type='text'
-              placeholder='Job Title, Keywords, or Company'
+              placeholder='Company'
               className='mr-sm-3'
               style={{ width: '10cm' }}
-              onChange
+              onChange={this.searchChangeHandler}
             />
-            <Button style={{backgroundColor: "transparent", color: 'black', borderColor: "grey"}}><i class="fas fa-search"></i></Button>
+            <Button style={{backgroundColor: "transparent", color: 'black', borderColor: "grey"}} onClick={this.search}><i class="fas fa-search"></i></Button>
           </Form>
           <Nav>
             <Button
@@ -67,6 +83,7 @@ class AdminNavbar extends Component {
               Reviews and Photos{' '}
             </Button>
             <Button
+                href = '/admin/companyProfile'
               onClick={this.handleSearch}
               variant = 'success'
               style={{

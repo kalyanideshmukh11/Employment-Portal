@@ -95,14 +95,6 @@ async function getJobsStatistics(msg, callback) {
       count.selectedCount = data
     })
 
-  // await Jobs.find({
-  //     companyName: 'Facebook',
-  //     applied_students: { $elemMatch: { application_status: 'Rejected'} },
-  //   }).count()
-  // .then((data) => {
-  //   count.rejectedCount = data;
-  // })
-
   await Jobs.aggregate([
     {
       $match: { companyName: 'Facebook' },
@@ -127,6 +119,8 @@ async function getJobsStatistics(msg, callback) {
     console.log(err);
   });
 }
+
+
 async function searchJobTitle(msg, callback) {
   let err = {};
   let response = {};

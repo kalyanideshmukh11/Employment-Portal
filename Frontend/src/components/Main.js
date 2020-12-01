@@ -24,9 +24,11 @@ import ReviewTab from './Student/Reviews/ReviewTab';
 import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
 import companyReport from './Employer/companyReport';
-import adminCompanyProfile from './Admin/adminCompany';
+import adminCompanyProfile from './Admin/companyProfile/adminCompany';
 import HomeTabs from './Student/Tabs/homeTabs';
 import SearchSalary from './Student/Search/search_salary';
+import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
+import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
 
 class Main extends Component {
   render() {
@@ -100,6 +102,17 @@ class Main extends Component {
         <Route exact path='/company/report' component={companyReport}/>
         <Route exact path='/admin/companyProfile' component ={adminCompanyProfile} />
         <Route exact path='/student/tabs' component={HomeTabs} />
+        <Route
+          exact
+          path='/admin/search/company/:keyword'
+          component={searchAdminCompany}
+        />
+         <Route
+          exact
+          path='/admin/companyReview/:companyName'
+          component={adminCompanyReview}
+        />
+
       </div>
     );
   }
