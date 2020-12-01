@@ -13,7 +13,6 @@ class AddSalary extends Component {
   constructor(props) {
     super(props);
     this.state = {show:false};
-    this.routeParam = props.match.params.companyName;
     this.changeHandler = this.changeHandler.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,13 +25,13 @@ class AddSalary extends Component {
   }
 getSalary=() =>{
   console.log("running")
-  axios.get(`${backendServer}student/salary/${this.routeParam}`)
+  axios.get(`${backendServer}student/salary/Facebook`)
         .then(res => {
           //console.log(res)
             if(res.status === 200){
                 if(res.data){
                   this.props.getSalaryDetails(res.data)
-                   console.log(this.props.salary)
+                   console.log(this.props.salary.salary[0]._id.job_title)
                     //this.props.saveEvents(res.data);
                 }
             }
@@ -67,6 +66,7 @@ getSalary=() =>{
       job_title: this.state.job_title,
       year_of_experience: this.state.year_of_experience,
       location: this.state.location,
+      sql_student_id: localStorage.getItem('sql_student_id'),
     };
     console.log(salaryData);
     this.props.insertNewSalaryDetails(salaryData);

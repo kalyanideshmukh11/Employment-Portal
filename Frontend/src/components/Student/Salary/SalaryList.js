@@ -8,10 +8,10 @@ export const SalaryList = (props) => {
     const list = Object.keys(salaryList).map(key =>
         <div>
                 <hr />
-                    <p style={{marginLeft: "10px", fontSize: "20px", color:"#1355a9",fontWeight: "bold"}}> {salaryList[key].job_title}</p>
+                    <p style={{marginLeft: "10px", fontSize: "20px", color:"#1355a9",fontWeight: "bold"}}> {salaryList[key]._id.job_title}</p>
                     <div style={{display: "flex", justifyContent: "space-between"}}>
                     <div>
-                        <p style={{marginLeft: "10px",fontWeight: "bold"}}> ${salaryList[key].base_salary}/yr</p>
+                        <p style={{marginLeft: "10px",fontWeight: "bold"}}> ${salaryList[key].base_salary + salaryList[key].bonus}/yr</p>
                         <p style={{fontWeight: "light",fontSize: "10px", marginLeft: "10px",  padding: "0px"}}>Avg. Total Pay</p>
                     </div>
                     <div>
