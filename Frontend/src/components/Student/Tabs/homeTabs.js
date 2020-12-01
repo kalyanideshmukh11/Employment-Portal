@@ -9,6 +9,7 @@ class HomeTabs extends Component {
     super(props);
     this.state = {
       user: {},
+      buttontxt: ' Review',
     };
   }
 
@@ -75,7 +76,7 @@ class HomeTabs extends Component {
                   Jobs{' '}
                 </Button>
                 <Button
-                  href='/company/reviews'
+                  href=''
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -133,7 +134,7 @@ class HomeTabs extends Component {
                   }}
                 >
                   {' '}
-                  Add Review
+                  Add {this.state.buttontxt}
                 </Button>
               </div>
             </div>

@@ -66,13 +66,13 @@
 .optionContainer li:hover, .optionContainer .highlight {
   background: rgb(77, 166, 79) !important ;
   color: white !important;
-  font-weight: lighter !important;
+  /* font-weight: lighter !important; */
 }
 
 .optionContainer li, .optionContainer .highlight {
   background: white !important ;
   color: black !important;
-  font-weight: lighter !important;
+  /* font-weight: lighter !important; */
 }
 
 div.ReactTags__tagInput {
@@ -86,25 +86,26 @@ div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
   height: 40px !important;
   margin: 0 !important;
   font-size: 15px !important;
-  width: 150% !important;
+  width: 200% !important;
   border: 1px solid rgb(219, 218, 218) !important;
   padding: 0 4px !important;
 }
 
 div.ReactTags__selected span.ReactTags__tag {
   border: 1px solid #ddd !important;
-  background: #eeeeee !important;
+  background:rgb(101, 182, 102) !important;
   font-size: 15px !important;
   display: inline-block !important;
   padding: 5px 5px 5px 5px !important;
   margin: 0 5px !important;
   cursor: move;
-  border-radius: 2px !important;
+  border-radius: 3px !important;
   margin-bottom: 3mm !important;
+  color: rgba(0, 0, 0, 0.76) !important;
 
 }
 div.ReactTags__selected a.ReactTags__remove {
-  color: #aaa !important;
+  color:rgba(0, 0, 0, 0.76) !important;
   margin-left: 5px !important;
   cursor: pointer !important;
   margin-bottom: 3mm !important;
@@ -131,3 +132,14 @@ button:focus, button:active {
   background-color:rgb(100, 190, 101) ;
   border-radius: 3%;
 }
+body > div.fade.modal.show > div > div > div.modal-body > form > div > label > span.MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1{
+  margin-top: 1mm !important ;
+  margin-left: 0 !important;
+}
+body > div.fade.modal.show > div > div > div.modal-body > form > div > label{
+  margin: 0 !important ;
+}  
+.dropdown-toggle.btn.btn-link::after{
+  display: none ;
+}
+

@@ -29,7 +29,7 @@ var jobsSchema = new Schema(
   },
   {
     versionKey: false,
-  },
+  }
 );
 
 var jobsModel = mongoose.model('Job', jobsSchema);

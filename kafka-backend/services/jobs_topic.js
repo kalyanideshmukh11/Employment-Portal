@@ -18,8 +18,10 @@ module.exports.jobsService = function (msg, callback) {
       break;
     case 'searchJob':
       searchJobTitle(msg, callback);
-    case 'getJobsStatistics':
-      getJobsStatistics(msg, callback);
+      break;
+    case 'apply_job':
+      applyToJob(msg, callback);
+      break;
   }
 };
 
@@ -118,43 +120,40 @@ async function searchJobTitle(msg, callback) {
       console.log(err);
     });
 }
-
-async function getJobsStatistics(msg, callback) {
+async function applyToJob(msg, callback) {
   let err = {};
   let response = {};
-  let start = new Date();
-  start.setDate(start.getDate() - 365);
-  start = start.toLocaleDateString();
-  console.log('In get job details topic. Msg: ', msg);
-  console.log(msg.body);
-  console.log(start);
-  let jobsCount = await Jobs.find({
-    companyName: 'Facebook',
-    posted_date: { $lt: '11/29/2019' },
-  }).count();
-  console.log(jobsCount);
+  console.log('In post APPLY TO JOB topic service. Msg: ', msg);
 
-  let selectedCount = await Jobs.find({
-    companyName: 'Facebook',
-    posted_date: { $lt: '11/29/2019' },
-    'applied_students.application_status': 'Hired',
-  }).count();
-  console.log('Selected', selectedCount);
-
-  let rejectedCount = await Jobs.find({
-    companyName: 'Facebook',
-    // posted_date: { $lt: '11/29/2019' },
-    'applied_students.application_status': 'Rejected',
-  }).count();
-
-  console.log('Rejected', rejectedCount);
-  // .then((data) => {
-  //   console.log(data);
-  //   response.status = 200;
-  //   response.data = data;
-  //   return callback(null, response);
-  // })
-  // .catch((err) => {
-  //   console.log(err);
-  // });
+  try {
+    await Jobs.findByIdAndUpdate(
+      { _id: msg.body.job_id },
+      {
+        $addToSet: {
+          applied_students: {
+            resume_file_name: msg.body.resume_file_name,
+            //cover_file: msg.body.cover_file,
+            cover_file_name: msg.body.cover_file_name,
+            sql_student_id: msg.body.sql_student_id,
+            application_status: msg.body.application_status,
+          },
+        },
+      },
+    )
+      .then((applyJob) => {
+        console.log(applyJob);
+        console.log('Applied to job');
+        response.status = 200;
+        response.message = 'APPLIED';
+        return callback(null, response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (error) {
+    console.log(error);
+    err.status = 500;
+    err.data = 'Error in Data';
+    return callback(err, null);
+  }
 }
