@@ -13,11 +13,10 @@ import { Charts } from './Charts';
 import {FeaturedReview} from './FeaturedReview';
 import {PositiveReview} from './PositiveReview';
 import {NegativeReview} from './NegativeReview';
-
+import queryString from 'query-string';
 class ReviewTab extends Component {
   constructor(props) {
     super(props);
-    
     this.changeHandler = this.changeHandler.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
@@ -30,7 +29,8 @@ class ReviewTab extends Component {
    this.getFeaturedReview();
   }
 getReview=() =>{
-  axios.get(`${backendServer}company/reviews/Twitter`)
+  
+  axios.get(`${backendServer}student/reviews/${this.routeParam}`)
         .then(res => {
             if(res.status === 200){
                 if(res.data){
@@ -82,6 +82,7 @@ getFeaturedReview=() =>{
 getAverageRating=() =>{
   axios.get(`${backendServer}company/reviews/rating/${this.routeParam}`)
         .then(res => {
+          
             if(res.status === 200){
                 if(res.data){
                     this.props.saveAverageRating(res.data)
@@ -156,7 +157,7 @@ createElements(n) {
       </React.Fragment>
         </Col>
         <Col sm={4} md={4} lg={4}>
-                <Button variant="primary" href="/company/addreview">+ Add Reivew</Button>
+                <Button variant="primary" href="/student/addreview">+ Add Reivew</Button>
                 </Col>
                 </Row>
                 </React.Fragment> 
