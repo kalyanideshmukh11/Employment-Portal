@@ -13,7 +13,6 @@ import { Charts } from './Charts';
 import {FeaturedReview} from './FeaturedReview';
 import {PositiveReview} from './PositiveReview';
 import {NegativeReview} from './NegativeReview';
-import queryString from 'query-string';
 class ReviewTab extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +28,7 @@ class ReviewTab extends Component {
    this.getFeaturedReview();
   }
 getReview=() =>{
-  axios.get(`${backendServer}student/reviews/${this.routeParam}`)
+  axios.get(`${backendServer}student/reviews/${this.props.match.params.companyName}`)
         .then(res => {
             if(res.status === 200){
                 if(res.data){
@@ -42,7 +41,7 @@ getReview=() =>{
 };
 
 getPositiveReview=() =>{
-  axios.get(`${backendServer}company/reviews/positive/${this.routeParam}`)
+  axios.get(`${backendServer}company/reviews/positive/${this.props.match.params.companyName}`)
         .then(res => {
             if(res.status === 200){
                 if(res.data){
@@ -54,7 +53,7 @@ getPositiveReview=() =>{
 };
 
 getNegativeReview=() =>{
-  axios.get(`${backendServer}company/reviews/negative/${this.routeParam}`)
+  axios.get(`${backendServer}company/reviews/negative/${this.props.match.params.companyName}`)
         .then(res => {
             if(res.status === 200){
                 if(res.data){
@@ -65,7 +64,7 @@ getNegativeReview=() =>{
         })
 };
 getFeaturedReview=() =>{
-  axios.get(`${backendServer}company/reviews/featured/${this.routeParam}`)
+  axios.get(`${backendServer}company/reviews/featured/${this.props.match.params.companyName}`)
         .then(res => {
             if(res.status === 200){
                 if(res.data){
@@ -79,7 +78,7 @@ getFeaturedReview=() =>{
 };
 
 getAverageRating=() =>{
-  axios.get(`${backendServer}company/reviews/rating/${this.routeParam}`)
+  axios.get(`${backendServer}company/reviews/rating/${this.props.match.params.companyName}`)
         .then(res => {
           
             if(res.status === 200){

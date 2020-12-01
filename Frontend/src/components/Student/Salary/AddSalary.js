@@ -9,6 +9,7 @@ import "react-bootstrap/ModalHeader";
 import axios from 'axios';
 import backendServer from '../../../webConfig';
 import { SalaryList } from './SalaryList';
+import { useParams} from 'react-router-dom';
 class AddSalary extends Component {
   constructor(props) {
     super(props);
@@ -17,21 +18,21 @@ class AddSalary extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   
   }
-
   componentDidMount() {
-   this.getSalary();
-    
+   this.getSalary();  
+   console.log(this.props.match.params.companyName);
   }
 getSalary=() =>{
   console.log("running")
-  axios.get(`${backendServer}student/salary/Facebook`)
+ 
+  axios.get(`${backendServer}student/salary/${this.props.match.params.companyName}`)
         .then(res => {
-          //console.log(res)
+          console.log(res)
             if(res.status === 200){
                 if(res.data){
                   this.props.getSalaryDetails(res.data)
-                   console.log(this.props.salary.salary[0]._id.job_title)
-                    //this.props.saveEvents(res.data);
+                   //console.log(this.props.salary.salary[0]._id.job_title)
+                   
                 }
             }
         })
