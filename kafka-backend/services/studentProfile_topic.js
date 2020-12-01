@@ -52,6 +52,14 @@ exports.studentProfileServices = function (msg, callback) {
     case "deleteDemographics":
       deleteDemographics(msg, callback);
       break;
+
+    case "addStudentProfilePicture":
+      addStudentProfilePicture(msg,callback);
+      break;
+
+    case "getStudentProfilePicture":
+      getStudentProfilePicture(msg, callback);
+      break;
   }
 };
 
@@ -396,4 +404,55 @@ async function deleteDemographics(msg, callback){
         return callback(null, response)
       }
     });
+}
+
+async function addStudentProfilePicture (msg, callback) {
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  await studentModel.findOneAndUpdate({sql_student_id: msg.userId}, 
+    {profile_picture: msg.data.file_name}, (error1, result1) => {
+      if (error1) {
+        error.message = error1
+        error.status = 500
+        return callback(null, error);
+      } else if(result1) {
+        response.status = 200
+        response.message = 'ABOUT_ME'
+        response.data = "CHANGES_SAVED"
+        return callback(null, response)
+      } else if (!error1 && !result1){
+        studentModel.create({sql_student_id: msg.userId, 
+          profile_picture: msg.data.file_name}, (error2, result2) => {
+          if (error2) {
+            error.message = error2
+            error.status = 500
+            return callback(null, error);
+          } else {
+            response.status = 200
+            response.message = 'ABOUT_ME'
+            response.data = "CHANGES_SAVED"
+            return callback(null, response)
+          }
+        })
+      }
+    })
+}
+
+async function getStudentProfilePicture(msg, callback) {
+  let err = {}, response = {};
+  console.log('get Student profile picture: ', msg);
+  await studentModel.find({sql_student_id: msg.userId}, (result, error) => {
+    if(error){
+      err.message = error
+      err.status = 500
+      return callback(null, error);
+    } else if(result){
+      response.status = 200
+      response.message = 'STUDENT_INTERVIEWS'
+      response.data = JSON.stringify(result)
+      return callback(null, response)
+    }
+  })
+
+
 }
