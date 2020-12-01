@@ -89,7 +89,7 @@ class ReviewContribution extends Component{
             </Card.Title>
             
                 <Card.Text>
-                    <Button style={{backgroundColor: '#1861bf', borderColor: "#1861bf"}} href=''>
+                    <Button style={{backgroundColor: '#1861bf', borderColor: "#1861bf"}} href='/student/addreviews'>
                         Write a Review
                     </Button>
                 </Card.Text>

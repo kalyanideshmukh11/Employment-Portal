@@ -109,7 +109,7 @@ async function getStudentReviews(msg, callback) {
       return callback(null, error);
     } else if(result){
       response.status = 200
-      response.message = 'ABOUT_ME'
+      response.message = 'STUDENT_INTERVIEWS'
       response.data = JSON.stringify(result)
       return callback(null, response)
     }

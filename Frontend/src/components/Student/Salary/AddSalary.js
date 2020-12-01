@@ -62,7 +62,7 @@ getSalary=() =>{
       sql_student_id: localStorage.getItem("sql_student_id"),
       company: this.state.company,
       base_salary: this.state.base_salary,
-      currancy: this.state.currancy,
+      currency: this.state.currency,
       bonus: this.state.bonus,
       job_title: this.state.job_title,
       year_of_experience: this.state.year_of_experience,

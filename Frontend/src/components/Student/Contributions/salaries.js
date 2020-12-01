@@ -4,13 +4,14 @@ import StudentNavbar from '../Navbar/navbar_student'
 import {Button, Card, Table} from 'react-bootstrap'
 import axios from 'axios'
 import backendServer from "../../../webConfig"
-import StarRatings from 'react-star-ratings';
+import AddSalaryModalForm from './addSalaryModalForm'
 
 class SalaryContribution extends Component{
  constructor(props){
      super(props)
          this.state = {
-            salary_reviews: []
+            salary_reviews: [],
+            add_salary_modal_form: false
      }
  }
  componentWillMount = () => {
@@ -25,6 +26,11 @@ class SalaryContribution extends Component{
     })
 
  }
+
+ handleSalaryModalClose = () => this.setState({add_salary_modal_form: false});
+ handleSalaryModalShow = () => this.setState({add_salary_modal_form: true});
+
+
  render(){
     let details = null;
     if(this.state.salary_reviews.length > 0){
@@ -53,6 +59,7 @@ class SalaryContribution extends Component{
      return(
         <div>
             <StudentNavbar />
+            <AddSalaryModalForm show={this.state.add_salary_modal_form} onHide={this.handleSalaryModalClose} />
        
         <div className='row' style={{background: "#eaeaea"}}>
         <div className="col-4 contri" style={{paddingLeft:"5cm"}}> 
@@ -66,7 +73,7 @@ class SalaryContribution extends Component{
             </Card.Title>
             
                 <Card.Text>
-                    <Button style={{backgroundColor: '#1861bf', borderColor: "#1861bf"}} href=''>
+                    <Button style={{backgroundColor: '#1861bf', borderColor: "#1861bf"}} onClick={this.handleSalaryModalShow}>
                         Add a Salary
                     </Button>
                 </Card.Text>

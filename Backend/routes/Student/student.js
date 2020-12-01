@@ -323,4 +323,18 @@ app.get('/studentReviews/:id', checkAuth, (req, res) => {
       }
     })
 })
+
+app.get('/exploreJobs/:state', checkAuth, (req, res) => {
+  console.log("OK")
+  kafka.make_request("jobs_topic", { "path": "getExploreJobs", 'state': req.params.state}, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(500).send(err);
+      } else {
+          console.log("Inside Jobs explore data")
+          return res.status(200).send(results.data)
+      }
+    })
+})
 module.exports = app;
