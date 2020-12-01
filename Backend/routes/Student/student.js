@@ -11,12 +11,24 @@ const fs = require('fs')
 const storage = multer.diskStorage({
   destination: path.join(__dirname, '../..') + '/public/uploads/student/resumes',
   filename: (req, file, cb) => {
-      cb(null, 'student' + req.params.id + '-' + 'resume' + "-" + Date.now() + '!%%%!' + file.originalname);
+      cb(null, 'student' + req.params.id + '-' + 'resume' + "-" + Date.now() + '!***!' + file.originalname);
   }
 });
 
 const upload = multer({
   storage: storage,
+  limits: { fileSize: 1000000 },
+}).single("file");
+
+const image_storage = multer.diskStorage({
+  destination: path.join(__dirname, '../..') + '/public/uploads/student/profile_pictures',
+  filename: (req, file, cb) => {
+      cb(null, 'student' + req.params.id + '-' + 'resume' + "-" + Date.now() + '!***!' + file.originalname);
+  }
+});
+
+const upload_image = multer({
+  storage: image_storage,
   limits: { fileSize: 1000000 },
 }).single("file");
 
@@ -213,7 +225,6 @@ app.post('/deleteResume/:id', checkAuth, (req, res) => {
 app.post('/openResume', (req, res) => {
   var file_path = path.join(__dirname, '../..') + '/public/uploads/student/resumes/' + req.body.resume;
   if (fs.existsSync(file_path)) {
-      res.contentType("application/pdf")
       res.sendFile(file_path);
   }
   else {
@@ -337,4 +348,53 @@ app.get('/exploreJobs/:state', checkAuth, (req, res) => {
       }
     })
 })
+
+app.post('/addProfilePicture/:id', checkAuth, (req, res) => {
+  upload_image(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      console.log(err)
+        return res.status(500).json(err)
+    } else if (err) {
+      console.log(err)
+        return res.status(500).json(err)
+    } else {
+      const profile_picture = {
+        file_name: req.file.filename
+      }
+      kafka.make_request("studentProfile_topic", { "path": "addStudentProfilePicture", "userId": req.params.id, "data": profile_picture }, function (err, results) {
+        console.log("In make request call back", results);
+        if (err) {
+          console.log("Inside err");
+          return res.status(err.status).send(err.message);
+        } else {
+            console.log("Inside Student resume data")
+            return res.status(results.status).send(results.data)
+        }
+      })
+
+    }
+
+})
+
+})
+
+app.get('/getProfilePicture/:id', (req, res) => {
+  kafka.make_request("studentProfile_topic", { "path": "getStudentProfilePicture", "userId": req.params.id}, function (err, results) {
+    console.log("In make profile picture request call back", results);
+    if (err) {
+      console.log("Inside err");
+      return res.status(err.status).send(err.message);
+    } else {
+        console.log("Inside Student profile data")
+        var image = path.join(__dirname, '../..') + '/public/uploads/student/profile_pictures/' + results[0].profile_picture;
+        if (fs.existsSync(image)) {
+            res.sendFile(image);
+        }
+        else {
+            return res.sendFile(path.join(__dirname, '../..') + '/public/uploads/student/profile_pictures/studentPlaceholder.png')
+        }
+    }
+  })
+
+});
 module.exports = app;

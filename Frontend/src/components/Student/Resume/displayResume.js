@@ -4,9 +4,7 @@ import { faTrash, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
 import { Dropdown, Button } from 'react-bootstrap';
 import axios from 'axios';
 import backendServer from "../../../webConfig"
-import { Document, pdfjs, Page } from 'react-pdf';
-import pdf from './resume.pdf'
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 
 
 class ResumeDisplay extends Component{
@@ -65,29 +63,27 @@ class ResumeDisplay extends Component{
 
       openResume = () => {
           const resume_data = this.state.data
-          axios.post(`${backendServer}student/openResume/`, resume_data)
+          axios.post(`${backendServer}student/openResume/`, resume_data, {responseType: 'blob'}) 
           .then(response => {
+            let file_extension = resume_data.resume.substr(resume_data.resume.length - 3)
+            if(file_extension === 'pdf'){
             var file = new Blob([response.data], {type: 'application/pdf'});
-            var len = response.data.length;
-            var bytes = new Uint8Array( len );
-            for (var i = 0; i < len; i++){
-                bytes[i] = response.data.charCodeAt(i);
+            const fileUrl = URL.createObjectURL(file);
+            window.open(fileUrl)
+            } else if(file_extension === 'doc'){
+            var file = new Blob([response.data], {type: 'application/msword'});
+            const fileUrl = URL.createObjectURL(file);
+            window.open(fileUrl)
+            } else {
+            var file = new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+            const fileUrl = URL.createObjectURL(file);
+            window.open(fileUrl)
             }
-            console.log(bytes)
-            let fileUrl = URL.createObjectURL(file);
-            console.log(fileUrl)
-            var pdf_file = {
-                url: fileUrl,
-                data: bytes.buffer
-            }
-            this.setState({
-                file_name: pdf_file
-            })
+
           })          
       }
 
     render(){
-        // console.log(this.state.file_name)    
         let error = {
             message: null
         }
@@ -122,7 +118,7 @@ class ResumeDisplay extends Component{
                 <div class='col-9'>
                     <Button variant='link'
                     onClick={this.openResume} style={{textDecoration: 'none'}}>
-                    <span style={{fontSize: "1.08rem", fontWeight: "420"}}> {this.props.resumes.resume.split("!%%%!")[1]}  </span>
+                    <span style={{fontSize: "1.08rem", fontWeight: "420"}}> {this.props.resumes.resume.split("!***!")[1]}  </span>
                     </Button> {primary_tag}
                 </div>
                 <div class='col-3'>
@@ -138,11 +134,6 @@ class ResumeDisplay extends Component{
                 </Dropdown>
                 </div>
 
-        {/* <Document
-            file={this.state.file_name}
-            >
-            <Page pageNumber={1} />
-                </Document> */}
         </div>
 
             <div>

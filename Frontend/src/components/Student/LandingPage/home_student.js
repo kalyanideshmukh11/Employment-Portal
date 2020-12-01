@@ -3,7 +3,6 @@ import StudentNavbar from '../Navbar/navbar_student'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBriefcase, faMapMarkerAlt} from '@fortawesome/free-solid-svg-icons'
 import {Card, Image} from 'react-bootstrap'
-import profilePicture from '../images/studentPlaceholder.png'
 import axios from 'axios'
 import backendServer from "../../../webConfig"
 import ExploreJobsCard from './exploreJobsCard'
@@ -141,6 +140,10 @@ class StudentHome extends Component {
                 activeClassName={"active"}/></div>
             )
         }
+        let profilePicture = null
+        if (this.state) {
+            profilePicture = `${backendServer}student/getProfilePicture/${localStorage.getItem("sql_student_id")}`;
+        }
         return (
             <div> 
                 <StudentNavbar />
@@ -151,7 +154,7 @@ class StudentHome extends Component {
                     <a href='/student/profile' style={{textDecoration: "none", color: "black"}} onClick={localStorage.setItem('active-list', 'profile')}> 
                     <Card>
                     <Card.Body>
-                    <Image src={profilePicture} style={{width:"1.5cm"}} roundedCircle />
+                    <Image src={profilePicture} style={{width:"1.5cm"}} roundedCircle/>
                     <br />
                     <br />
 

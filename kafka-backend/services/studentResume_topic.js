@@ -21,10 +21,11 @@ async function addStudentResume(msg, callback){
     let error = {}, response = {}
     console.log("IN STUDENT RESUME TOPIC", msg)
     if(msg.data.is_primary === 'true'){
-        studentModel.update({ sql_student_id: msg.userId },
+        studentModel.update({ sql_student_id: msg.userId, resumes: {$exists: true} },
         { "$set": { "resumes.$[elem].is_primary": false } },
         { "arrayFilters": [{ "elem.is_primary": true }], "multi": true }, (error1, result1) => {
         if(error1){
+        console.log(error1)
         error.message = error1
         error.status = 500
         return callback(null, error);
