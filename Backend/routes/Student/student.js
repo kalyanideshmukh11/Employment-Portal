@@ -285,4 +285,42 @@ app.get('/deleteDemographics/:id', checkAuth, (req, res) => {
       }
     })
 })
+
+app.get('/studentInterviews/:id', checkAuth, (req, res) => {
+  kafka.make_request("interview_topic", { "path": "getStudentReviews", "userId": req.params.id }, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(500).send(err);
+      } else {
+          console.log("Inside Student profile data")
+          return res.status(200).send(results)
+      }
+    })
+})
+app.get('/studentSalaries/:id', checkAuth, (req, res) => {
+  kafka.make_request("salary_topic", { "path": "getStudentSalaries", "userId": req.params.id }, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(500).send(err);
+      } else {
+          console.log("Inside Student profile data")
+          return res.status(200).send(results)
+      }
+    })
+})
+
+app.get('/studentReviews/:id', checkAuth, (req, res) => {
+  kafka.make_request("review_topic", { "path": "getStudentReviews", "userId": req.params.id }, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(500).send(err);
+      } else {
+          console.log("Inside Student profile data")
+          return res.status(200).send(results)
+      }
+    })
+})
 module.exports = app;

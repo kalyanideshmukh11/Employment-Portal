@@ -142,4 +142,8 @@ body > div.fade.modal.show > div > div > div.modal-body > form > div > label{
 .dropdown-toggle.btn.btn-link::after{
   display: none ;
 }
+/* .star-ratings {
+  display: block !important;
+
+} */
 

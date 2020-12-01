@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const SalarySchema = new mongoose.Schema(
   {
     //sql_company_id: { type: String, required: true },
+    sql_student_id: { type: String, required: true },
     base_salary: { type: mongoose.Schema.Types.Number, default: 0 },
     currancy: { type: mongoose.Schema.Types.String, required: true },
     bonus: { type: mongoose.Schema.Types.Number },
