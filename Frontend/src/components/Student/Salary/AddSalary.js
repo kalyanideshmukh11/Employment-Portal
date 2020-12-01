@@ -14,18 +14,17 @@ class AddSalary extends Component {
     super(props);
     this.state = {show:false};
     this.changeHandler = this.changeHandler.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   
   }
 
   componentDidMount() {
-   const data=  this.getSalary();
-    console.log(data)
+   this.getSalary();
+    
   }
 getSalary=() =>{
   console.log("running")
-  axios.get(`${backendServer}student/salary/${this.routeParam}`)
+  axios.get(`${backendServer}student/salary/Facebook`)
         .then(res => {
           //console.log(res)
             if(res.status === 200){
@@ -52,9 +51,7 @@ getSalary=() =>{
     });
   };
 
-  handleCheckboxChange(e) {
-    this.setState({ workType: e.target.value });
-  }
+
 
   handleSubmit(e) {
     e.preventDefault();
@@ -70,9 +67,13 @@ getSalary=() =>{
     };
     console.log(salaryData);
     this.props.insertNewSalaryDetails(salaryData);
+    console.log(this.props.status);
+    if(this.props.status === "Inserted Successfully"){
+        this.hideModal()
+    }
     
   }
-   
+
  
    
   render() {
@@ -95,7 +96,7 @@ getSalary=() =>{
           <Modal.Title>Add a Salary</Modal.Title>
         </Modal.Header>
           <Modal.Body>
-          <Form onSubmit={this.handleSubmit,this.hideModal}>
+          <Form onSubmit={this.handleSubmit}>
             <h12>Your anonymous salary will help other job seekers.</h12>
             <br></br>
             <h6> Salary Details*</h6>           

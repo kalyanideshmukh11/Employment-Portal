@@ -1,7 +1,7 @@
 'use strict';
 
 const Salary = require('../models/salary');
-
+const sqlDB = require('../config/sqlConfig');
 const redisClient = require('../config/redisConfig');
 const paginate = require('jw-paginate');
 
@@ -59,7 +59,7 @@ async function insertSalaryDetails(msg, callback) {
   let response = {};
   console.log('In add Interview topic service. Msg: ', msg);
   let companyId = '';
-  let sql = `Call get_sqlCompanyId('${msg.body.companyName}');`;
+  let sql = `Call get_sqlCompanyId('${msg.body.company}');`;
   try {
     sqlDB.query(sql, async (err, result) => {
       if (err) {
@@ -80,10 +80,12 @@ async function insertSalaryDetails(msg, callback) {
           location: msg.body.location,
           company: msg.body.company,    
         });
+        console.log(iObj);
         let newSalary = await iObj.save();
         if (!newSalary) {
           response.status = 500;
           response.data = 'Data error';
+          response.message = 'Data error';
           return callback(null, response);
         } else {
           response.status = 200;

@@ -46,7 +46,10 @@ class AddReview extends Component {
     console.log(reviewData);
     this.props.insertNewReviewDetails(reviewData);
     //fix redirection on submit
-    this.props.history.push('/student/contributions/reviews');
+    if(this.props.status === "Inserted Sucessfully"){
+      alert("Review Added!");
+      this.props.history.push('/student/contributions/reviews');
+  }
   }
 
   render() {
