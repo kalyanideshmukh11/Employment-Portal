@@ -64,7 +64,16 @@ class ApexChart extends Component {
         <div className='row'>
           <div className='mixed-chart'>
             {this.state.loading ? (
-              <Loader type='Puff' color='#00BFFF' height={100} width={100} />
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '15%',
+                  top: '20%',
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <Loader type='Puff' color='#00b32d' height={70} width={100} />
+              </div>
             ) : (
               <Chart
                 options={this.state.options}
