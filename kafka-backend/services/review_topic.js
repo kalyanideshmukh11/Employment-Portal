@@ -24,6 +24,9 @@ exports.reviewService = function (msg, callback) {
     case 'mostReviewed':
       MostReviewed(msg, callback);
       break;
+    case 'topRated':
+      TopRated(msg, callback);
+      break;
   }
 };
 
@@ -191,6 +194,66 @@ async function MostReviewed(msg, callback) {
         // msg.body[each._id].rating = each.rating;
       }
       let final_output = { names: names, reviews: reviews };
+      console.log('Results:', results);
+      // var msg = [];
+      // msg.push(msg.body);
+      // console.log('msg.body:', msg);
+      // console.log('type:', typeof msg);
+      callback(null, final_output);
+    }
+  );
+}
+
+async function TopRated(msg, callback) {
+  console.log('In top rated company: ');
+  console.log(Object.keys(msg.body));
+  let ids = Object.keys(msg.body);
+  const page = parseInt(msg.page) || 1;
+  await Review.aggregate(
+    [
+      {
+        $match: { sql_company_id: { $in: ids } },
+      },
+      {
+        $group: {
+          _id: '$sql_company_id',
+          // _id: {
+          //   month: { $month: '$date' },
+          //   day: { $dayOfMonth: '$date' },
+          //   year: { $year: '$date' },
+          // },
+          // reviews: { $sum: 1 },
+          avgrating: { $avg: '$rating' },
+        },
+      },
+      {
+        $sort: { avgrating: -1 },
+        // $project: { $sql_company_id: 1 },
+        // $group: {
+        //   _id: '$sql_company_id',
+        //   avgrating: { $avg: '$rating' },
+        //   // reviews: 1,
+        // },
+      },
+    ],
+    function (err, results) {
+      console.log('Results:', results);
+      let output = [];
+      if (results.length > 5) {
+        results = results.slice(0, 5);
+      }
+      let avgrating = [];
+      let names = [];
+      for (var each of results) {
+        names.push(msg.body[each._id].name);
+        avgrating.push(parseFloat(each.avgrating).toFixed(1));
+        each.name = msg.body[each._id].name;
+        msg.body[each._id].avgrating = each.avgrating;
+        let val = { [msg.body[each._id].name]: msg.body[each._id] };
+        output.push(val);
+        // msg.body[each._id].rating = each.rating;
+      }
+      let final_output = { names: names, avgrating: avgrating };
       console.log('Results:', results);
       // var msg = [];
       // msg.push(msg.body);

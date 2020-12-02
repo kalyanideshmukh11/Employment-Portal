@@ -30,6 +30,7 @@ import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
 import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
 import adminCompanyProfile from './Admin/companyProfile/adminCompany';
 import JobDetails from './Student/Job/JobDetails';
+import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 
 class Main extends Component {
   render() {
@@ -101,7 +102,7 @@ class Main extends Component {
         <Route exact path='/student/addreviews' component={AddReview} />
         <Route exact path='/student/salary' component={SalaryTab} />
         <Route exact path='/student/tabs' component={HomeTabs} />
-        <Route exact path='/admin/home' component={ApexChart} />
+        <Route exact path='/admin/home' component={AnalyticsHome} />
         <Route
           exact
           path='/admin/companyProfile'
