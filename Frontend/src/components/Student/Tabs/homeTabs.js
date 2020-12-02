@@ -2,31 +2,43 @@ import Navigationbar from '../../Student/Navbar/navbar_student';
 import React, { Component } from 'react';
 import { CardImg, Button } from 'react-bootstrap';
 import Comp from '../component';
+import CompanyOverview from '../CompanyOverview/companyOverview';
+import ReviewTab from '../Reviews/ReviewTab';
+import AddSalary from '../Salary/AddSalary';
 
-// import axios from 'axios';
-// import backendServer from '../../webConfig';
 class HomeTabs extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   // user: {},
-    //   // buttontxt: ' Review',
-    //   loadComponent: ,
-    // };
+
     this.loadComp = this.loadComp.bind(this);
     console.log('props:', this.props);
-    if (
-      this.props.location.category &&
-      this.props.location.category === 'overview'
-    ) {
-      console.log('in if condition');
-      this.state = {
-        loadComponent: <Comp str='This is Overview'></Comp>,
-      };
-      // this.setState({
-      //   loadComponent: <Comp str='This is Overview'></Comp>,
-      // });
-      // this.loadComp(<Comp str='This is Overview'></Comp>);
+    if (this.props.location.category) {
+      if (this.props.location.category === 'reviews') {
+        console.log('in if condition');
+        this.state = {
+          loadComponent: (
+            <ReviewTab
+              companyName={this.props.location.companyName}
+            ></ReviewTab>
+          ),
+        };
+      } else if (this.props.location.category === 'overview') {
+        this.state = {
+          loadComponent: (
+            <CompanyOverview
+              companyID={this.props.location.companyID}
+            ></CompanyOverview>
+          ),
+        };
+      } else if (this.props.location.category === 'salaries') {
+        this.state = {
+          loadComponent: (
+            <AddSalary
+              companyName={this.props.location.companyName}
+            ></AddSalary>
+          ),
+        };
+      }
     } else {
       this.state = {
         loadComponent: <Comp str='This is Overview'></Comp>,
@@ -42,17 +54,9 @@ class HomeTabs extends Component {
     this.setState({ loadComponent: param });
     this.forceUpdate();
   }
-  // componentWillMount() {
-  //     axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`)
-  //     .then(res => {
-  //         this.setState({ user: res.data });
-  //     });
-  // }
 
   render() {
-    // console.log(this.state.user);
-    // console.log(this.props.user);
-    // var fileName = this.state.user.cphoto_file_name;
+    // TODO add image link
     // var imgSrc = `${backendServer}company/imageUpload/${fileName}`;
     return (
       <React.Fragment>
@@ -80,7 +84,11 @@ class HomeTabs extends Component {
                 <br />
                 <Button
                   onClick={() =>
-                    this.loadComp(<Comp str='This is Overview'></Comp>)
+                    this.loadComp(
+                      <CompanyOverview
+                        companyID={this.props.location.companyID}
+                      ></CompanyOverview>
+                    )
                   }
                   style={{
                     backgroundColor: 'transparent',
@@ -107,7 +115,11 @@ class HomeTabs extends Component {
                 </Button>
                 <Button
                   onClick={() =>
-                    this.loadComp(<Comp str='This is reviews'></Comp>)
+                    this.loadComp(
+                      <ReviewTab
+                        companyName={this.props.location.companyName}
+                      ></ReviewTab>
+                    )
                   }
                   href=''
                   style={{
@@ -137,7 +149,13 @@ class HomeTabs extends Component {
                   Interviews{' '}
                 </Button>
                 <Button
-                  href='/student/salary/Google'
+                  onClick={() =>
+                    this.loadComp(
+                      <AddSalary
+                        companyName={this.props.location.companyName}
+                      ></AddSalary>
+                    )
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -161,18 +179,6 @@ class HomeTabs extends Component {
                   {' '}
                   Photos{' '}
                 </Button>
-                {/* <Button
-                  href='/company/profileUpdate'
-                  style={{
-                    float: 'right',
-                    marginLeft: '500px',
-                    backgroundColor: 'green',
-                    border: 'green',
-                  }}
-                >
-                  {' '}
-                  Add {this.state.buttontxt}
-                </Button> */}
               </div>
             </div>
           </div>

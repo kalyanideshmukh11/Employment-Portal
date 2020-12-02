@@ -3,6 +3,7 @@ import Chart from 'react-apexcharts';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
 import Loader from 'react-loader-spinner';
+import { noAuto } from '@fortawesome/fontawesome-svg-core';
 
 class TopRated extends Component {
   constructor(props) {
@@ -27,9 +28,6 @@ class TopRated extends Component {
     };
     this.getData();
   }
-  //   componentDidMount() {
-  //     this.getData();
-  //   }
 
   getData() {
     axios.get(`${backendServer}admin/toprated`).then((response) => {
@@ -37,7 +35,7 @@ class TopRated extends Component {
       if (response.status === 200) {
         this.setState({
           loading: false,
-          //   loading: false,
+          // loading: true,
           options: {
             chart: {
               id: 'basic-bar',
@@ -66,10 +64,12 @@ class TopRated extends Component {
             {this.state.loading ? (
               <div
                 style={{
-                  position: 'absolute',
-                  left: '15%',
-                  top: '20%',
-                  transform: 'translate(-50%, -50%)',
+                  width: 500,
+                  position: 'relative',
+                  left: '50%',
+                  top: '50%',
+
+                  // transform: 'translate(-50%, -50%)',
                 }}
               >
                 <Loader type='Puff' color='#00b32d' height={70} width={100} />
