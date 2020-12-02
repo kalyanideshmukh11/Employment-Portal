@@ -53,6 +53,10 @@ class StudentResume extends Component {
         if (this.state && this.state.resumes && this.state.resumes.length > 0) {
             section = this.resumeData(this.state.resumes);
             renderOutput.push(section);
+                } else {
+                    renderOutput = (<div style={{padding:"10px 10px 10px 10px", color: "green", fontWeight: "300"}}>
+                        Please upload your recent resumes to show here.
+                    </div>)
                 }
         return (
             <div>
