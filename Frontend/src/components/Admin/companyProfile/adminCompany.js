@@ -2,7 +2,7 @@ import Navbar from '../../Student/Navbar/navbar_admin';
 import React, { Component } from 'react';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
-import { Card, Button} from 'react-bootstrap';
+import { Card} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 class adminCompany extends Component {

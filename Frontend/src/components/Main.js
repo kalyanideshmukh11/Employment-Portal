@@ -23,7 +23,7 @@ import SearchInterview from './Student/Search/search_interview';
 import ReviewTab from './Student/Reviews/ReviewTab';
 import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
-import companyReport from './Employer/companyReport';
+import companyReport from './Employer/Report/companyReport';
 import adminCompanyProfile from './Admin/companyProfile/adminCompany';
 import HomeTabs from './Student/Tabs/homeTabs';
 import SearchSalary from './Student/Search/search_salary';
@@ -40,6 +40,7 @@ import JobDetails from './Student/Job/JobDetails';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
 import InterviewAnswers from './Student/Interview/InterviewAnswers';
+import companyDemographics from './Employer/Report/companyDemographics';
 
 class Main extends Component {
   render() {
@@ -154,7 +155,8 @@ class Main extends Component {
         <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
 
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
-      </div>
+        <Route exact path='/company/demogrphics' component={companyDemographics} />
+        </div>
     );
   }
 }
