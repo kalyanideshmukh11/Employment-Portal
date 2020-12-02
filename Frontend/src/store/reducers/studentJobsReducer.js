@@ -1,7 +1,7 @@
 
 import { GET_JOBS } from '../actions/types';
 const initialState = {
-  student_job: [], 
+  student_jobs: [], 
   days:{},
   
 };
@@ -11,7 +11,7 @@ export default function (state = initialState, action) {
     case GET_JOBS:
         return { 
           ...state, 
-          student_job: action.payload ,
+          student_jobss: action.payload ,
         };
     default:
       return state;

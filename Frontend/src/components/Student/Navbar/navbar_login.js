@@ -4,9 +4,6 @@ import {
   Nav,
   Button,
   Image,
-  DropdownButton,
-  Dropdown,
-  InputGroup,
 } from 'react-bootstrap';
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
 import { Redirect } from 'react-router';

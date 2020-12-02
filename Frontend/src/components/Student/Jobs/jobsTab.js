@@ -30,7 +30,7 @@ class JobsTab extends Component {
               if(res.status === 200){
                   if(res.data){
                       this.props.saveJobs(res.data)
-                      console.log(this.props.student_job)
+                      console.log(this.props. student_jobs)
                   }
               }
           })
@@ -73,7 +73,7 @@ class JobsTab extends Component {
   }
   search= (event)=>{
    // event.preventDefault();
-    this.props.saveJobs(this.props.student_job.filter(job =>{
+    this.props.saveJobs(this.props. student_jobs.filter(job =>{
       console.log("inside search",this.state.inputValue)
       console.log((job.title.toLowerCase().includes(this.state.inputValue.toLowerCase()) || job.city.toLowerCase().includes(this.state.inputValue.toLowerCase())))
       return (job.title.toLowerCase().includes(this.state.inputValue.toLowerCase()) || job.city.toLowerCase().includes(this.state.inputValue.toLowerCase()))
@@ -81,22 +81,22 @@ class JobsTab extends Component {
   }
   render() {
     let renderOutput = [];
-    if (this.props && this.props.student_job && this.props.student_job.length > 0) {
-      for (var i = 0; i < this.props.student_job.length; i++) {
-        const job_id = this.props.student_job[i]._id;
+    if (this.props && this.props. student_jobs && this.props. student_jobs.length > 0) {
+      for (var i = 0; i < this.props. student_jobs.length; i++) {
+        const job_id = this.props. student_jobs[i]._id;
         renderOutput.push(
           <div className='container' style={{ paddingRight: '60%' }}>
             <div className='col-md-12'>
               <Card.Title>
               <Link to={`/student/job/jobdetails`}
-                          params={{ data: this.props.student_job[i] }}
+                          params={{ data: this.props. student_jobs[i] }}
                         >
-                          {this.props.student_job[i].title}
+                          {this.props. student_jobs[i].title}
                         </Link>
                 <Card.Body>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
-                    <h6>{this.props.student_job[i].companyName}- {this.props.student_job[i].city},{this.props.student_job[i].state}</h6>
+                    <h6>{this.props. student_jobs[i].companyName}- {this.props. student_jobs[i].city},{this.props. student_jobs[i].state}</h6>
                     </div>
                      <div>
                       <button style={{backgroundColor: "transparent",border: "none",  color: "green", fontSize: "20px"}}> <i class="far fa-heart"></i> </button>
@@ -104,7 +104,7 @@ class JobsTab extends Component {
                   </div>
                   <span style={{ float: 'right' }}>
                   <div>
-                     <p  style={{ color: "grey", fontSize: "10px"}}> {new Date()- this.props.student_job[i].posted_date} days ago </p>
+                     <p  style={{ color: "grey", fontSize: "10px"}}> {new Date()- this.props. student_jobs[i].posted_date} days ago </p>
                     </div>
                   </span>
                 </Card.Body>
@@ -149,11 +149,11 @@ class JobsTab extends Component {
 
 JobsTab.propTypes = {
   saveJobs: PropTypes.func.isRequired,
-  student_job: PropTypes.object.isRequired,
+  student_jobs: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  student_job: state.student_job.student_job,
+  student_jobs: state.student_jobs.student_jobs,
 });
 
 const mapDispatchToProps = (dispatch) => {

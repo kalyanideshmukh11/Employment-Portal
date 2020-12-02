@@ -11,11 +11,13 @@ class adminCompanyReport extends Component {
     constructor(props) {
         super(props); 
             this.state = {
+                selected: 0,
+                rejected: 0
             }
         }
 
         componentWillMount() {
-            axios.get(`${backendServer}glassdoor/jobs/${this.props.match.params.companyName}/fetchStatistics`)
+            axios.get(`${backendServer}glassdoor/jobs/${this.props.match.params.title}/fetchStatistics`)
             .then(res => {
                 let val = res.data.selectedCount
                 for( let i = 0; i < val.length; i++ ) {
@@ -60,15 +62,11 @@ return(
         <br />
         <h1> {this.props.match.params.companyName}'s report</h1>
         <Button> View demographics</Button>
-        <br />
-        <br />
-        <h5> Total number of jobs posted in past year: {this.state.totalJobs}</h5>
         <div>
         <div>
             <MDBContainer>
             <Pie data = {companyData.dataPie} />
             <p style={{fontWeight: "bold",fontSize: "30px", marginLeft: "60px",  padding: "0px"}}>Job statistics</p>
-            <p style={{fontWeight: "light",fontSize: "20px", marginLeft: "60px",  padding: "0px"}}>Total number of applicants: {this.state.applicantCount}</p>
             <p style={{fontWeight: "light",fontSize: "20px", marginLeft: "60px",  padding: "0px"}}>Selected applicants: {this.state.selected}</p>
             <p style={{fontWeight: "light",fontSize: "20px", marginLeft: "60px",  padding: "0px"}}>Rejected applicants: {this.state.rejected}</p>
             </MDBContainer>

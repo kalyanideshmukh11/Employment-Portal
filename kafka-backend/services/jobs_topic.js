@@ -81,18 +81,18 @@ async function getJobsStatistics(msg, callback) {
   console.log(start);
 
   
-  await Jobs.find({
-    companyName: msg.body,
-    // posted_date: {$elemMatch: { $lt: 11/29/2019 }},
-  }).count()
-  .then((data) =>
-    {
-      count.jobsCount = data
-    })
-  console.log(response);
+  // await Jobs.find({
+  //   _id: msg.body,
+  //   // posted_date: {$elemMatch: { $lt: 11/29/2019 }},
+  // }).count()
+  // .then((data) =>
+  //   {
+  //     count.jobsCount = data
+  //   })
+  // console.log(response);
 
   await Jobs.aggregate([
-    { $match: { companyName: msg.body } },
+    { $match: { title: 'Data Scientist, Analytics' } },
     { $unwind: '$applied_students' },
     { $unwind: { path: '$applied_students.application_status' } },
 
@@ -105,19 +105,13 @@ async function getJobsStatistics(msg, callback) {
   ])
   .then((data) =>
     {
+      console.log(data)
       count.selectedCount = data
     })
 
   await Jobs.aggregate([
-    {
-      $match: { companyName: 'Facebook' },
-    },
-    {
-      $group: {
-        _id: 'applied_students.$._id',
-        applicants: { $sum: 1 },
-      },
-    },
+    { $match: { title: 'Data Scientist, Analytics' } },
+    {$project: {_id: 0, count: {$size: '$applied_students'}}}
   ])
   .then((data) => {
     count.applicantCount = data[0].applicants
@@ -163,7 +157,7 @@ async function getApplicantId(msg, callback) {
   let response = {};
   console.log('In get applicant ID for admin details topic. Msg: ', msg);
   console.log(msg.body);
-  await Jobs.find({ companyName: msg.body }, 
+  await Jobs.find({ title: 'Data Scientist, Analytics' }, 
     {'applied_students.sql_student_id':1, _id: 0})
     .then((data) => {
       let applicantId = [];
@@ -172,15 +166,15 @@ async function getApplicantId(msg, callback) {
           val.sql_student_id)
       }
       console.log(applicantId)
-     //console.log(applied_students_id)
       response.status = 200;
-      response.data = data;
+      response.data = applicantId;
       return callback(null, response);
     })
     .catch((err) => {
       console.log(err);
     });
   }
+
 
 async function getExploreJobs(msg, callback) {
   let err = {};

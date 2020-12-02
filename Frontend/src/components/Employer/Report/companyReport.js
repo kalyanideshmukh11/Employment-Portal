@@ -1,10 +1,10 @@
-import Navigationbar from '../Student/Navbar/navbar_company';
+import Navigationbar from '../../Student/Navbar/navbar_company';
 import React, { Component } from 'react';
-//import {Button, MDBContainer} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import { MDBContainer } from "mdbreact";
 import { Pie } from "react-chartjs-2";
 import axios from 'axios';
-import backendServer from '../../webConfig';
+import backendServer from '../../../webConfig';
 
 class companyReport extends Component {
 
@@ -15,7 +15,7 @@ class companyReport extends Component {
         }
 
         componentWillMount() {
-            axios.get(`${backendServer}glassdoor/jobs/${localStorage.getItem("name")}/fetchStatistics`)
+            axios.get(`${backendServer}glassdoor/jobs/${this.props.match.params.title}/fetchStatistics`)
             .then(res => {
                 let val = res.data.selectedCount
                 for( let i = 0; i < val.length; i++ ) {
@@ -29,6 +29,11 @@ class companyReport extends Component {
                 this.setState({totalJobs: res.data.jobsCount}) 
                 this.setState({applicantCount: res.data.applicantCount})
             });
+
+            axios.get(`${backendServer}glassdoor/jobs/${this.props.match.params.companyName}/fetchApplicantId`)
+            .then(res => {
+                console.log(res.data)
+            })
         }
 
 
@@ -59,15 +64,12 @@ return(
     <div class='container'>
         <br />
         <h1> {localStorage.getItem("name")}'s report</h1>
-        <br />
-        <br />
-        <h5> Total number of jobs posted in past year: {this.state.totalJobs}</h5>
+        <Button href= '/company/demogrphics' > View Demographics</Button>
         <div>
         <div>
             <MDBContainer>
             <Pie data = {companyData.dataPie}   />
             <p style={{fontWeight: "light",fontSize: "40px", marginLeft: "60px",  padding: "0px"}}>Job statistics</p>
-            <p style={{fontWeight: "light",fontSize: "25px", marginLeft: "60px",  padding: "0px"}}>Total number of applicants: {this.state.applicantCount}</p>
             <p style={{fontWeight: "light",fontSize: "25px", marginLeft: "60px",  padding: "0px"}}>Selected applicants: {this.state.selected}</p>
             <p style={{fontWeight: "light",fontSize: "25px", marginLeft: "60px",  padding: "0px"}}>Rejected applicants: {this.state.rejected}</p>
             </MDBContainer>
