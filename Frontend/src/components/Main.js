@@ -27,21 +27,15 @@ import companyReport from './Employer/companyReport';
 import adminCompanyProfile from './Admin/companyProfile/adminCompany';
 import HomeTabs from './Student/Tabs/homeTabs';
 import SearchSalary from './Student/Search/search_salary';
-<<<<<<< HEAD
 import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
 import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
 import adminCompanyReport from './Admin/companyProfile/statistics';
 import adminDemographics from './Admin/companyProfile/demographics';
 import nonUserLanding from './nonUser/landingPage';
 import nonUserCompanyReview from './nonUser/nonUserReviews';
-=======
 import ApexChart from './Admin/Dashboard/mostReviewed';
-import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
-import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
-import adminCompanyProfile from './Admin/companyProfile/adminCompany';
 import CompanyOverview from './Student/CompanyOverview/companyOverview';
 import JobsTab from './Student/Jobs/jobsTab';
->>>>>>> d0c02848624390445cbae488d296449b8d4cac4b
 import JobDetails from './Student/Job/JobDetails';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
@@ -125,12 +119,7 @@ class Main extends Component {
           component={ReviewTab}
         />
         <Route exact path='/student/addreviews' component={AddReview} />
-<<<<<<< HEAD
-        <Route exact path='/student/salary' component={SalaryTab} />
         <Route exact path='/company/report' component={companyReport}/>
-        <Route exact path='/admin/companyProfile' component ={adminCompanyProfile} />
-        <Route exact path='/student/tabs' component={HomeTabs} />
-=======
         <Route
           exact
           path='/student/salary/:companyName'
@@ -149,29 +138,21 @@ class Main extends Component {
           path='/admin/companyProfile'
           component={adminCompanyProfile}
         />
->>>>>>> d0c02848624390445cbae488d296449b8d4cac4b
         <Route
           exact
           path='/admin/search/company/:keyword'
           component={searchAdminCompany}
         />
-<<<<<<< HEAD
-         <Route
-=======
         <Route
->>>>>>> d0c02848624390445cbae488d296449b8d4cac4b
           exact
           path='/admin/companyReview/:companyName'
           component={adminCompanyReview}
         />
-<<<<<<< HEAD
         <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
         <Route exact path='/admin/demographics/:companyName' component = {adminDemographics} />
         <Route exact path='/' component = {nonUserLanding} />
         <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
 
-=======
->>>>>>> d0c02848624390445cbae488d296449b8d4cac4b
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
       </div>
     );

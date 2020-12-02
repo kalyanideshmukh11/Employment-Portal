@@ -182,9 +182,7 @@ async function getApplicantId(msg, callback) {
     .catch((err) => {
       console.log(err);
     });
-
-
-
+  }
 
 async function getExploreJobs(msg, callback) {
   let err = {};
@@ -241,5 +239,4 @@ async function applyToJob(msg, callback) {
     err.data = 'Error in Data';
     return callback(err, null);
   }
-}
 }

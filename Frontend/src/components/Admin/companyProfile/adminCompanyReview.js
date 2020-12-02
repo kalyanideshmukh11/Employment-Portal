@@ -50,6 +50,7 @@ render() {
                     </div>
                 <br />
             </div>
+            </div>
             )
         })
     }
