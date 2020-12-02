@@ -12,6 +12,12 @@ module.exports.jobsService = function (msg, callback) {
       break;
     case 'searchJob':
       searchJobTitle(msg, callback);
+    case 'getExploreJobs':
+      getExploreJobs(msg, callback);
+      break;
+    case 'apply_job':
+      applyToJob(msg, callback);
+      break;
   }
 };
 
@@ -69,4 +75,61 @@ async function searchJobTitle(msg, callback) {
     .catch((err) => {
       console.log(err);
     });
+}
+
+async function getExploreJobs(msg, callback) {
+  let err = {};
+  let response = {};
+
+  console.log('In get job topic. Msg: ', msg);
+  console.log(msg.state);
+  await Jobs.find({state: msg.state}, (error, result) => {
+    if(error){
+      err.message = error
+      err.status = 500
+      return callback(null, error);
+    } else if (result){
+      response.status = 200
+      response.message = 'EXPLORE_JOBS'
+      response.data = (result)
+      return callback(null, response)
+    }
+  })
+}
+async function applyToJob(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In post APPLY TO JOB topic service. Msg: ', msg);
+
+  try {
+    await Jobs.findByIdAndUpdate(
+      { _id: msg.body.job_id },
+      {
+        $addToSet: {
+          applied_students: {
+            resume_file_name: msg.body.resume_file_name,
+            //cover_file: msg.body.cover_file,
+            cover_file_name: msg.body.cover_file_name,
+            sql_student_id: msg.body.sql_student_id,
+            application_status: msg.body.application_status,
+          },
+        },
+      }
+    )
+      .then((applyJob) => {
+        console.log(applyJob);
+        console.log('Applied to job');
+        response.status = 200;
+        response.message = 'APPLIED';
+        return callback(null, response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (error) {
+    console.log(error);
+    err.status = 500;
+    err.data = 'Error in Data';
+    return callback(err, null);
+  }
 }

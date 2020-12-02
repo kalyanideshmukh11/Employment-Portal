@@ -29,6 +29,7 @@ import ApexChart from './Admin/Dashboard/mostReviewed';
 import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
 import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
 import adminCompanyProfile from './Admin/companyProfile/adminCompany';
+import JobDetails from './Student/Job/JobDetails';
 
 class Main extends Component {
   render() {
@@ -116,6 +117,7 @@ class Main extends Component {
           path='/admin/companyReview/:companyName'
           component={adminCompanyReview}
         />
+        <Route exact path='/student/job/jobdetails' component={JobDetails} />
       </div>
     );
   }

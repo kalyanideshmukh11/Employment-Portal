@@ -37,7 +37,7 @@ var reviewSchema = new schema(
 featured:{ type: mongoose.Schema.Types.Boolean, default: false},
 favorite:{ type: mongoose.Schema.Types.Boolean, default: false}, 
 status:{ type: mongoose.Schema.Types.Boolean, default: true},  //default +ve (admin sholud mark? +ve -ve)
-approvedstatus:{type: mongoose.Schema.Types.Boolean, default: false},
+approvedstatus:{type: mongoose.Schema.Types.String, default: "Pending"},
 },
 
   {

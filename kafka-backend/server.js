@@ -1,14 +1,16 @@
 var connection = new require('./kafka/connection');
 
 // topic files
+var companyProfileTopic = require("./services/companyProfile_topic");
+var reviewTopic = require("./services/review_topic");
+var studentProfileTopic = require("./services/studentProfile_topic");
+var studentResumeTopic = require('./services/studentResume_topic');
 var companyProfileTopic = require('./services/companyProfile_topic');
 var reviewTopic = require('./services/review_topic');
 var jobsTopic = require('./services/jobs_topic');
 var searchTopic = require('./services/search_topic');
-var studentProfileTopic = require('./services/studentProfile_topic');
 var interviewTopic = require('./services/interview_topic');
 var salaryTopic = require('./services/salary_topic');
-var studentProfileTopic = require('./services/studentProfile_topic');
 
 const mongoose = require('mongoose');
 const { mongoDBURI } = require('./config/config');
@@ -51,6 +53,18 @@ function handleTopicRequest(topic_name, fname) {
           return;
         });
         break;
+      case "studentProfile_topic":
+        fname.studentProfileServices(data.data, function (err, res) {
+          response(data, res, producer)
+          return
+        });
+        break;
+      case "studentResume_topic":
+        fname.studentResumeServices(data.data, function (err, res) {
+          response(data, res, producer)
+          return
+        });
+          break;
       case 'jobs_topic':
         fname.jobsService(data.data, function (err, res) {
           response(data, res, producer);
@@ -71,12 +85,6 @@ function handleTopicRequest(topic_name, fname) {
         break;
       case 'salary_topic':
         fname.salaryService(data.data, function (err, res) {
-          response(data, res, producer);
-          return;
-        });
-        break;
-      case 'studentProfile_topic':
-        fname.studentProfileServices(data.data, function (err, res) {
           response(data, res, producer);
           return;
         });
@@ -109,10 +117,11 @@ function response(data, res, producer) {
 // first argument is topic name
 // second argument is a function that will handle this topic request
 
-handleTopicRequest('companyProfile_topic', companyProfileTopic);
-handleTopicRequest('review_topic', reviewTopic);
+handleTopicRequest("companyProfile_topic", companyProfileTopic);
+handleTopicRequest("review_topic", reviewTopic);
+handleTopicRequest("studentProfile_topic", studentProfileTopic)
+handleTopicRequest("studentResume_topic", studentResumeTopic)
 handleTopicRequest('jobs_topic', jobsTopic);
 handleTopicRequest('search_topic', searchTopic);
 handleTopicRequest('salary_topic', salaryTopic);
 handleTopicRequest('interview_topic', interviewTopic);
-handleTopicRequest('studentProfile_topic', studentProfileTopic);

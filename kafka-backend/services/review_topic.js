@@ -14,6 +14,9 @@ exports.reviewService = function (msg, callback) {
       updateFavFeatured(msg, callback);
       break;
 
+    case 'getStudentReviews':
+      getStudentReviews(msg, callback);
+
     case 'reviewsPerDay':
       ReviewsPerDay(msg, callback);
       break;
@@ -196,4 +199,22 @@ async function MostReviewed(msg, callback) {
       callback(null, final_output);
     }
   );
+}
+
+async function getStudentReviews(msg, callback) {
+  let err = {},
+    response = {};
+  console.log('get Student Interviews: ', msg);
+  await Review.find({ sql_student_id: msg.userId }, (result, error) => {
+    if (error) {
+      err.message = error;
+      err.status = 500;
+      return callback(null, error);
+    } else if (result) {
+      response.status = 200;
+      response.message = 'STUDENT_REVIEWS';
+      response.data = JSON.stringify(result);
+      return callback(null, response);
+    }
+  });
 }

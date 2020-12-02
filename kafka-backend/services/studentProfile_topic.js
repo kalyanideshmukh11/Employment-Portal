@@ -32,6 +32,34 @@ exports.studentProfileServices = function (msg, callback) {
     case "addStudentEducation":
       addStudentEducation(msg, callback);
       break;
+
+    case "addJobPreferences":
+      addJobPreferences(msg, callback);
+      break;
+
+    case "addCompanyPreferences":
+      addCompanyPreferences(msg, callback);
+      break;
+    
+    case "addDemographics":
+      addDemographics(msg, callback);
+      break;
+
+    case "getStudentDemographics":
+      getStudentDemographics(msg, callback);
+      break;
+
+    case "deleteDemographics":
+      deleteDemographics(msg, callback);
+      break;
+
+    case "addStudentProfilePicture":
+      addStudentProfilePicture(msg,callback);
+      break;
+
+    case "getStudentProfilePicture":
+      getStudentProfilePicture(msg, callback);
+      break;
   }
 };
 
@@ -48,7 +76,6 @@ async function getStudentHomedata(msg, callback){
           response.status = 200
           response.message = 'FETCH_STUDENT_LANDINGPAGE'
           response.data = result[0]
-          console.log("BASIC HOME", response.data)
           return callback(null, response)
         }
       });
@@ -257,5 +284,175 @@ async function addStudentEducation(msg, callback){
         })
       }
     })
+
+}
+
+async function addJobPreferences (msg, callback) {
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  await studentModel.findOneAndUpdate({sql_student_id: msg.userId}, 
+    {job_preferences: msg.data}, (error1, result1) => {
+      if (error1) {
+        error.message = error1
+        error.status = 500
+        return callback(null, error);
+      } else if(result1) {
+        response.status = 200
+        response.message = 'ABOUT_ME'
+        response.data = "CHANGES_SAVED"
+        return callback(null, response)
+      } else if (!error1 && !result1){
+        studentModel.create({sql_student_id: msg.userId, 
+        job_preferences: msg.data}, (error2, result2) => {
+          if (error2) {
+            error.message = error2
+            error.status = 500
+            return callback(null, error);
+          } else {
+            response.status = 200
+            response.message = 'ABOUT_ME'
+            response.data = "CHANGES_SAVED"
+            return callback(null, response)
+          }
+        })
+      }
+    })
+}
+
+async function addCompanyPreferences (msg, callback) {
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  await studentModel.findOneAndUpdate({sql_student_id: msg.userId}, 
+    {company_preferences: msg.data}, (error1, result1) => {
+      if (error1) {
+        error.message = error1
+        error.status = 500
+        return callback(null, error);
+      } else if(result1) {
+        response.status = 200
+        response.message = 'ABOUT_ME'
+        response.data = "CHANGES_SAVED"
+        return callback(null, response)
+      } else if (!error1 && !result1){
+        studentModel.create({sql_student_id: msg.userId, 
+          company_preferences: msg.data}, (error2, result2) => {
+          if (error2) {
+            error.message = error2
+            error.status = 500
+            return callback(null, error);
+          } else {
+            response.status = 200
+            response.message = 'ABOUT_ME'
+            response.data = "CHANGES_SAVED"
+            return callback(null, response)
+          }
+        })
+      }
+    })
+}
+
+async function addDemographics(msg, callback){
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  let sql = `Call addStudentProfile_demographics('${(msg.userId)}', '${(msg.data.race_ethnicity)}', '${(msg.data.gender_identity)}',
+  '${(msg.data.sexual_orientation)}', '${(msg.data.disabilities)}', '${(msg.data.care_giver)}', '${(msg.data.veteran_status)}');`
+  await sqlDB.query(sql, (err, result) => {
+      if (err) {
+        error.message = err
+        error.status = 500
+        return callback(null, error);
+      } else {
+        response.status = 200
+        response.message = 'EDIT_STUDENT_PROFILE'
+        response.data = result[0]
+        return callback(null, response)
+      }
+    });
+}
+
+async function getStudentDemographics(msg, callback){
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  let sql = `Call getStudentDemographics_data('${(msg.userId)}');`
+  await sqlDB.query(sql, (err, result) => {
+      if (err) {
+        error.message = err
+        error.status = 500
+        return callback(null, error);
+      } else{
+        response.status = 200
+        response.message = 'FETCH_STUDENT_DEMOGRAPHICS'
+        response.data = result[0]
+        return callback(null, response)
+      }
+    });
+}
+
+async function deleteDemographics(msg, callback){
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  let sql = `Call deleteDemographics_data('${(msg.userId)}');`
+  await sqlDB.query(sql, (err, result) => {
+      if (err) {
+        error.message = err
+        error.status = 500
+        return callback(null, error);
+      } else{
+        response.status = 200
+        response.message = 'DELETE_STUDENT_DEMOGRAPHICS'
+        response.data = result[0]
+        return callback(null, response)
+      }
+    });
+}
+
+async function addStudentProfilePicture (msg, callback) {
+  let error = {}, response = {}
+  console.log("IN STUDENT PROFILE TOPIC", msg)
+  await studentModel.findOneAndUpdate({sql_student_id: msg.userId}, 
+    {profile_picture: msg.data.file_name}, (error1, result1) => {
+      if (error1) {
+        error.message = error1
+        error.status = 500
+        return callback(null, error);
+      } else if(result1) {
+        response.status = 200
+        response.message = 'ABOUT_ME'
+        response.data = "CHANGES_SAVED"
+        return callback(null, response)
+      } else if (!error1 && !result1){
+        studentModel.create({sql_student_id: msg.userId, 
+          profile_picture: msg.data.file_name}, (error2, result2) => {
+          if (error2) {
+            error.message = error2
+            error.status = 500
+            return callback(null, error);
+          } else {
+            response.status = 200
+            response.message = 'ABOUT_ME'
+            response.data = "CHANGES_SAVED"
+            return callback(null, response)
+          }
+        })
+      }
+    })
+}
+
+async function getStudentProfilePicture(msg, callback) {
+  let err = {}, response = {};
+  console.log('get Student profile picture: ', msg);
+  await studentModel.find({sql_student_id: msg.userId}, (result, error) => {
+    if(error){
+      err.message = error
+      err.status = 500
+      return callback(null, error);
+    } else if(result){
+      response.status = 200
+      response.message = 'STUDENT_INTERVIEWS'
+      response.data = JSON.stringify(result)
+      return callback(null, response)
+    }
+  })
+
 
 }

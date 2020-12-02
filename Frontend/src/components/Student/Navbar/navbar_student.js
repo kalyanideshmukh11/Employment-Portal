@@ -66,10 +66,11 @@ class StudentNavbar extends Component {
   };
 
   handleLogout = () => {
-    localStorage.removeItem('sql_student_id');
-    localStorage.removeItem('first_name');
-    localStorage.removeItem('last_name');
-    localStorage.removeItem('type');
+    // localStorage.removeItem('sql_student_id');
+    // localStorage.removeItem('first_name');
+    // localStorage.removeItem('last_name');
+    // localStorage.removeItem('type');
+    localStorage.clear();
     this.setState({
       redirectVar: <Redirect to='/student/login' />,
     });
@@ -330,7 +331,12 @@ class StudentNavbar extends Component {
                   >
                     Discover Interviews
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={this.handleLogout}>
+                  <Dropdown.Item
+                    href='/student/interview/add'
+                    onClick={() => {
+                      localStorage.setItem('active-list', 'add_interview');
+                    }}
+                  >
                     Add an Interview
                   </Dropdown.Item>
                 </Dropdown.Menu>
