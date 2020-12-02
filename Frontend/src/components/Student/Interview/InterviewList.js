@@ -115,9 +115,9 @@ class InterviewList extends Component {
           neutral++;
         }
       }
-      data.push((positive * 100) / interviews.length);
-      data.push((neutral * 100) / interviews.length);
-      data.push((negative * 100) / interviews.length);
+      data.push(((positive * 100) / interviews.length).toFixed(2));
+      data.push(((neutral * 100) / interviews.length).toFixed(2));
+      data.push(((negative * 100) / interviews.length).toFixed(2));
     }
     return data;
   }
@@ -159,6 +159,7 @@ class InterviewList extends Component {
 
       let d = this.calculateExp(this.state.interviews);
       avgDifficulty = this.getDifficultyAverage(this.state.interviews);
+      avgDifficulty = avgDifficulty.toFixed(2);
       avgDifficultyColor = this.getDifficultyAverageColor(avgDifficulty);
       let l = [];
       if (d.length > 0) {

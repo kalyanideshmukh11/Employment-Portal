@@ -81,8 +81,28 @@ class HomeTabs extends Component {
     // TODO add image link
     // var imgSrc = `${backendServer}company/imageUpload/${fileName}`;
     let loadComponent = null;
+    let addButton = null;
     if (this.state && this.state.loadComponent) {
       loadComponent = this.state.loadComponent;
+      if (
+        this.props.location &&
+        this.props.location.category === 'interviews'
+      ) {
+        addButton = (
+          <Button
+            href='/student/interview/add'
+            style={{
+              float: 'right',
+              marginLeft: '470px',
+              backgroundColor: '#1861bf',
+              border: '#1861bf',
+            }}
+          >
+            {' '}
+            Add an Interview
+          </Button>
+        );
+      }
     }
     return (
       <React.Fragment>
@@ -205,6 +225,7 @@ class HomeTabs extends Component {
                   {' '}
                   Photos{' '}
                 </Button>
+                {addButton}
               </div>
             </div>
           </div>
