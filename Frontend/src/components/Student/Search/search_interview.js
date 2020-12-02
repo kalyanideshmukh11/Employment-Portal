@@ -97,8 +97,10 @@ class SearchCompany extends Component {
                     <Card.Title>
                       <Link
                         to={{
-                          pathname: `/student/interview/list`,
-                          state: value,
+                          pathname: '/student/tabs',
+                          companyName: value.name,
+                          companyID: value.id,
+                          category: 'interviews',
                         }}
                       >
                         {/*`/student/interview/list/${value.id}`*/}

@@ -5,6 +5,7 @@ import Comp from '../component';
 import CompanyOverview from '../CompanyOverview/companyOverview';
 import ReviewTab from '../Reviews/ReviewTab';
 import AddSalary from '../Salary/AddSalary';
+import Interview from '../Interview/InterviewList';
 
 class HomeTabs extends Component {
   constructor(props) {
@@ -39,6 +40,12 @@ class HomeTabs extends Component {
           ),
         };
       }
+    } else if (this.props.location.category === 'interviews') {
+      this.state = {
+        loadComponent: (
+          <Interview id={this.props.location.companyID}></Interview>
+        ),
+      };
     } else {
       this.state = {
         loadComponent: <Comp str='This is Overview'></Comp>,
@@ -49,6 +56,21 @@ class HomeTabs extends Component {
   componentWillReceiveProps(nextProp) {
     console.log('Received: ', nextProp);
   }
+
+  componentDidMount() {
+    if (
+      this.props.location.category &&
+      this.props.location.category === 'interviews'
+    ) {
+      this.setState({
+        loadComponent: (
+          <Interview id={this.props.location.companyID}></Interview>
+        ),
+      });
+    }
+    console.log('this.state');
+    console.log(this.state);
+  }
   loadComp(param) {
     console.log('Button clicked', param);
     this.setState({ loadComponent: param });
@@ -58,6 +80,10 @@ class HomeTabs extends Component {
   render() {
     // TODO add image link
     // var imgSrc = `${backendServer}company/imageUpload/${fileName}`;
+    let loadComponent = null;
+    if (this.state && this.state.loadComponent) {
+      loadComponent = this.state.loadComponent;
+    }
     return (
       <React.Fragment>
         <Navigationbar />
@@ -195,8 +221,7 @@ class HomeTabs extends Component {
             <hr />
           </div>
         </div>
-
-        {this.state.loadComponent}
+        {loadComponent}
       </React.Fragment>
     );
   }

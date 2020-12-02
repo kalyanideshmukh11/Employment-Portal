@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import StudentNavbar from '../Navbar/navbar_student';
-import CompanyOverviewTab from '../Tabs/homeTabs';
+//import CompanyOverviewTab from '../Tabs/homeTabs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare } from '@fortawesome/free-solid-svg-icons';
 import { Card, Col } from 'react-bootstrap';
@@ -25,9 +25,7 @@ class InterviewList extends Component {
 
   componentDidMount() {
     axios
-      .get(
-        `${backendServer}student/interview/get/${this.props.location.state.id}`
-      )
+      .get(`${backendServer}student/interview/get/${this.props.id}`)
       .then((response) => {
         if (response.data) {
           this.setState({
@@ -141,8 +139,10 @@ class InterviewList extends Component {
   }
 
   render() {
-    console.log('this.props.location.state');
-    console.log(this.props.location.state);
+    //console.log('this.props.location.state');
+    //console.log(this.props.location.state);
+    console.log('this.props');
+    console.log(this.props);
     let interviewTag = null;
     let data = [];
     let avgDifficulty = 0;
@@ -297,10 +297,8 @@ class InterviewList extends Component {
         position: 'right',
       },
     };
-
     return (
       <div>
-        <CompanyOverviewTab />
         <div style={{ margin: 'auto', width: '50%' }}>
           <Card style={{ width: '22cm' }}>
             <br />
