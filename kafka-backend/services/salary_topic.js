@@ -1,7 +1,7 @@
 'use strict';
 
 const Salary = require('../models/salary');
-
+const sqlDB = require('../config/sqlConfig');
 const redisClient = require('../config/redisConfig');
 const paginate = require('jw-paginate');
 
@@ -22,57 +22,89 @@ exports.salaryService = function (msg, callback) {
   }
 };
 
-async function insertSalaryDetails(msg, callback) {
-  let err = {};
-  let response = {};
-  console.log('In post salary  topic service. Msg: ', msg);
-  console.log(msg.body);
-  await Salary.create(msg.body)
-    .then((data) => {
-      response.status = 200;
-      response.message = 'Inserted Successfully';
-      response.data = data;
-      return callback(null, response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
 
 async function getSalaryDetails(msg, callback) {
   let err = {};
   let response = {};
-  console.log('In getSalaryDetails service. Msg: ', msg);
+  console.log("In getSalaryDetails service. Msg: ", msg);
   console.log(msg.body);
-
-  redisClient.get('allSalary', function (err, data) {
-    if (err) {
-      console.log('error');
-      response.status = 400;
-    }
-    // else if (data) {
-    //     console.log("fetching from redis cache");
-    //     console.log(data);
-    //     response.data = (JSON.parse(data));
-    //     console.log(response);
-    //     return callback( null, response)
-    // }
-    else {
-      console.log('fetching from mongoDb');
-      Salary.find({ company: msg.body }, function (err, doc) {
-        if (err || !doc) {
-          response.status = 400;
-        } else {
-          redisClient.setex('allSalary', 36000, JSON.stringify(doc));
-          response.status = 200;
-          response.data = doc;
-          //console.log(response)
-          return callback(null, response);
+  Salary.aggregate([
+    {
+      $match:{
+        'company':msg.body
+      }
+    },
+    {
+      $group:
+        {
+          _id: {job_title:"$job_title", company:"$company"},
+          base_salary: { $avg: "$base_salary" },
+          bonus: { $avg: "$bonus" },
         }
-      });
     }
+    
+  ]).then((user) => {
+    console.log(user);
+    console.log("average salary");
+    response.status = 200;
+    response.data = user;
+    return callback(null, response);
+  })
+  .catch((err) => {
+    console.log(err);
   });
 }
+
+
+async function insertSalaryDetails(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In add Interview topic service. Msg: ', msg);
+  let companyId = '';
+  let sql = `Call get_sqlCompanyId('${msg.body.company}');`;
+  try {
+    sqlDB.query(sql, async (err, result) => {
+      if (err) {
+        error.message = err;
+        error.status = 500;
+        return callback(null, error);
+      } else {
+        companyId = result[0][0].id;
+
+        let iObj = new Salary({
+          sql_company_id: companyId,
+          sql_student_id: msg.body.sql_student_id,
+          base_salary: msg.body.base_salary,
+          currancy: msg.body.currancy,
+          bonus: msg.body.bonus,
+          job_title: msg.body.job_title,
+          year_of_experience: msg.body.year_of_experience,
+          location: msg.body.location,
+          company: msg.body.company,    
+        });
+        console.log(iObj);
+        let newSalary = await iObj.save();
+        if (!newSalary) {
+          response.status = 500;
+          response.data = 'Data error';
+          response.message = 'Data error';
+          return callback(null, response);
+        } else {
+          response.status = 200;
+          response.message = 'Inserted Successfully';
+          response.data = JSON.stringify(newSalary);
+          return callback(null, response);
+        }
+      }
+      });
+    }catch (error) {
+  console.log(error);
+  err.status = 500;
+  err.data = 'Error in Data';
+  return callback(err, null);
+  }
+}
+
 
 async function searchBySalary(msg, callback) {
   console.log('In search by salary for a company: ');

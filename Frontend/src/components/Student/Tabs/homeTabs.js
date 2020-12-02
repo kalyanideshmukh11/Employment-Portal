@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { CardImg, Button } from 'react-bootstrap';
 import Comp from '../component';
 
+// import axios from 'axios';
+// import backendServer from '../../webConfig';
 class HomeTabs extends Component {
   constructor(props) {
     super(props);
@@ -135,6 +137,7 @@ class HomeTabs extends Component {
                   Interviews{' '}
                 </Button>
                 <Button
+                  href='/student/salary/Google'
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',

@@ -9,30 +9,31 @@ import "react-bootstrap/ModalHeader";
 import axios from 'axios';
 import backendServer from '../../../webConfig';
 import { SalaryList } from './SalaryList';
+import { useParams} from 'react-router-dom';
+import HomeTabs from '../Tabs/homeTabs';
 class AddSalary extends Component {
   constructor(props) {
     super(props);
     this.state = {show:false};
     this.changeHandler = this.changeHandler.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   
   }
-
   componentDidMount() {
-   const data=  this.getSalary();
-    console.log(data)
+   this.getSalary();  
+   console.log(this.props.match.params.companyName);
   }
 getSalary=() =>{
   console.log("running")
-  axios.get(`${backendServer}student/salary/Facebook`)
+ 
+  axios.get(`${backendServer}student/salary/${this.props.match.params.companyName}`)
         .then(res => {
-          //console.log(res)
+          console.log(res)
             if(res.status === 200){
                 if(res.data){
                   this.props.getSalaryDetails(res.data)
-                   console.log(this.props.salary)
-                    //this.props.saveEvents(res.data);
+                   //console.log(this.props.salary.salary[0]._id.job_title)
+                   
                 }
             }
         })
@@ -52,36 +53,36 @@ getSalary=() =>{
     });
   };
 
-  handleCheckboxChange(e) {
-    this.setState({ workType: e.target.value });
-  }
+
 
   handleSubmit(e) {
     e.preventDefault();
     const salaryData = {
-      sql_student_id: localStorage.getItem("sql_student_id"),
       company: this.state.company,
       base_salary: this.state.base_salary,
-      currency: this.state.currency,
+      currancy: this.state.currancy,
       bonus: this.state.bonus,
       job_title: this.state.job_title,
       year_of_experience: this.state.year_of_experience,
       location: this.state.location,
+      sql_student_id: localStorage.getItem('sql_student_id'),
     };
     console.log(salaryData);
     this.props.insertNewSalaryDetails(salaryData);
+    console.log(this.props.status);
     if(this.props.status === "Inserted Successfully"){
-      this.hideModal()
+        this.hideModal()
     }
+    
   }
-   
+
  
    
   render() {
     return (
-        <Container className="mt-5 mb-5">                                           
-                    <Row>
-        <Navbar />             
+      <React.Fragment>
+      <HomeTabs />
+        <Row>           
         <Col sm={8} md={8} lg={8}>
               <h4 style={{ color: '#3BB143', float: 'left' }}>Salary range of all the job title</h4>
               <br />
@@ -91,7 +92,7 @@ getSalary=() =>{
                 </div>
                 </React.Fragment>
               </Col>
-<Col sm={4} md={4} lg={4}>
+          <Col sm={4} md={4} lg={4}>
         <Modal show={this.state.show} handleClose={this.hideModal}>
         <Modal.Header closeButton onClick={this.hideModal}>
           <Modal.Title>Add a Salary</Modal.Title>
@@ -113,7 +114,7 @@ getSalary=() =>{
                 </Form.Group>
                 <Form.Group> 
                   <Form.Label>
-                   Currency*
+                   Currancy*
                   </Form.Label>
                   <Form.Control
                     required={true}
@@ -184,9 +185,9 @@ getSalary=() =>{
         </Modal>
 
         <Button variant="primary"onClick={this.showModal}>+ Add Salary</Button>
-                </Col>
-                </Row>
-</Container>
+         </Col>
+         </Row>
+        </React.Fragment> 
 
     );
   }
@@ -201,7 +202,6 @@ AddSalary.propTypes = {
 
 const mapStateToProps = (state) => ({
   salary: state.salary,
-  status: state.salary.status
 });
 const mapDispatchToProps = (dispatch) => {
   return {
