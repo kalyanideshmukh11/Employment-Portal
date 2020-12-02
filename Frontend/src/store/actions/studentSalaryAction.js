@@ -21,19 +21,3 @@ export const getSalaryDetails = (payload) => {
   return { type: GET_SALARY, payload}
 };
 
-// export const getSalaryDetails = () => (dispatch) => {
-//   axios
-//     .get(`${backendServer}/glassdoor/company/salary/Facebook`)
-//     .then((response) =>
-//       dispatch({
-//         type: GET_SALARY,
-//         payload: response.data,
-       
-//       }),
-//       //console.log(payload)
-//       console.log(`${backendServer}/glassdoor/company/salary/Facebook`)
-//     )
-//     .catch((error) => {
-//       console.log(error);
-//     });
-// };

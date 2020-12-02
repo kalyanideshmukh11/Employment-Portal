@@ -38,6 +38,8 @@ render() {
             return (
             <div>
                     <div class='card bg-light p-3'>
+                <hr />
+                    <div class='container'>
                     <h4> "{rev.headline}" </h4>
                     <p style={{marginLeft: "10px"}}>{rev.rating}.0 {this.createElements(rev.rating)}</p>
                     <p style={{marginLeft: "10px"}}> {rev.description}</p>

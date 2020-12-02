@@ -84,12 +84,15 @@ class LoginNavbar extends Component {
         this.setState({
           redirect: <Redirect to='/student/home' />,
         });
-      }
-      if (localStorage.getItem('type') === 'company') {
+      } else if (localStorage.getItem('type') === 'company') {
         localStorage.setItem('sql_company_id', decoded.id);
         localStorage.setItem('name', decoded.name);
         this.setState({
           redirect: <Redirect to='/company/home' />,
+        });
+      } else if (localStorage.getItem('type') === 'admin') {
+        this.setState({
+          redirect: <Redirect to='/admin/home' />,
         });
       }
     }
