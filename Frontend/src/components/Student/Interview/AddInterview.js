@@ -30,7 +30,7 @@ class AddInterview extends Component {
         { value: 'Very Easy', key: 1 },
         { value: 'Easy', key: 2 },
         { value: 'Average', key: 3 },
-        { value: 'Difficult', key: 4 },
+        { value: 'Difficult', key: 5 },
       ],
       offer_option: [
         { value: 'No', key: 1 },

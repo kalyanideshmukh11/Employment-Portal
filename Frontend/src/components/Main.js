@@ -35,6 +35,8 @@ import CompanyOverview from './Student/CompanyOverview/companyOverview';
 import JobsTab from './Student/Jobs/jobsTab';
 import JobDetails from './Student/Job/JobDetails';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
+import InterviewList from './Student/Interview/InterviewList';
+import InterviewAnswers from './Student/Interview/InterviewAnswers';
 
 class Main extends Component {
   render() {
@@ -92,6 +94,12 @@ class Main extends Component {
         />
         <Route exact path='/company/reviews' component={companyReviews} />
         <Route exact path='/student/interview/add' component={AddInterview} />
+        <Route exact path='/student/interview/list' component={InterviewList} />
+        <Route
+          exact
+          path='/student/interview/answers'
+          component={InterviewAnswers}
+        />
         <Route
           exact
           path='/student/search/job/:keyword'
