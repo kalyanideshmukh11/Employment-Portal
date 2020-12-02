@@ -33,7 +33,7 @@ router.get('/:companyName', (req, res) => {
   kafka.make_request(
     'jobs_topic',
     {
-      path: 'getAllCompanyJobs',
+      path: 'getAllJobs',
       body: req.params.companyName,
     },
     function (err, results) {

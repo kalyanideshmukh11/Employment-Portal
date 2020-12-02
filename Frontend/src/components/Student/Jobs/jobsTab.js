@@ -12,10 +12,16 @@ class JobsTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        showModal: false,
+        
         inputValue:'',
+        offset: 0,
+        job_items: [],
+        perPage: 4,
+        currentPage: 0,
+        loading: true
       };
-
+      this.jobItems = this.jobItems.bind(this);
+      this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +36,35 @@ class JobsTab extends Component {
           })
       
   };
+  getJobs=()=> {
+    setTimeout(() => {
+        axios.get(`${backendServer}student/exploreJobs/${this.state.studentHome_data.state}`, 
+        {headers: { Authorization: `${localStorage.getItem("token")}` }
+        })
+        .then(response => {
+            const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.state.job_items = []
+            this.setState({
+                job_items: this.state.job_items.concat(slice),
+                pageCount: Math.ceil(response.data.length / this.state.perPage),
+                loading: false
+            });
+        })
+    }, 800)
+}
+  handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    console.log(selectedPage)
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState({
+        currentPage: selectedPage,
+        offset: offset
+    }, () => {
+        this.getJobs()
+    });
+
+};
   searchChangeHandler=(e) =>{
     console.log("onchange search", e.target.value)
     this.setState({

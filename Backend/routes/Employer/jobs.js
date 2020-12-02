@@ -30,7 +30,7 @@ router.get('/:companyname/fetchjobs', (req, res) => {
   console.log('In company profile jobs route');
   kafka.make_request(
     'jobs_topic',
-    { path: 'getAllCompanyJobs', body: req.params.companyname },
+    { path: 'getAllJobs', body: req.params.companyname },
     function (err, results) {
       if (err) {
         console.log('Inside err');
