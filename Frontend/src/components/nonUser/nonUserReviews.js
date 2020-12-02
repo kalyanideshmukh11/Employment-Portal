@@ -1,9 +1,10 @@
-import Navigationbar from '../../Student/Navbar/navbar_admin';
+import Navigationbar from '../Student/Navbar/navbar_login';
 import React, { Component } from 'react';
 import axios from 'axios';
-import backendServer from '../../../webConfig';
+import backendServer from '../../webConfig';
+import { Link } from 'react-router-dom';
 
-class adminCompanyReview extends Component {
+class nonUserCompanyReview extends Component {
 
     constructor(props) {
         super(props); 
@@ -34,30 +35,34 @@ render() {
     console.log(this.state.reviews)
     let renderReviews;
     if (this.state.reviews) {
-        renderReviews = this.state.reviews.map( rev => {
+        renderReviews = this.state.reviews.slice(0,5).map(rev => {
             return (
-            <div>
+                <div>
                     <div class='card bg-light p-3'>
-                    <h4> "{rev.headline}" </h4>
+                    <h5> "{rev.headline}" </h5>
                     <p style={{marginLeft: "10px"}}>{rev.rating}.0 {this.createElements(rev.rating)}</p>
                     <p style={{marginLeft: "10px"}}> {rev.description}</p>
                     <p style={{fontWeight: "bold", marginLeft: "10px",  padding: "0px"}}>Pros</p>
-                    <p style={{marginLeft: "10px"}}>{rev.pros}</p>
+                    <p style={{marginLeft: "10px"}}>  {rev.pros}</p>
                     <p style={{fontWeight: "bold", marginLeft: "10px"}}>Cons</p>
-                    <p style={{marginLeft: "10px"}}>{rev.cons}</p>
+                    <p style={{marginLeft: "10px"}}>  {rev.cons}</p>
                     </div>
-                <br />
-            </div>
+                    <br /> 
+                </div>     
             )
         })
     }
 return(
     <React.Fragment>
     <Navigationbar />
-    <div class='container'>
-        <h1> {this.props.match.params.companyName} Reviews</h1>
+        <div class='container'>
+        <h3> {this.props.match.params.companyName} Reviews</h3>
+        <br />
     {renderReviews}
     </div>
+    <center>
+    <Link to={`/signup`}>View more</Link>
+    </center>
     </React.Fragment>
 
 )}
@@ -65,4 +70,4 @@ return(
 
 
 
-export default adminCompanyReview;
+export default nonUserCompanyReview;

@@ -61,4 +61,24 @@ router.get('/:companyName/fetchStatistics', (req, res) => {
     },
   );
 });
+
+router.post('/reply', (req, res) => {
+  console.log(req.params)
+  kafka.make_request("companyProfile_topic", { "path": "addReviewReply", "id": req.body._id, "body": req.body.message}, function (err, results) {
+  console.log(results);
+  console.log("In make request call back", results);
+  if (err) {
+    console.log("Inside err");
+    console.log(err);
+    return res.status(err.status).send(err.message);
+  } else {
+    //console.log("Inside else", results);
+    if (results.status === 200) {
+      return res.send(results.message);
+    } else {
+      return res.status(results.status).send(results.errors);
+    }
+  }
+})
+})
 module.exports = router;

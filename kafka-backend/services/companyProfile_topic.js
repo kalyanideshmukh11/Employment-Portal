@@ -19,6 +19,10 @@ exports.companyProfileService = function (msg, callback) {
     case "getAllCompanies":
       getAllCompanies(msg,callback);
       break;
+
+    case "addReviewReply":
+      addReviewReply(msg, callback);
+      break;
   }
 };
 
@@ -113,4 +117,26 @@ async function getAllCompanies(msg, callback) {
       })
 }
 
+async function addReviewReply(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log("In reply to a review topic service. Msg: ", msg);
+  console.log(msg.body)
 
+  await Review.findOneAndUpdate(
+      {_id: msg.id},
+      {reply: msg.body},
+      { safe: true, new: true, useFindAndModify: false }) 
+      .then(review => {
+              response.status = 200;
+              response.data = review;
+              response.message = "REPLY_POSTED" ;
+              console.log(review);
+              // console.log("Returning error");
+              return callback(null, response);
+          })
+      .catch(err => {
+              console.log(err)
+      });
+           
+}

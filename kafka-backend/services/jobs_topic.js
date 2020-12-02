@@ -15,11 +15,18 @@ module.exports.jobsService = function (msg, callback) {
     case 'getJobsStatistics':
       getJobsStatistics(msg, callback);
       break;
+
     case 'getAllJobs':
       getAllCompanyJobs(msg, callback);
       break;
+
     case 'searchJob':
       searchJobTitle(msg, callback);
+      break;
+    
+    case 'getApplicantId':
+      getApplicantId(msg, callback);
+      break;
   }
 };
 
@@ -79,7 +86,7 @@ async function getJobsStatistics(msg, callback) {
   console.log(response);
 
   await Jobs.aggregate([
-    { $match: { companyName: 'Facebook' } },
+    { $match: { companyName: msg.body } },
     { $unwind: '$applied_students' },
     { $unwind: { path: '$applied_students.application_status' } },
 
@@ -137,6 +144,26 @@ async function searchJobTitle(msg, callback) {
       const pager = paginate(items.length, page, 2);
       const pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
       response.data = { pager: pager, items: pageOfItems };
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+
+async function getApplicantId(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In get applicant ID for admin details topic. Msg: ', msg);
+  console.log(msg.body);
+  await Jobs.find({ companyName: msg.body }, 
+    {'applied_students.sql_student_id':1, _id: 0})
+    .then((data) => {
+      console.log(data[0])
+     //console.log(applied_students_id)
+      response.status = 200;
+      response.data = data;
       return callback(null, response);
     })
     .catch((err) => {

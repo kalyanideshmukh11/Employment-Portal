@@ -29,12 +29,16 @@ import HomeTabs from './Student/Tabs/homeTabs';
 import SearchSalary from './Student/Search/search_salary';
 import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
 import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
+import adminCompanyReport from './Admin/companyProfile/statistics';
+import adminDemographics from './Admin/companyProfile/demographics';
+import nonUserLanding from './nonUser/landingPage';
+import nonUserCompanyReview from './nonUser/nonUserReviews';
 
 class Main extends Component {
   render() {
     return (
       <div>
-        <Route exact path='/' component={Login} />
+        <Route exact path='/signup' component={Login} />
         <Route exact path='/student/home' component={StudentHome} />
         <Route exact path='/student/profile' component={StudentProfile} />
         <Route exact path='/student/resume' component={StudentResume} />
@@ -112,6 +116,10 @@ class Main extends Component {
           path='/admin/companyReview/:companyName'
           component={adminCompanyReview}
         />
+        <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
+        <Route exact path='/admin/demographics/:companyName' component = {adminDemographics} />
+        <Route exact path='/' component = {nonUserLanding} />
+        <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
 
       </div>
     );

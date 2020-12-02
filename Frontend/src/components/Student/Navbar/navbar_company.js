@@ -41,7 +41,7 @@ class StudentNavbar extends Component {
     return (
       <div>
         <Navbar bg='light' expand='lg'>
-          <Navbar.Brand href='/student/home'>
+          <Navbar.Brand href='/company/home'>
             <Image src={glassdorNavIco} style={{ width: '200px' }} />
           </Navbar.Brand>
           <Form inline>

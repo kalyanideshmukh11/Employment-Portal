@@ -41,6 +41,7 @@ async function companyReviews(msg, callback) {
         if (err || !doc) {
           response.status = 400;
         } else {
+          console.log(doc)
           //redisClient.setex("allReviews", 36000, JSON.stringify(doc));
           response.status = 200;
           response.data = doc;
