@@ -1,11 +1,11 @@
-import Navbar from '../../Student/Navbar/navbar_admin';
+import Navbar from '../Student/Navbar/navbar_login';
 import React, { Component } from 'react';
 import axios from 'axios';
-import backendServer from '../../../webConfig';
-import { Card, Button} from 'react-bootstrap';
+import backendServer from '../../webConfig';
+import { Card} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-class adminCompany extends Component {
+class nonUserLanding extends Component {
     constructor(props) {
         super(props); 
             this.state = {
@@ -26,7 +26,7 @@ class adminCompany extends Component {
         render() {
             let renderCompanyList;
             if (this.state.companyList){
-            renderCompanyList = this.state.companyList.map(company => {
+            renderCompanyList = this.state.companyList.slice(0,5).map(company => {
                 let rating = this.state.companyRating;
                 var averageRating;
                 for(let i =0; i<rating.length; i++) {
@@ -35,9 +35,9 @@ class adminCompany extends Component {
                     }
                 }
                 return (
-                        <div class='container'>
-                            <br />
-                            <div class='card bg-light p-3' style={{width: "60rem", paddingLeft: "10%"}} >
+                    <div class='container'>
+                        <br />
+                        <div class='card bg-light p-3' style={{width: "60rem", paddingLeft: "10%"}} >
                         <Card>
                             <div class="continer">
                         <Card.Body>
@@ -51,11 +51,9 @@ class adminCompany extends Component {
                   </div>
                   <div class='col-md-5'>
                     <Card.Title>
-                      <Link to={`/admin/companyReview/${company.name}`}>
                         <h4 className='ml-3' style={{ color: 'green' }}>
                           <b>{company.name}</b>
                         </h4>
-                      </Link>
 
                       <h6 className='ml-3'>
                         {<span>{averageRating} </span>}
@@ -83,14 +81,14 @@ class adminCompany extends Component {
                         </span>
                       )}
                     </h4>
-                    <Link to={`/admin/statistics/${company.name}`}>View Statictics</Link>
+                    <Link to={`/reviews/${company.name}`}>Reviews</Link>
                   </div>
                 </div>
               </Card.Body>
               </div>
               </Card>
-              </div>
-              </div>
+            </div>
+            </div>
                 )
             })
         }
@@ -98,11 +96,10 @@ class adminCompany extends Component {
             return(
                 <React.Fragment>
                     <Navbar/>
-                    <br />
                     {renderCompanyList}
                 </React.Fragment>
             )
         }
 }
 
-export default adminCompany;
+export default nonUserLanding;

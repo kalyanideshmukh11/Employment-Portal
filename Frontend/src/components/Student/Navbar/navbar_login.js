@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import {
   Navbar,
   Nav,
-  NavDropdown,
-  Form,
-  FormControl,
   Button,
   Image,
   DropdownButton,
