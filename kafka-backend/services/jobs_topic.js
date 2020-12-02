@@ -76,7 +76,7 @@ async function getJobsStatistics(msg, callback) {
 
   
   await Jobs.find({
-    companyName: 'Facebook',
+    companyName: msg.body,
     // posted_date: {$elemMatch: { $lt: 11/29/2019 }},
   }).count()
   .then((data) =>

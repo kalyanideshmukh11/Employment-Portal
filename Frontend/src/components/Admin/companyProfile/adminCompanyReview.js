@@ -55,7 +55,8 @@ return(
     <React.Fragment>
     <Navigationbar />
     <div class='container'>
-        <h1> {this.props.match.params.companyName} Reviews</h1>
+        <h3 style={{paddingTop: "2%"}}> {this.props.match.params.companyName} Reviews</h3>
+        <br />
     {renderReviews}
     </div>
     </React.Fragment>

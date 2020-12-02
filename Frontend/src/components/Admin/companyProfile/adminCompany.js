@@ -37,6 +37,7 @@ class adminCompany extends Component {
                 return (
                         <div class='container'>
                             <br />
+                            <div class='card bg-light p-3' style={{width: "60rem", paddingLeft: "10%"}} >
                         <Card>
                             <div class="continer">
                         <Card.Body>
@@ -88,9 +89,8 @@ class adminCompany extends Component {
               </Card.Body>
               </div>
               </Card>
-                        <br/>
-                        <br />
-                        </div>
+              </div>
+              </div>
                 )
             })
         }
