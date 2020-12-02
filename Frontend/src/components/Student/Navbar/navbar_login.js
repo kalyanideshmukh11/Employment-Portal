@@ -1,30 +1,33 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Navbar,
   Nav,
   Button,
   Image,
-} from "react-bootstrap";
-import glassdorNavIco from "../images/glassdoor-logotype-rgb.png";
-import { Redirect } from "react-router";
-import ReactModalLogin from "react-modal-login";
-import axios from "axios";
-import backendServer from "../../../webConfig";
-import jwt_decode from "jwt-decode";
+  DropdownButton,
+  Dropdown,
+  InputGroup,
+} from 'react-bootstrap';
+import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
+import { Redirect } from 'react-router';
+import ReactModalLogin from 'react-modal-login';
+import axios from 'axios';
+import backendServer from '../../../webConfig';
+import jwt_decode from 'jwt-decode';
 
 class LoginNavbar extends Component {
   constructor(props, context) {
     super(props);
     this.state = {
       authFlag: false,
-      err: "",
+      err: '',
       loading: false,
       error: null,
       showModal: false,
       loggedIn: null,
       initialTab: null,
       redirect: null,
-      token: "",
+      token: '',
     };
     this.openModal = this.openModal.bind(this);
   }
@@ -33,8 +36,8 @@ class LoginNavbar extends Component {
     // console.log('email: ' + document.querySelector('#email').value);
     // console.log('password: ' + document.querySelector('#password').value);
 
-    const email = document.querySelector("#email").value;
-    const password = document.querySelector("#password").value;
+    const email = document.querySelector('#email').value;
+    const password = document.querySelector('#password').value;
 
     if (!email || !password) {
       this.setState({
@@ -57,34 +60,34 @@ class LoginNavbar extends Component {
           if (response.status === 200) {
             this.onLoginSuccess(response.data);
           } else {
-            this.onLoginFail("form");
+            this.onLoginFail('form');
           }
         })
         .catch((err) => {
           console.log(err);
-          this.onLoginFail("form");
+          this.onLoginFail('form');
         });
     }
   }
 
   onLoginSuccess(method, response) {
     if (this.state.token.length > 0) {
-      localStorage.setItem("token", this.state.token);
+      localStorage.setItem('token', this.state.token);
 
-      var decoded = jwt_decode(this.state.token.split(" ")[1]);
-      localStorage.setItem("type", decoded.type);
-      console.log("Localstorage data", decoded.type + decoded.id);
-      if (localStorage.getItem("type") === "student") {
-        localStorage.setItem("sql_student_id", decoded.id);
-        localStorage.setItem("first_name", decoded.first_name);
-        localStorage.setItem("last_name", decoded.last_name);
+      var decoded = jwt_decode(this.state.token.split(' ')[1]);
+      localStorage.setItem('type', decoded.type);
+      console.log('Localstorage data', decoded.type + decoded.id);
+      if (localStorage.getItem('type') === 'student') {
+        localStorage.setItem('sql_student_id', decoded.id);
+        localStorage.setItem('first_name', decoded.first_name);
+        localStorage.setItem('last_name', decoded.last_name);
         this.setState({
           redirect: <Redirect to='/student/home' />,
         });
       }
-      if (localStorage.getItem("type") === "company") {
-        localStorage.setItem("sql_company_id", decoded.id);
-        localStorage.setItem("name", decoded.name);
+      if (localStorage.getItem('type') === 'company') {
+        localStorage.setItem('sql_company_id', decoded.id);
+        localStorage.setItem('name', decoded.name);
         this.setState({
           redirect: <Redirect to='/company/home' />,
         });
@@ -107,7 +110,7 @@ class LoginNavbar extends Component {
   }
 
   onLoginFail(method, response) {
-    console.log("logging failed with " + method);
+    console.log('logging failed with ' + method);
     this.setState({
       error: true,
     });
@@ -143,7 +146,7 @@ class LoginNavbar extends Component {
         {redirectVar}
         <Navbar bg='transparent' expand='lg'>
           <Navbar.Brand href='/student/home'>
-            <Image src={glassdorNavIco} style={{ width: "200px" }} />
+            <Image src={glassdorNavIco} style={{ width: '200px' }} />
           </Navbar.Brand>
           <Nav className='ml-auto'>
             <Button onClick={() => this.openModal()} variant='success'>
@@ -160,7 +163,7 @@ class LoginNavbar extends Component {
               afterChange: this.afterTabsChange.bind(this),
             }}
             loginError={{
-              label: "Invalid username or password",
+              label: 'Invalid username or password',
             }}
             registerError={{
               label: "Couldn't sign up, please try again.",
@@ -170,26 +173,26 @@ class LoginNavbar extends Component {
             form={{
               onLogin: this.onLogin.bind(this),
               loginBtn: {
-                label: "Sign in",
+                label: 'Sign in',
               },
               loginInputs: [
                 {
-                  containerClass: "RML-form-group",
-                  label: "Email",
-                  type: "email",
-                  inputClass: "RML-form-control",
-                  id: "email",
-                  name: "email",
-                  placeholder: "Email",
+                  containerClass: 'RML-form-group',
+                  label: 'Email',
+                  type: 'email',
+                  inputClass: 'RML-form-control',
+                  id: 'email',
+                  name: 'email',
+                  placeholder: 'Email',
                 },
                 {
-                  containerClass: "RML-form-group",
-                  label: "Password",
-                  type: "password",
-                  inputClass: "RML-form-control",
-                  id: "password",
-                  name: "password",
-                  placeholder: "Password",
+                  containerClass: 'RML-form-group',
+                  label: 'Password',
+                  type: 'password',
+                  inputClass: 'RML-form-control',
+                  id: 'password',
+                  name: 'password',
+                  placeholder: 'Password',
                 },
               ],
             }}

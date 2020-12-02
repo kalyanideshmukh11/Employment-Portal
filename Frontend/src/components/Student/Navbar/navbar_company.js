@@ -29,7 +29,9 @@ class StudentNavbar extends Component {
     this.setState({ isOpen: false });
   };
 
-  handleLogout = () => {};
+  handleLogout = () => {
+    localStorage.clear();
+  };
 
   SearchType = (e) => {
     this.setState({

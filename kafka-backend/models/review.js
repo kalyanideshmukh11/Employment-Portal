@@ -21,10 +21,10 @@ var reviewSchema = new schema(
   reply: {type: mongoose.Schema.Types.String, required: true},
   student:{type: mongoose.Schema.Types.String, required: true},
   date: { type: mongoose.Schema.Types.Date, default: Date.now() },
-  featured:{ type: mongoose.Schema.Types.Boolean, default: false},
-  favorite:{ type: mongoose.Schema.Types.Boolean, default: false}, 
-  status:{ type: mongoose.Schema.Types.Boolean, default: true},  //default +ve (admin sholud mark? +ve -ve)
-  approvedstatus:{type: mongoose.Schema.Types.Boolean, default: false},
+featured:{ type: mongoose.Schema.Types.Boolean, default: false},
+favorite:{ type: mongoose.Schema.Types.Boolean, default: false}, 
+status:{ type: mongoose.Schema.Types.Boolean, default: true},  //default +ve (admin sholud mark? +ve -ve)
+approvedstatus:{type: mongoose.Schema.Types.String, default: "Pending"},
 },
 
   {

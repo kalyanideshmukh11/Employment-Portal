@@ -33,6 +33,7 @@ import adminCompanyReport from './Admin/companyProfile/statistics';
 import adminDemographics from './Admin/companyProfile/demographics';
 import nonUserLanding from './nonUser/landingPage';
 import nonUserCompanyReview from './nonUser/nonUserReviews';
+import JobDetails from './Student/Job/JobDetails';
 
 class Main extends Component {
   render() {
@@ -121,6 +122,7 @@ class Main extends Component {
         <Route exact path='/' component = {nonUserLanding} />
         <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
 
+        <Route exact path='/student/job/jobdetails' component={JobDetails} />
       </div>
     );
   }

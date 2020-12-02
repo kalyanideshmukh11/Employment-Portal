@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 var interviewSchema = new schema(
@@ -11,10 +11,13 @@ var interviewSchema = new schema(
     description: { type: String, required: true },
     difficulty: { type: Number, required: true },
     offer_status: { type: String, required: true },
+    interview_date: { type: Date, required: true },
     interview_q_a: [
       {
         question: { type: String, required: true },
-        answers: [{ answer: { type: String }, student_id: { type: String } }],
+        answers: [
+          { answer: { type: String }, sql_student_id: { type: String } },
+        ],
       },
     ],
   },
@@ -23,6 +26,6 @@ var interviewSchema = new schema(
   }
 );
 
-var Interview = mongoose.model("Interview", interviewSchema);
+var Interview = mongoose.model('Interview', interviewSchema);
 
 module.exports = Interview;

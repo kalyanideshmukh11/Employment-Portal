@@ -17,6 +17,8 @@ exports.salaryService = function (msg, callback) {
     case 'searchBySalary':
       searchBySalary(msg, callback);
       break;
+    case 'getStudentSalaries':
+      getStudentSalaries(msg, callback);
   }
 };
 
@@ -109,4 +111,23 @@ async function searchBySalary(msg, callback) {
   //   console.log("reviews list:", result);
   //   callback(null, result);
   // });
+}
+
+async function getStudentSalaries(msg, callback) {
+  let err = {}, response = {};
+  console.log('get Student Interviews: ', msg);
+  await Salary.find({sql_student_id: msg.userId}, (result, error) => {
+    if(error){
+      err.message = error
+      err.status = 500
+      return callback(null, error);
+    } else if(result){
+      response.status = 200
+      response.message = 'ABOUT_ME'
+      response.data = JSON.stringify(result)
+      return callback(null, response)
+    }
+  })
+
+
 }

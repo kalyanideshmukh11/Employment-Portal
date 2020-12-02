@@ -16,11 +16,20 @@ var jobsSchema = new Schema(
     city: { type: String, required: true },
     state: { type: String },
     zipcode: { type: String },
-    posted_date: { type: Date },
+    posted_date: { type: String },
+    applied_students: [
+      {
+        resume_file_name: { type: String, required: true },
+        //cover_file: { type: Buffer },
+        cover_file_name: { type: String },
+        sql_student_id: { type: String, required: true },
+        application_status: { type: String, required: true },
+      },
+    ],
   },
   {
     versionKey: false,
-  },
+  }
 );
 
 var jobsModel = mongoose.model('Job', jobsSchema);

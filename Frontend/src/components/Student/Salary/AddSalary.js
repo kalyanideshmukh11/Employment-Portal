@@ -59,9 +59,10 @@ getSalary=() =>{
   handleSubmit(e) {
     e.preventDefault();
     const salaryData = {
+      sql_student_id: localStorage.getItem("sql_student_id"),
       company: this.state.company,
       base_salary: this.state.base_salary,
-      currancy: this.state.currancy,
+      currency: this.state.currency,
       bonus: this.state.bonus,
       job_title: this.state.job_title,
       year_of_experience: this.state.year_of_experience,
@@ -69,7 +70,9 @@ getSalary=() =>{
     };
     console.log(salaryData);
     this.props.insertNewSalaryDetails(salaryData);
-    
+    if(this.props.status === "Inserted Successfully"){
+      this.hideModal()
+    }
   }
    
  
@@ -94,7 +97,7 @@ getSalary=() =>{
           <Modal.Title>Add a Salary</Modal.Title>
         </Modal.Header>
           <Modal.Body>
-          <Form onSubmit={this.handleSubmit,this.hideModal}>
+          <Form onSubmit={this.handleSubmit}>
             <h12>Your anonymous salary will help other job seekers.</h12>
             <br></br>
             <h6> Salary Details*</h6>           
@@ -110,7 +113,7 @@ getSalary=() =>{
                 </Form.Group>
                 <Form.Group> 
                   <Form.Label>
-                   Currancy*
+                   Currency*
                   </Form.Label>
                   <Form.Control
                     required={true}
@@ -198,6 +201,7 @@ AddSalary.propTypes = {
 
 const mapStateToProps = (state) => ({
   salary: state.salary,
+  status: state.salary.status
 });
 const mapDispatchToProps = (dispatch) => {
   return {

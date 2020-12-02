@@ -48,6 +48,7 @@ class StudentProfile extends Component {
 
     componentWillMount = () => {
         this.props.getStudentProfile()
+        localStorage.setItem("contri-list", 'salaries')
     }
 
     render() {
