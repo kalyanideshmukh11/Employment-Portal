@@ -15,6 +15,8 @@ class JobDetails extends Component {
   handleApplicationModalShow = () => this.setState({ applicationShow: true });
 
   render() {
+    console.log('this.props.location.state');
+    console.log(this.props.location.state);
     return (
       <div>
         <StudentNavbar />
@@ -32,15 +34,18 @@ class JobDetails extends Component {
                   fontSize: '25px',
                 }}
               >
-                Company Name
+                {this.props.location.state.companyName}
               </Card.Title>
               <div className='d-flex flex-row'>
                 <div style={{ width: '22cm' }}>
                   <Card.Body>
-                    <Card.Text>Company Details</Card.Text>
+                    <Card.Text>{this.props.location.state.industry}</Card.Text>
                     <br />
-                    <Card.Text>Company Details</Card.Text>
-                    <br />
+                    <Card.Text>
+                      {' '}
+                      {this.props.location.state.city} |{' '}
+                      {this.props.location.state.country}
+                    </Card.Text>
                   </Card.Body>
                 </div>
                 <div style={{ float: 'right', padding: '40px 100px 0 0' }}>
@@ -72,25 +77,25 @@ class JobDetails extends Component {
                   fontSize: '25px',
                 }}
               >
-                Job Title
+                {this.props.location.state.title}
               </Card.Title>
               <Card.Body>
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Job Description
                 </Card.Text>
-                <Card.Text>Detailed description. Get from props</Card.Text>
+                <Card.Text>{this.props.location.state.description}</Card.Text>
                 <br />
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Responsibilities
                 </Card.Text>
-                <Card.Text>list of responsibilities. Get from props</Card.Text>
+                <Card.Text>
+                  {this.props.location.state.responsibilities}
+                </Card.Text>
                 <br />
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Qualifications
                 </Card.Text>
-                <Card.Text>
-                  list of necessary Qualifications. Get from props
-                </Card.Text>
+                <Card.Text>{this.props.location.state.qualification}</Card.Text>
               </Card.Body>
             </Card>
             <br />
