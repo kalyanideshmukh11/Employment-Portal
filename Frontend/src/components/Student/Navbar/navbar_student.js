@@ -66,7 +66,14 @@ class StudentNavbar extends Component {
   };
 
   handleLogout = () => {
+    // localStorage.removeItem('sql_student_id');
+    // localStorage.removeItem('first_name');
+    // localStorage.removeItem('last_name');
+    // localStorage.removeItem('type');
     localStorage.clear();
+    this.setState({
+      redirectVar: <Redirect to='/student/login' />,
+    });
   };
   searchChangeHandler = (e) => {
     console.log('Search keyword:', e);
@@ -97,7 +104,7 @@ class StudentNavbar extends Component {
               type='text'
               placeholder='Job Title, Keywords, or Company'
               className='mr-sm-3'
-              style={{ width: '10cm' }}
+              style={{ width: '15cm' }}
               onChange={this.searchChangeHandler}
             />
 
@@ -114,7 +121,7 @@ class StudentNavbar extends Component {
                 title=''
                 name='searchType'
                 menuAlign='right'
-                style={{ marginLeft: '0.1mm' }}
+                style={{ width: '9cm', marginLeft: '0.1mm' }}
                 onSelect={this.SearchType}
               >
                 <Dropdown.Item eventKey='Jobs'>Jobs</Dropdown.Item>
@@ -124,12 +131,12 @@ class StudentNavbar extends Component {
               </DropdownButton>
             </InputGroup>
 
-            <FormControl
+            {/* <FormControl
               style={{ marginLeft: '5mm' }}
               type='text'
               placeholder='Location'
               className='mr-sm-4'
-            />
+            /> */}
             <Button onClick={this.search} variant='success'>
               Search
             </Button>

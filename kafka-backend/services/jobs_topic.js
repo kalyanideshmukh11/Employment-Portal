@@ -18,6 +18,8 @@ module.exports.jobsService = function (msg, callback) {
       break;
     case 'searchJob':
       searchJobTitle(msg, callback);
+    case 'getExploreJobs':
+      getExploreJobs(msg, callback);
       break;
     case 'apply_job':
       applyToJob(msg, callback);
@@ -119,6 +121,26 @@ async function searchJobTitle(msg, callback) {
     .catch((err) => {
       console.log(err);
     });
+}
+
+async function getExploreJobs(msg, callback) {
+  let err = {};
+  let response = {};
+
+  console.log('In get job topic. Msg: ', msg);
+  console.log(msg.state);
+  await Jobs.find({state: msg.state}, (error, result) => {
+    if(error){
+      err.message = error
+      err.status = 500
+      return callback(null, error);
+    } else if (result){
+      response.status = 200
+      response.message = 'EXPLORE_JOBS'
+      response.data = (result)
+      return callback(null, response)
+    }
+  })
 }
 async function applyToJob(msg, callback) {
   let err = {};

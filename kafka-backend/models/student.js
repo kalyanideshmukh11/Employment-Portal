@@ -1,16 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var profilePicture = new Schema(
-  {
-    img: { type: String, required: true },
-  },
-
-  {
-    versionKey: false,
-  }
-);
-
 var experienceSchema = new Schema(
   {
     title: { type: String, required: true },
@@ -157,13 +147,13 @@ var studentSchema = new Schema(
   {
     sql_student_id: { type: String, required: true },
     aboutMe: { type: String },
-    image: [profilePicture],
     experience: [experienceSchema],
     skills: [skillsSchema],
     education: [educationSchema],
     resumes: [resumeSchema],
     job_preferences: jobPreferenceSchema,
     company_preferences: companyPreferenceSchema,
+    profile_picture: { type: String, required: false }
   },
   {
     versionKey: false,

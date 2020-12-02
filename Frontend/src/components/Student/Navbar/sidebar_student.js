@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {Image, ListGroup} from 'react-bootstrap'
-import profilePicture from '../images/studentPlaceholder.png'
+import UploadImageModalForm from './uploadImageModal'
+import backendServer from "../../../webConfig"
+import { connect } from 'react-redux';
+
+
 
 
 class SideBarStudent extends Component {
@@ -10,7 +14,8 @@ class SideBarStudent extends Component {
             profileState: false,
             resumeState: false,
             jobPreferenceState: false,
-            demographicsState: false
+            demographicsState: false,
+            showModal: false
         }
         
     }
@@ -27,10 +32,21 @@ class SideBarStudent extends Component {
             this.setState({demographicsState: true})
         }
     }
+    handleClose = () => this.setState({showModal: false});
+    handleShow = () => this.setState({showModal: true});
+
+
+
     render() {
+        let profilePicture = null
+        if (this.state) {
+            profilePicture = `${backendServer}student/getProfilePicture/${localStorage.getItem("sql_student_id")}`;
+        }
         return (
             <div>
-            <Image src={profilePicture} style={{width:"1.5cm"}} roundedCircle />
+            <UploadImageModalForm show={this.state.showModal} onHide={this.handleClose} />
+
+            <Image src={profilePicture} style={{width:"1.5cm"}} roundedCircle onClick={this.handleShow}/>
                     <br />
                     <br />
                     <ListGroup variant='flush' >
@@ -69,4 +85,8 @@ class SideBarStudent extends Component {
     }
 }
 
-export default SideBarStudent
+const mapStateToProps = (state) => ({
+    studentProfile_data: state.studentProfile.payload,
+  });
+  
+export default connect(mapStateToProps)(SideBarStudent);

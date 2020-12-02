@@ -68,16 +68,20 @@ class SearchSalary extends Component {
                   </div>
                   <div class='col-md-9'>
                     <Card.Title>
-                      <Link to={`/student/salary/${value.name}`}>
+                      <Link
+                        to={{
+                          pathname: '/student/tabs',
+                          companyName: value.name,
+                          companyID: value.id,
+                          category: 'overview',
+                        }}
+                      >
                         <h4 className='ml-3' style={{ color: 'green' }}>
                           <b>{value.name}</b>
                         </h4>
                       </Link>
                     </Card.Title>
-                    {/* <h5 className='ml-3'>
-                      {value.city && <span>{value.city},</span>}
-                      {value.state && <span> {value.state}</span>}
-                    </h5> */}
+
                     <h5 className='ml-3' style={{ color: 'grey' }}>
                       {value.website && <span>{value.website}</span>}
                     </h5>
@@ -91,7 +95,16 @@ class SearchSalary extends Component {
                         </span>
                       )}
                     </h4>
-                    <Link to={`/student/salary/${value.name}`}>Salaries</Link>
+                    <Link
+                      to={{
+                        pathname: '/student/tabs',
+                        companyName: value.name,
+                        companyID: value.id,
+                        category: 'salaries',
+                      }}
+                    >
+                      Salaries
+                    </Link>
                   </div>
                 </div>
               </Card.Body>

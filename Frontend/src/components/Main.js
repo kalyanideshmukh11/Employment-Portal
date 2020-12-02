@@ -27,7 +27,14 @@ import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
 import HomeTabs from './Student/Tabs/homeTabs';
 import SearchSalary from './Student/Search/search_salary';
+import ApexChart from './Admin/Dashboard/mostReviewed';
+import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
+import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
+import adminCompanyProfile from './Admin/companyProfile/adminCompany';
+import CompanyOverview from './Student/CompanyOverview/companyOverview';
+import JobsTab from './Student/Jobs/jobsTab';
 import JobDetails from './Student/Job/JobDetails';
+import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 
 class Main extends Component {
   render() {
@@ -105,10 +112,40 @@ class Main extends Component {
           path='/student/search/salary/:keyword'
           component={SearchSalary}
         />
-        <Route exact path='/student/reviews' component={ReviewTab} />
+        <Route
+          exact
+          path='/student/reviews/:companyName'
+          component={ReviewTab}
+        />
         <Route exact path='/student/addreviews' component={AddReview} />
-        <Route exact path='/student/salary' component={SalaryTab} />
+        <Route
+          exact
+          path='/student/salary/:companyName'
+          component={SalaryTab}
+        />
+        <Route
+          exact
+          path='/student/companyoverview/:companyID'
+          component={CompanyOverview}
+        />
+        <Route exact path='/student/jobs/:companyName' component={JobsTab} />
         <Route exact path='/student/tabs' component={HomeTabs} />
+        <Route exact path='/admin/home' component={AnalyticsHome} />
+        <Route
+          exact
+          path='/admin/companyProfile'
+          component={adminCompanyProfile}
+        />
+        <Route
+          exact
+          path='/admin/search/company/:keyword'
+          component={searchAdminCompany}
+        />
+        <Route
+          exact
+          path='/admin/companyReview/:companyName'
+          component={adminCompanyReview}
+        />
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
       </div>
     );
