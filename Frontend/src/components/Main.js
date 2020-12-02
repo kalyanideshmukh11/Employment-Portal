@@ -11,11 +11,11 @@ import PhotosContribution from './Student/Contributions/photos';
 import InterviewContribution from './Student/Contributions/interviews';
 import Login from './Student/Login/Login';
 import CompanyLogin from './Employer/Login/companyLogin';
-import companyProfile from './Employer/companyProfile';
-import updateCompany from './Employer/update';
+import companyProfile from './Employer/Profile/companyProfile';
+import updateCompany from './Employer/Profile/profileUpdate';
 import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
-import companyReviews from './Employer/companyReviews';
+import companyReviews from './Employer/Reviews/companyReviews';
 import AddInterview from './Student/Interview/AddInterview';
 import SearchJob from './Student/Search/search_jobs';
 import SearchCompany from './Student/Search/search_company';
@@ -23,24 +23,30 @@ import SearchInterview from './Student/Search/search_interview';
 import ReviewTab from './Student/Reviews/ReviewTab';
 import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
+import companyReport from './Employer/Report/companyReport';
+import adminCompanyProfile from './Admin/companyProfile/adminCompany';
 import HomeTabs from './Student/Tabs/homeTabs';
 import SearchSalary from './Student/Search/search_salary';
-import ApexChart from './Admin/Dashboard/mostReviewed';
 import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
 import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
-import adminCompanyProfile from './Admin/companyProfile/adminCompany';
+import adminCompanyReport from './Admin/companyProfile/statistics';
+import adminDemographics from './Admin/companyProfile/demographics';
+import nonUserLanding from './nonUser/landingPage';
+import nonUserCompanyReview from './nonUser/nonUserReviews';
+import ApexChart from './Admin/Dashboard/mostReviewed';
 import CompanyOverview from './Student/CompanyOverview/companyOverview';
 import JobsTab from './Student/Jobs/jobsTab';
 import JobDetails from './Student/Job/JobDetails';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
 import InterviewAnswers from './Student/Interview/InterviewAnswers';
+import companyDemographics from './Employer/Report/companyDemographics';
 
 class Main extends Component {
   render() {
     return (
       <div>
-        <Route exact path='/' component={Login} />
+        <Route exact path='/signup' component={Login} />
         <Route exact path='/student/home' component={StudentHome} />
         <Route exact path='/student/profile' component={StudentProfile} />
         <Route exact path='/student/resume' component={StudentResume} />
@@ -114,6 +120,7 @@ class Main extends Component {
           component={ReviewTab}
         />
         <Route exact path='/student/addreviews' component={AddReview} />
+        <Route exact path='/company/report' component={companyReport}/>
         <Route
           exact
           path='/student/salary/:companyName'
@@ -142,8 +149,14 @@ class Main extends Component {
           path='/admin/companyReview/:companyName'
           component={adminCompanyReview}
         />
+        <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
+        <Route exact path='/admin/demographics/:companyName' component = {adminDemographics} />
+        <Route exact path='/' component = {nonUserLanding} />
+        <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
+
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
-      </div>
+        <Route exact path='/company/demogrphics' component={companyDemographics} />
+        </div>
     );
   }
 }

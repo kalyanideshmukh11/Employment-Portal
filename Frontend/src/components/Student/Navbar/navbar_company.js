@@ -51,7 +51,7 @@ class StudentNavbar extends Component {
       <div>
         {this.state.redirectVar}
         <Navbar bg='light' expand='lg'>
-          <Navbar.Brand href='/student/home'>
+          <Navbar.Brand href='/company/home'>
             <Image src={glassdorNavIco} style={{ width: '200px' }} />
           </Navbar.Brand>
           <Form inline>
