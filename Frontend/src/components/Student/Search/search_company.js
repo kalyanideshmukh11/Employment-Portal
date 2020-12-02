@@ -68,7 +68,14 @@ class SearchCompany extends Component {
                   </div>
                   <div class='col-md-5'>
                     <Card.Title>
-                      <Link to={`/student/companyoverview/${value.id}`}>
+                      <Link
+                        to={{
+                          pathname: '/student/tabs',
+                          companyName: value.name,
+                          companyID: value.id,
+                          category: 'overview',
+                        }}
+                      >
                         <h4 className='ml-3' style={{ color: 'green' }}>
                           <b>{value.name}</b>
                         </h4>
@@ -100,7 +107,16 @@ class SearchCompany extends Component {
                         </span>
                       )}
                     </h4>
-                    <Link to={`/student/reviews/${value.name}`}>Reviews</Link>
+                    <Link
+                      to={{
+                        pathname: '/student/tabs',
+                        companyName: value.name,
+                        companyID: value.id,
+                        category: 'reviews',
+                      }}
+                    >
+                      Reviews
+                    </Link>
                   </div>
                   <div class='col-md-2'>
                     <h4>
@@ -110,10 +126,19 @@ class SearchCompany extends Component {
                         </span>
                       )}
                     </h4>
-                    <Link to={`/student/salary/${value.name}`}>Salaries</Link>
+                    <Link
+                      to={{
+                        pathname: '/student/tabs',
+                        companyName: value.name,
+                        companyID: value.id,
+                        category: 'salaries',
+                      }}
+                    >
+                      Salaries
+                    </Link>
                   </div>
                   <div class='col-md-2'>
-                    {/* TODO Change to interview link */}
+                    {/* TODO add to interview link */}
 
                     <h4>
                       {value.reviews && (
@@ -122,7 +147,14 @@ class SearchCompany extends Component {
                         </span>
                       )}
                     </h4>
-                    <Link to={`/student/reviews/${value.name}`}>
+                    <Link
+                      to={{
+                        pathname: '/student/tabs',
+                        companyName: value.name,
+                        companyID: value.id,
+                        category: 'interviews',
+                      }}
+                    >
                       Interviews
                     </Link>
                   </div>
