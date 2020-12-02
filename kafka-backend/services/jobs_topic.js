@@ -168,7 +168,12 @@ async function getApplicantId(msg, callback) {
   await Jobs.find({ companyName: msg.body }, 
     {'applied_students.sql_student_id':1, _id: 0})
     .then((data) => {
-      console.log(data[0])
+      let applicantId = [];
+      for(const key of Object.keys(data[0]._doc)){
+        applicantId = data[0]._doc[key].map( val => 
+          val.sql_student_id)
+      }
+      console.log(applicantId)
      //console.log(applied_students_id)
       response.status = 200;
       response.data = data;
@@ -177,6 +182,9 @@ async function getApplicantId(msg, callback) {
     .catch((err) => {
       console.log(err);
     });
+
+
+
 
 async function getExploreJobs(msg, callback) {
   let err = {};
