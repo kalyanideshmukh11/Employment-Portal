@@ -2,6 +2,8 @@
 import { GET_JOBS } from '../actions/types';
 const initialState = {
   jobs: [], 
+  days:{},
+  
 };
 
 export default function (state = initialState, action) {
@@ -9,7 +11,7 @@ export default function (state = initialState, action) {
     case GET_JOBS:
         return { 
           ...state, 
-          jobs: action.payload 
+          jobs: action.payload ,
         };
     default:
       return state;

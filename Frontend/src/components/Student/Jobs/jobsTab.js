@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, FormControl, ToastBody } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Navbar from '../../Student/Navbar/navbar_student';
 import PropTypes from 'prop-types';
@@ -11,16 +11,15 @@ import backendServer from '../../../webConfig';
 class JobsTab extends Component {
   constructor(props) {
     super(props);
-    this.routeParam = props.match.params.companyName;
     this.state = {
         showModal: false,
+        inputValue:'',
       };
-      this.handleOpenModal = this.handleOpenModal.bind(this);
-      this.handleCloseModal = this.handleCloseModal.bind(this);
+
   }
 
   componentDidMount() {
-    axios.get(`${backendServer}glassdoor/jobs/${this.routeParam}/fetchjobs/`)
+    axios.get(`${backendServer}student/job/${this.props.companyName}`)
           .then(res => {
               if(res.status === 200){
                   if(res.data){
@@ -29,20 +28,22 @@ class JobsTab extends Component {
                   }
               }
           })
+      
   };
-  handleOpenModal(arg) {
-    let jobdata = this.props.jobs.filter((job) => job._id === arg);
+  searchChangeHandler=(e) =>{
+    console.log("onchange search", e.target.value)
     this.setState({
-      showModal: true,
-      jobdata: jobdata[0],
-      job_id: arg,
-    });
+      inputValue:e.target.value
+    })
   }
-
-  handleCloseModal() {
-    this.setState({ showModal: false });
+  search= (event)=>{
+   // event.preventDefault();
+    this.props.saveJobs(this.props.jobs.filter(job =>{
+      console.log("inside search",this.state.inputValue)
+      console.log((job.title.toLowerCase().includes(this.state.inputValue.toLowerCase()) || job.city.toLowerCase().includes(this.state.inputValue.toLowerCase())))
+      return (job.title.toLowerCase().includes(this.state.inputValue.toLowerCase()) || job.city.toLowerCase().includes(this.state.inputValue.toLowerCase()))
+    }))
   }
-
   render() {
     let renderOutput = [];
     if (this.props && this.props.jobs && this.props.jobs.length > 0) {
@@ -52,14 +53,25 @@ class JobsTab extends Component {
           <div className='container' style={{ paddingRight: '60%' }}>
             <div className='col-md-12'>
               <Card.Title>
-                <a href='#' onClick={() => this.handleOpenModal(job_id)}>
-                  {this.props.jobs[i].title}
-                </a>
+              <Link to={`/student/job/jobdetails`}
+                          params={{ data: this.props.jobs[i] }}
+                        >
+                          {this.props.jobs[i].title}
+                        </Link>
                 <Card.Body>
-                    <h6>{this.props.jobs[i].companyName}- {this.props.jobs[i].city},{this.props.jobs[i].state}</h6>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div>
-                    {this.props.jobs[i].posted_date}
+                    <h6>{this.props.jobs[i].companyName}- {this.props.jobs[i].city},{this.props.jobs[i].state}</h6>
                     </div>
+                     <div>
+                      <button style={{backgroundColor: "transparent",border: "none",  color: "green", fontSize: "20px"}}> <i class="far fa-heart"></i> </button>
+                    </div>
+                  </div>
+                  <span style={{ float: 'right' }}>
+                  <div>
+                     <p  style={{ color: "grey", fontSize: "10px"}}> {new Date()- this.props.jobs[i].posted_date} days ago </p>
+                    </div>
+                  </span>
                 </Card.Body>
               </Card.Title>
               <hr />
@@ -70,23 +82,27 @@ class JobsTab extends Component {
     }
     return (
       <React.Fragment>
-        <Navbar />
         <div className='container'>
           <div className='row'>
             <div className='col-md-12 mt-5'>
               <h3
-                style={{ color: '#028A0F', textAlign: 'center' }}
+                style={{ color: '#028A0F', textAlign: 'left' }}
                 className='pl-3'>
-                All Jobs
+                {this.props.companyName} Jobs
               </h3>
-              <span style={{ float: 'right' }}>
-                <Link
-                  to={{
-                    pathname: `/company/addjob`,
-                  }}>
-                  <Button variant='success'>Add New Job</Button>
-                </Link>
-              </span>
+              <div className='col-md-12 mt-5' style={{ display: 'flex'}}>
+              <input
+              type='text'
+              placeholder='Search Job Title, or City'
+              className='mr-sm-3'
+              style={{ width: '8cm' }}
+              value={this.state.inputValue}
+              onChange={this.searchChangeHandler}
+            />
+            <Button onClick={this.search} variant='primary'>
+              Find Jobs
+            </Button>
+            </div>
             </div>
             {renderOutput}
           </div>

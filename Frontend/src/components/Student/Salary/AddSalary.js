@@ -200,6 +200,7 @@ AddSalary.propTypes = {
 
 const mapStateToProps = (state) => ({
   salary: state.salary,
+  status: state.salary.status
 });
 const mapDispatchToProps = (dispatch) => {
   return {

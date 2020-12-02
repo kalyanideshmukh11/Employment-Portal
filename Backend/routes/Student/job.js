@@ -27,4 +27,28 @@ router.post('/apply', (req, res) => {
   );
 });
 
+router.get('/:companyName', (req, res) => {
+  console.log('In company jobs route');
+  console.log(req.params.companyName);
+  kafka.make_request(
+    'jobs_topic',
+    {
+      path: 'getAllCompanyJobs',
+      body: req.params.companyName,
+    },
+    function (err, results) {
+      if (err) {
+        console.log('Inside err');
+        console.log(err);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Some error has occured');
+      } else {
+        console.log(results);
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(JSON.stringify(results.data));
+      }
+    },
+  );
+});
+
 module.exports = router;

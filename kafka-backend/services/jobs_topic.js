@@ -18,6 +18,9 @@ module.exports.jobsService = function (msg, callback) {
     case 'apply_job':
       applyToJob(msg, callback);
       break;
+    case 'getAllCompanyJobs':
+      getAllCompanyJobs(msg, callback);
+      break;
   }
 };
 

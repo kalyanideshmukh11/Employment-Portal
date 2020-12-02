@@ -5,7 +5,7 @@ import Comp from '../component';
 import CompanyOverview from '../CompanyOverview/companyOverview';
 import ReviewTab from '../Reviews/ReviewTab';
 import AddSalary from '../Salary/AddSalary';
-
+import JobsTab from '../Jobs/jobsTab';
 class HomeTabs extends Component {
   constructor(props) {
     super(props);
@@ -101,7 +101,13 @@ class HomeTabs extends Component {
                   Overview{' '}
                 </Button>
                 <Button
-                  onClick={() => this.loadComp(<Comp str='sfsdg'></Comp>)}
+                 onClick={() =>
+                  this.loadComp(
+                    <JobsTab
+                      companyName={this.props.location.companyName}
+                    ></JobsTab>
+                  )
+                }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
