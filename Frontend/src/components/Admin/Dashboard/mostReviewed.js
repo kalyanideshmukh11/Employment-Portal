@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
-import backendServer from '../../webConfig';
+import backendServer from '../../../webConfig';
 import Loader from 'react-loader-spinner';
 
 class ApexChart extends Component {

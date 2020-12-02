@@ -1,18 +1,45 @@
 import Navigationbar from '../../Student/Navbar/navbar_student';
 import React, { Component } from 'react';
 import { CardImg, Button } from 'react-bootstrap';
-// import axios from 'axios';
-// import backendServer from '../../webConfig';
+import Comp from '../component';
 
 class HomeTabs extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      user: {},
-      buttontxt: ' Review',
-    };
+    // this.state = {
+    //   // user: {},
+    //   // buttontxt: ' Review',
+    //   loadComponent: ,
+    // };
+    this.loadComp = this.loadComp.bind(this);
+    console.log('props:', this.props);
+    if (
+      this.props.location.category &&
+      this.props.location.category === 'overview'
+    ) {
+      console.log('in if condition');
+      this.state = {
+        loadComponent: <Comp str='This is Overview'></Comp>,
+      };
+      // this.setState({
+      //   loadComponent: <Comp str='This is Overview'></Comp>,
+      // });
+      // this.loadComp(<Comp str='This is Overview'></Comp>);
+    } else {
+      this.state = {
+        loadComponent: <Comp str='This is Overview'></Comp>,
+      };
+    }
   }
 
+  componentWillReceiveProps(nextProp) {
+    console.log('Received: ', nextProp);
+  }
+  loadComp(param) {
+    console.log('Button clicked', param);
+    this.setState({ loadComponent: param });
+    this.forceUpdate();
+  }
   // componentWillMount() {
   //     axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`)
   //     .then(res => {
@@ -21,8 +48,8 @@ class HomeTabs extends Component {
   // }
 
   render() {
-    console.log(this.state.user);
-    //console.log(this.props.user);
+    // console.log(this.state.user);
+    // console.log(this.props.user);
     // var fileName = this.state.user.cphoto_file_name;
     // var imgSrc = `${backendServer}company/imageUpload/${fileName}`;
     return (
@@ -44,15 +71,15 @@ class HomeTabs extends Component {
                 </card>
               </div>
               <div class='col-xs-4 profileName' style={{ marginLeft: '200px' }}>
-                <h1>{this.state.user.name}</h1>
-                <h6> {this.state.user.street}</h6>
-                <h6>
-                  {' '}
-                  {this.state.user.city}, {this.state.user.state}
-                </h6>
+                <h1>
+                  <b>{this.props.location.companyName}</b>
+                </h1>
+
                 <br />
                 <Button
-                  href='/company'
+                  onClick={() =>
+                    this.loadComp(<Comp str='This is Overview'></Comp>)
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -64,6 +91,7 @@ class HomeTabs extends Component {
                   Overview{' '}
                 </Button>
                 <Button
+                  onClick={() => this.loadComp(<Comp str='sfsdg'></Comp>)}
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -76,6 +104,9 @@ class HomeTabs extends Component {
                   Jobs{' '}
                 </Button>
                 <Button
+                  onClick={() =>
+                    this.loadComp(<Comp str='This is reviews'></Comp>)
+                  }
                   href=''
                   style={{
                     backgroundColor: 'transparent',
@@ -89,6 +120,9 @@ class HomeTabs extends Component {
                   Reviews{' '}
                 </Button>
                 <Button
+                  onClick={() =>
+                    this.loadComp(<Comp str='This is Interviews'></Comp>)
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -124,7 +158,7 @@ class HomeTabs extends Component {
                   {' '}
                   Photos{' '}
                 </Button>
-                <Button
+                {/* <Button
                   href='/company/profileUpdate'
                   style={{
                     float: 'right',
@@ -135,7 +169,7 @@ class HomeTabs extends Component {
                 >
                   {' '}
                   Add {this.state.buttontxt}
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -152,6 +186,8 @@ class HomeTabs extends Component {
             <hr />
           </div>
         </div>
+
+        {this.state.loadComponent}
       </React.Fragment>
     );
   }

@@ -25,7 +25,10 @@ import AddReview from './Student/Reviews/AddReview';
 import SalaryTab from './Student/Salary/AddSalary';
 import HomeTabs from './Student/Tabs/homeTabs';
 import SearchSalary from './Student/Search/search_salary';
-import ApexChart from './Admin/dummy';
+import ApexChart from './Admin/Dashboard/mostReviewed';
+import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
+import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
+import adminCompanyProfile from './Admin/companyProfile/adminCompany';
 
 class Main extends Component {
   render() {
@@ -98,6 +101,21 @@ class Main extends Component {
         <Route exact path='/student/salary' component={SalaryTab} />
         <Route exact path='/student/tabs' component={HomeTabs} />
         <Route exact path='/admin/home' component={ApexChart} />
+        <Route
+          exact
+          path='/admin/companyProfile'
+          component={adminCompanyProfile}
+        />
+        <Route
+          exact
+          path='/admin/search/company/:keyword'
+          component={searchAdminCompany}
+        />
+        <Route
+          exact
+          path='/admin/companyReview/:companyName'
+          component={adminCompanyReview}
+        />
       </div>
     );
   }
