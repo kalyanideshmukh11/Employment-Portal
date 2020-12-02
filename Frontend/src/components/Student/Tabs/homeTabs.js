@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { CardImg, Button } from 'react-bootstrap';
 // import axios from 'axios';
 // import backendServer from '../../webConfig';
-
 class HomeTabs extends Component {
   constructor(props) {
     super(props);
@@ -52,7 +51,7 @@ class HomeTabs extends Component {
                 </h6>
                 <br />
                 <Button
-                  href='/company'
+                  href='/student/companyoverview/1'
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -64,6 +63,7 @@ class HomeTabs extends Component {
                   Overview{' '}
                 </Button>
                 <Button
+                  href='/student/jobs/Google'
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -76,7 +76,7 @@ class HomeTabs extends Component {
                   Jobs{' '}
                 </Button>
                 <Button
-                  href=''
+                  href='/student/reviews/Google'
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -89,6 +89,7 @@ class HomeTabs extends Component {
                   Reviews{' '}
                 </Button>
                 <Button
+                  href=''
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -101,6 +102,7 @@ class HomeTabs extends Component {
                   Interviews{' '}
                 </Button>
                 <Button
+                href='/student/salary/Google'
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',

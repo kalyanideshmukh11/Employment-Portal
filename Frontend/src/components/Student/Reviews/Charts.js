@@ -20,6 +20,7 @@ export const Charts = (props) => {
       const  rec = {
         title: "Recommend to a Friend",
         dataDoughnut: {
+          //labels: ["Recommended"],
           datasets: [
             {
               data: [reviewList.recommended,reviewList.recommended],
@@ -31,6 +32,7 @@ export const Charts = (props) => {
       const  ceo = {
         title: "Recommend to a Friend",
         dataDoughnut: {
+          //labels: ["Approved", "Disapproved"],
           datasets: [
             {
               data: [reviewList.ceoRating,reviewList.ceoRating],

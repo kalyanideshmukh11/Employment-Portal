@@ -13,6 +13,7 @@ import { Charts } from './Charts';
 import {FeaturedReview} from './FeaturedReview';
 import {PositiveReview} from './PositiveReview';
 import {NegativeReview} from './NegativeReview';
+import HomeTabs from '../Tabs/homeTabs';
 class ReviewTab extends Component {
   constructor(props) {
     super(props);
@@ -133,7 +134,7 @@ createElements(n) {
   render() {
     return (
       <React.Fragment>
-      <Navbar />                                      
+      <HomeTabs />                                     
         <Row>           
         <Col sm={8} md={8} lg={8}>
         <h4 style={{ color: '#3BB143', float: 'left' }}>Reviews</h4>

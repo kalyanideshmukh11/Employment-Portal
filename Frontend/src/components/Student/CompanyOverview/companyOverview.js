@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import {CardImg, Button } from 'react-bootstrap';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
+import HomeTabs from '../Tabs/homeTabs';
 const qs = require('query-string');
 
-class companyProfile extends Component {
+class companyOverview extends Component {
 
     constructor(props) {
         super(props); 
@@ -30,7 +31,7 @@ render() {
     var imgSrc = `${backendServer}company/imageUpload/${fileName}`
     return (
         <React.Fragment>
-        <Navigationbar />
+        <HomeTabs />
         <div style={{margin:"5px"}}>
         <div class='jumbotron' style={{paddingBottom: "0px"}}>
         </div>
@@ -71,6 +72,6 @@ render() {
     )}
 }
 
-export default companyProfile;
+export default companyOverview;
 
 

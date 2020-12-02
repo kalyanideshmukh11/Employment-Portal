@@ -10,6 +10,7 @@ import axios from 'axios';
 import backendServer from '../../../webConfig';
 import { SalaryList } from './SalaryList';
 import { useParams} from 'react-router-dom';
+import HomeTabs from '../Tabs/homeTabs';
 class AddSalary extends Component {
   constructor(props) {
     super(props);
@@ -79,9 +80,9 @@ getSalary=() =>{
    
   render() {
     return (
-        <Container className="mt-5 mb-5">                                           
-                    <Row>
-        <Navbar />             
+      <React.Fragment>
+      <HomeTabs />
+        <Row>           
         <Col sm={8} md={8} lg={8}>
               <h4 style={{ color: '#3BB143', float: 'left' }}>Salary range of all the job title</h4>
               <br />
@@ -91,7 +92,7 @@ getSalary=() =>{
                 </div>
                 </React.Fragment>
               </Col>
-<Col sm={4} md={4} lg={4}>
+          <Col sm={4} md={4} lg={4}>
         <Modal show={this.state.show} handleClose={this.hideModal}>
         <Modal.Header closeButton onClick={this.hideModal}>
           <Modal.Title>Add a Salary</Modal.Title>
@@ -184,9 +185,9 @@ getSalary=() =>{
         </Modal>
 
         <Button variant="primary"onClick={this.showModal}>+ Add Salary</Button>
-                </Col>
-                </Row>
-</Container>
+         </Col>
+         </Row>
+        </React.Fragment> 
 
     );
   }
