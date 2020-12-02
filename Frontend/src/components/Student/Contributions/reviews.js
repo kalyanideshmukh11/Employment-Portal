@@ -26,7 +26,8 @@ class ReviewContribution extends Component{
 
  }
  render(){
-     let details= null;
+     let details= null; let review_contributions_count = null;
+
      if(this.state.company_reviews.length > 0){
         details = this.state.company_reviews.map(reviews => {
             return(
@@ -35,7 +36,7 @@ class ReviewContribution extends Component{
                         <div>
                         <span style={{fontWeight: '600', fontSize: "15px", padding:"20px 10px 10px 10px"}}>{reviews.job_title}</span> <br />
                     <span style={{fontSize: '15px', fontWeight: '500', padding:"20px 10px 10px 10px"}}>{reviews.company} </span>
-                    <p style={{padding: "20px 10px 10px 10px"}}> <span style={{fontWeight: "600"}}><a href='' style={{textDecoration: 'none'}}> "{reviews.headline}" </a></span>  
+                    <p style={{padding: "20px 10px 10px 10px"}}> <span style={{fontWeight: "600"}}><a href='/student/reviews' style={{textDecoration: 'none'}}> "{reviews.headline}" </a></span>  
                     <span> 
                         <div class='row'>
                             <div class='col-3.5' style={{marginTop: "0.60mm", marginLeft: '25px'}}> Rating:  </div>
@@ -67,12 +68,25 @@ class ReviewContribution extends Component{
                 </tr>
             )
         })
+        review_contributions_count = (
+            <div>
+                <br />
+                You have contributed <span style={{fontWeight:"600"}}>{this.state.company_reviews.length}</span> job/company reviews.
+            </div>
+        )
      } else {
          details = (
          <tr>
             <td colSpan="2" style={{padding: "10px 10px 10px 10px", color:"#33333", verticalAlign:"middle"}}> Please add your interview experiences to show it here.</td>
          </tr>)
+        review_contributions_count = (
+                    <div>
+                        <br />
+                        You have <span style={{fontWeight:"600"}}>no</span> contributions in job/company reviews.
+                    </div>
+                )
          }
+
      return(
         <div>
             <StudentNavbar />
@@ -97,7 +111,10 @@ class ReviewContribution extends Component{
                 <Card.Text>
                 The Glassdoor team reviews every piece of content submitted by users, so please be patient. 
                 Contributions with the 'Pending' status are being reviewed, and will appear on the site once they are approved.
-
+                <br />
+                <p>
+                {review_contributions_count}
+                </p>
                 </Card.Text>
                 <Card.Text>
                     <Table striped bordered hover size="sm">
