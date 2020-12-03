@@ -11,7 +11,7 @@ export default function (state = initialState, action) {
     case GET_JOBS:
         return { 
           ...state, 
-          student_jobss: action.payload ,
+          student_jobs: action.payload ,
         };
     default:
       return state;

@@ -1,28 +1,26 @@
-import React from 'react';
-import { Card, Button, Modal, Form, Alert, Badge } from 'react-bootstrap';
+import React, {Component} from 'react';
+import {Card, Button} from 'react-bootstrap'
 
-export const SalaryList = (props) => {
-  let salaryList = props.salaryList.salary;
-  console.log(salaryList);
-  const list = Object.keys(salaryList).map((key) => (
-    <div>
-      <hr />
-      <p
-        style={{
-          marginLeft: '10px',
-          fontSize: '20px',
-          color: '#1355a9',
-          fontWeight: 'bold',
-        }}
-      >
+
+class SalaryList extends Component {
+  constructor(props){
+      super(props)
+      this.state ={
+      }
+  }
+  render(){
+      return(
+      <div className='container' style={{ paddingRight: '60%' }}>
+        <hr/>
+      <p style={{marginLeft: '10px', fontSize: '20px',color: '#1355a9',fontWeight: 'bold'}}>
         {' '}
-        {salaryList[key]._id.job_title}
+        { this.props.salary_items._id.job_title}
       </p>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
           <p style={{ marginLeft: '10px', fontWeight: 'bold' }}>
             {' '}
-            ${salaryList[key].base_salary + salaryList[key].bonus}/yr
+            ${ this.props.salary_items.base_salary +  this.props.salary_items.bonus}/yr
           </p>
           <p
             style={{
@@ -50,7 +48,7 @@ export const SalaryList = (props) => {
         <div>
           <p style={{ marginLeft: '15px', fontWeight: 'bold' }}>
             {' '}
-            ${salaryList[key].base_salary}/yr
+            ${ this.props.salary_items.base_salary}/yr
           </p>
           <p
             style={{
@@ -65,7 +63,7 @@ export const SalaryList = (props) => {
         </div>
         <div>
           <p style={{ marginLeft: '15px', fontWeight: 'bold' }}>
-            ${salaryList[key].bonus}/yr
+            ${ this.props.salary_items.bonus}/yr
           </p>
           <p
             style={{
@@ -79,7 +77,10 @@ export const SalaryList = (props) => {
           </p>
         </div>
       </div>
-    </div>
-  ));
-  return <div>{list}</div>;
+</div>
+
+  )
+ }
 };
+
+export default SalaryList;

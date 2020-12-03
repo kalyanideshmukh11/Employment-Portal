@@ -1,51 +1,39 @@
 import React, { Component } from 'react';
-import { Button, Card, FormControl, ToastBody } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import Navbar from '../../Student/Navbar/navbar_student';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { saveJobs } from '../../../store/actions/studentJobsAction';
+import { Button} from 'react-bootstrap';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
+import ReactPaginate from 'react-paginate';
+import ScaleLoader from "react-spinners/ScaleLoader";
+import JobList from './jobList';
 
 class JobsTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        
+      student_jobs:[],
         inputValue:'',
         offset: 0,
-        job_items: [],
+        company_jobs: [],
         perPage: 4,
         currentPage: 0,
-        loading: true
-      };
-     // this.jobItems = this.jobItems.bind(this);
+       loading: true
+      }
+      this.companyJobs = this.companyJobs.bind(this);
       this.handlePageClick = this.handlePageClick.bind(this);
+      this.getJobs();
   }
 
-  componentDidMount() {
-    axios.get(`${backendServer}student/job/${this.props.companyName}`)
-          .then(res => {
-              if(res.status === 200){
-                  if(res.data){
-                      this.props.saveJobs(res.data)
-                      console.log(this.props. student_jobs)
-                  }
-              }
-          })
-      
-  };
   getJobs=()=> {
+    console.log("function called.")
     setTimeout(() => {
-        axios.get(`${backendServer}student/exploreJobs/${this.state.studentHome_data.state}`, 
-        {headers: { Authorization: `${localStorage.getItem("token")}` }
-        })
+        axios.get(`${backendServer}student/job/${this.props.companyName}`)
         .then(response => {
+          console.log(response)
             const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
-            this.state.job_items = []
+            this.state.company_jobs = []
+            this.state.student_jobs= response.data
             this.setState({
-                job_items: this.state.job_items.concat(slice),
+                company_jobs: this.state.company_jobs.concat(slice),
                 pageCount: Math.ceil(response.data.length / this.state.perPage),
                 loading: false
             });
@@ -65,6 +53,22 @@ class JobsTab extends Component {
     });
 
 };
+
+companyJobs = () => {
+  console.log("this is called")
+  var itemsRender = [], items, item;
+  if (this.state && this.state.company_jobs && this.state.company_jobs.length > 0) {
+      items = this.state.company_jobs
+      if (items.length > 0) {
+          for (var i = 0; i < items.length; i++) {
+              item = <JobList company_jobs={items[i]}/>;
+              itemsRender.push(item);
+          }
+      }
+      console.log(itemsRender)
+      return itemsRender;
+  } 
+};
   searchChangeHandler=(e) =>{
     console.log("onchange search", e.target.value)
     this.setState({
@@ -72,94 +76,74 @@ class JobsTab extends Component {
     })
   }
   search= (event)=>{
-   // event.preventDefault();
-    this.props.saveJobs(this.props. student_jobs.filter(job =>{
+    event.preventDefault();
+   this.state.company_jobs = this.state.student_jobs.filter(job =>{
       console.log("inside search",this.state.inputValue)
       console.log((job.title.toLowerCase().includes(this.state.inputValue.toLowerCase()) || job.city.toLowerCase().includes(this.state.inputValue.toLowerCase())))
       return (job.title.toLowerCase().includes(this.state.inputValue.toLowerCase()) || job.city.toLowerCase().includes(this.state.inputValue.toLowerCase()))
-    }))
+    })
   }
+
   render() {
-    let renderOutput = [];
-    if (this.props && this.props. student_jobs && this.props. student_jobs.length > 0) {
-      for (var i = 0; i < this.props. student_jobs.length; i++) {
-        const job_id = this.props. student_jobs[i]._id;
-        renderOutput.push(
-          <div className='container' style={{ paddingRight: '60%' }}>
-            <div className='col-md-12'>
-              <Card.Title>
-              <Link to={`/student/job/jobdetails`}
-                          params={{ data: this.props. student_jobs[i] }}
-                        >
-                          {this.props. student_jobs[i].title}
-                        </Link>
-                <Card.Body>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div>
-                    <h6>{this.props. student_jobs[i].companyName}- {this.props. student_jobs[i].city},{this.props. student_jobs[i].state}</h6>
+    let section,
+    renderOutput = [];
+    if (this.state && this.state.company_jobs && this.state.company_jobs.length > 0) {
+        section = this.companyJobs(this.state.company_jobs);
+        renderOutput.push(section);
+            }else {
+                renderOutput = (
+                    <div class='center' style = {{position: "fixed", top: "95%", left: "30%" }}>  
+                    <ScaleLoader
+                    size={50}
+                    color={"green"}
+                   loading={this.state.loading}
+                     />
                     </div>
-                     <div>
-                      <button style={{backgroundColor: "transparent",border: "none",  color: "green", fontSize: "20px"}}> <i class="far fa-heart"></i> </button>
-                    </div>
-                  </div>
-                  <span style={{ float: 'right' }}>
-                  <div>
-                     <p  style={{ color: "grey", fontSize: "10px"}}> {new Date()- this.props. student_jobs[i].posted_date} days ago </p>
-                    </div>
-                  </span>
-                </Card.Body>
-              </Card.Title>
-              <hr />
-            </div>
-          </div>,
-        );
-      }
+
+                )
+            }
+    let paginateElem = null
+    if(this.state.company_jobs.length > 0){
+        paginateElem = (
+            <div>
+            <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}/></div>
+        )
     }
+
     return (
-      <React.Fragment>
-        <div className='container'>
-          <div className='row'>
+      
+          <div class="col-8" style={{borderLeft:"1px solid #e6e6e6"}}>
             <div className='col-md-12 mt-5'>
               <h3
-                style={{ color: '#028A0F', textAlign: 'left' }}
-                className='pl-3'>
-                {this.props.companyName} Jobs
+                 style={{ color: '#028A0F', textAlign: 'left' }}
+                 className='pl-3'>
+                 {this.props.companyName} Jobs
               </h3>
               <div className='col-md-12 mt-5' style={{ display: 'flex'}}>
-              <input
-              type='text'
-              placeholder='Search Job Title, or City'
-              className='mr-sm-3'
-              style={{ width: '8cm' }}
-              value={this.state.inputValue}
-              onChange={this.searchChangeHandler}
-            />
-            <Button onClick={this.search} variant='primary'>
-              Find Jobs
-            </Button>
+               <input type='text' placeholder='Search Job Title, or City' className='mr-sm-3'
+               style={{ width: '8cm' }} value={this.state.inputValue} onChange={this.searchChangeHandler} />
+                <Button onClick={this.search} variant='primary'>Find Jobs</Button>
+              </div>
             </div>
+            <div class='row'>
+                {renderOutput}
             </div>
-            {renderOutput}
+            {paginateElem}
+                
           </div>
-        </div>
-      </React.Fragment>
-    );
+            )
   }
+
 }
-
-JobsTab.propTypes = {
-  saveJobs: PropTypes.func.isRequired,
-  student_jobs: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  student_jobs: state.student_jobs.student_jobs,
-});
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-      saveJobs: (data) => dispatch(saveJobs(data)),
-     
-    }
-  }
-export default connect(mapStateToProps,mapDispatchToProps )(JobsTab);
+export default JobsTab;
