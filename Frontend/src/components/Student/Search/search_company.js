@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/navbar_student';
 import backendServer from '../../../webConfig';
 import axios from 'axios';
+import Loader from 'react-loader-spinner';
 
 class SearchCompany extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       pager: {},
       pageOfItems: [],
     };
@@ -29,6 +31,7 @@ class SearchCompany extends Component {
       .then((response) => {
         console.log(response);
         this.setState({
+          loading: false,
           pager: response.data.pager,
           pageOfItems: response.data.items,
         });
@@ -44,11 +47,28 @@ class SearchCompany extends Component {
   }
   render() {
     const { pager, pageOfItems } = this.state;
-    let renderOutput = (
-      <h3>
-        <b>No results found</b>
-      </h3>
-    );
+    let renderOutput = <div></div>;
+    if (this.state.loading) {
+      renderOutput = (
+        <div
+          style={{
+            width: 500,
+            position: 'relative',
+            left: '50%',
+            top: '50%',
+            // transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <Loader type='Puff' color='#00b32d' height={70} width={100} />
+        </div>
+      );
+    } else if (!pageOfItems || pageOfItems.length < 1) {
+      renderOutput = (
+        <h3>
+          <b>No results found</b>
+        </h3>
+      );
+    }
     if (pageOfItems && pageOfItems.length > 0) {
       renderOutput = [];
       for (var i = 0; i < pageOfItems.length; i++) {
@@ -84,7 +104,7 @@ class SearchCompany extends Component {
                       <h6 className='ml-3'>
                         {value.rating && <span>{value.rating} </span>}
                         <img
-                        alt = 'rating'
+                          alt='rating'
                           height='16'
                           width='16'
                           src='https://upload.wikimedia.org/wikipedia/commons/1/1f/Green_star_41-108-41.svg'

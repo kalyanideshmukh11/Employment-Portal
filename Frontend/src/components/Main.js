@@ -33,7 +33,6 @@ import adminCompanyReport from './Admin/companyProfile/statistics';
 import adminDemographics from './Admin/companyProfile/demographics';
 import nonUserLanding from './nonUser/landingPage';
 import nonUserCompanyReview from './nonUser/nonUserReviews';
-import ApexChart from './Admin/Dashboard/mostReviewed';
 import CompanyOverview from './Student/CompanyOverview/companyOverview';
 import JobsTab from './Student/Jobs/jobsTab';
 import JobDetails from './Student/Job/JobDetails';
