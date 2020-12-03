@@ -47,8 +47,27 @@ router.get('/:companyName', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(JSON.stringify(results.data));
       }
-    },
-  );
-});
+    }
+    );
+  });
 
+  router.get('/all', (req, res) => {
+    console.log('Get all jobs');
+    kafka.make_request(
+      'jobs_topic',
+      { path: 'getJobs' },
+      function (err, results) {
+        if (err) {
+          console.log('Inside err');
+          console.log(err);
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          res.end('Some error has occured');
+        } else {
+          console.log(results);
+          res.writeHead(200, { 'Content-Type': 'text/plain' });
+          res.end(JSON.stringify(results.data));
+        }
+      }
+    );
+  });
 module.exports = router;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import StudentNavbar from '../Navbar/navbar_student';
-import CompanyOverviewTab from '../Tabs/homeTabs';
+//import CompanyOverviewTab from '../Tabs/homeTabs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare } from '@fortawesome/free-solid-svg-icons';
 import { Card, Col } from 'react-bootstrap';
@@ -25,9 +25,7 @@ class InterviewList extends Component {
 
   componentDidMount() {
     axios
-      .get(
-        `${backendServer}student/interview/get/${this.props.location.state.id}`
-      )
+      .get(`${backendServer}student/interview/get/${this.props.id}`)
       .then((response) => {
         if (response.data) {
           this.setState({
@@ -117,9 +115,9 @@ class InterviewList extends Component {
           neutral++;
         }
       }
-      data.push((positive * 100) / interviews.length);
-      data.push((neutral * 100) / interviews.length);
-      data.push((negative * 100) / interviews.length);
+      data.push(((positive * 100) / interviews.length).toFixed(2));
+      data.push(((neutral * 100) / interviews.length).toFixed(2));
+      data.push(((negative * 100) / interviews.length).toFixed(2));
     }
     return data;
   }
@@ -141,8 +139,10 @@ class InterviewList extends Component {
   }
 
   render() {
-    console.log('this.props.location.state');
-    console.log(this.props.location.state);
+    //console.log('this.props.location.state');
+    //console.log(this.props.location.state);
+    console.log('this.props');
+    console.log(this.props);
     let interviewTag = null;
     let data = [];
     let avgDifficulty = 0;
@@ -159,6 +159,7 @@ class InterviewList extends Component {
 
       let d = this.calculateExp(this.state.interviews);
       avgDifficulty = this.getDifficultyAverage(this.state.interviews);
+      avgDifficulty = avgDifficulty.toFixed(2);
       avgDifficultyColor = this.getDifficultyAverageColor(avgDifficulty);
       let l = [];
       if (d.length > 0) {
@@ -196,9 +197,23 @@ class InterviewList extends Component {
           return (
             <div>
               <Card.Text style={{ color: '#49504C' }}>{que.question}</Card.Text>
-              <Link
+              {/*<Link
                 to={{
                   pathname: '/student/interview/answers',
+                  state: {
+                    job_title: interviewCard.job_title,
+                    question: que.question,
+                    answers: que.answers,
+                    ansCountString: ansTag,
+                  },
+                }}
+              >*/}
+              <Link
+                to={{
+                  pathname: '/student/tabs',
+                  companyName: interviewCard.companyName,
+                  companyID: interviewCard.sql_company_id,
+                  category: 'answers',
                   state: {
                     job_title: interviewCard.job_title,
                     question: que.question,
@@ -297,10 +312,8 @@ class InterviewList extends Component {
         position: 'right',
       },
     };
-
     return (
       <div>
-        <CompanyOverviewTab />
         <div style={{ margin: 'auto', width: '50%' }}>
           <Card style={{ width: '22cm' }}>
             <br />
