@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Card, Button, Image } from 'react-bootstrap';
-import HomeTabs from '../Tabs/homeTabs'
 import UploadImageModalForm from './uploadImageModal'
 import ScaleLoader from "react-spinners/ScaleLoader";
 import axios from 'axios'
@@ -48,19 +47,27 @@ class PhotosTab extends Component {
             {headers: { Authorization: `${localStorage.getItem("token")}` }
             })
             .then(response => {
-                const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
-                this.state.photo_items = []
-                this.setState({
-                    photo_items: this.state.photo_items.concat(slice),
-                    pageCount: Math.ceil(response.data.length / this.state.perPage),
-                    loading: false
-                });
+                if(response.data === "NO_PHOTOS_AVAILABLE"){
+                    this.setState({
+                        loading: false,
+                        status: response.data
+                    })
+                } else {
+                    const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+                    this.state.photo_items = []
+                    this.setState({
+                        photo_items: this.state.photo_items.concat(slice),
+                        pageCount: Math.ceil(response.data.length / this.state.perPage),
+                        loading: false
+                    });
+                }
+
             })
         }, 800)
     }
 
     ImageBox = (props) => {
-        return <Image src={props.s3Url} style={{width:"9cm", height:"8cm", padding:"5px 5px 10px 60px"}}/>
+        return <Image src={props.s3Url} style={{width:"9cm", height:"8cm", padding:"5px 5px 10px 20px"}}/>
     } 
 
     photoItems = () => {
@@ -80,12 +87,17 @@ class PhotosTab extends Component {
     render(){
         let section,
         renderOutput = [];
+        if(this.state.status === "NO_PHOTOS_AVAILABLE"){
+            renderOutput = (<div style={{padding: "0px 10px 10px 10px", color:"gray", fontSize: "18px"}}>
+                This company has no photos available. Be the first to add them.
+            </div>)
+        } else
         if (this.state && this.state.photo_items && this.state.photo_items.length > 0) {
             section = this.photoItems(this.state.photo_items);
             renderOutput.push(section);
                 }else {
                     renderOutput = (
-                        <div class='center' style = {{position: "fixed", top: "65%", left: "50%" }}>  
+                        <div class='center' style = {{position: "fixed", top: "60%", left: "50%" }}>  
                         <ScaleLoader
                         size={50}
                         color={"green"}
@@ -119,7 +131,6 @@ class PhotosTab extends Component {
         
         return(
             <div>
-                <HomeTabs />
                 <UploadImageModalForm show={this.state.showModal} onHide={this.handleClose} />
 
                 <div class='col-11' style={{padding: "20px 10px 30px 225px"}}>

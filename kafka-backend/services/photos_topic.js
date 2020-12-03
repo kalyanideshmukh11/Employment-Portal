@@ -65,11 +65,16 @@ async function getCompanyPhotos(msg, callback){
       error.message = err
       error.status = 500
       return callback(null, error);
-    } else if (result) {
+    } else if (result.length > 0) {
       console.log(result)
       response.status = 200
       response.message = 'PHOTO_UPLOADED'
       response.data = result[0].photos
+      return callback(null, response)
+    } else {
+      response.status = 200
+      response.message = 'PHOTO_UPLOADED'
+      response.data = "NO_PHOTOS_AVAILABLE"
       return callback(null, response)
     }
   })
