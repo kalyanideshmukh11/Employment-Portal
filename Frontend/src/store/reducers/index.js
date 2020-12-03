@@ -13,5 +13,5 @@ export default combineReducers({
   review: studentReviewReducer,
   salary: studentSalaryReducer,
   companyOverview:companyOverviewReducer,
-  jobs: studentJobsReducer,
+  student_jobs: studentJobsReducer,
 });

@@ -9,7 +9,8 @@ module.exports.interviewService = function (msg, callback) {
       addInterview(msg, callback);
       break;
     case 'get_all_interviews':
-      getAllInterviews(msg, callback);
+      getAllInterviewsForCompany(msg, callback);
+      break;
     case 'searchByInterview':
       searchByCompanyInterview(msg, callback);
       break;
@@ -79,18 +80,23 @@ async function addInterview(msg, callback) {
   }
 }
 
-async function getAllInterviews(msg, callback) {
+async function getAllInterviewsForCompany(msg, callback) {
   let err = {};
   let response = {};
-  console.log('get All Interviews: ', msg);
+  console.log('get All Interviews: ', msg.body);
+  console.log(msg.body.company_id);
   try {
-    let interview = await Interview.findById(msg.body.sql_company_id);
-    if (interview) {
+    let interview = await Interview.find({
+      sql_company_id: msg.body.company_id,
+    });
+    console.log('response:');
+    console.log(response);
+    if (interview && interview.length > 0) {
       response.status = 200;
       response.data = JSON.stringify(interview);
       return callback(null, response);
     } else {
-      response.status = 200;
+      response.status = 500;
       response.data = 'NO_RECORD';
       return callback(null, response);
     }

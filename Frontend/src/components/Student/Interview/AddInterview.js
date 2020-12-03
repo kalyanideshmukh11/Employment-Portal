@@ -10,6 +10,7 @@ import {
   faThumbsDown,
   faMinus,
 } from '@fortawesome/free-solid-svg-icons';
+import { Redirect } from 'react-router';
 
 class AddInterview extends Component {
   constructor(props) {
@@ -30,7 +31,7 @@ class AddInterview extends Component {
         { value: 'Very Easy', key: 1 },
         { value: 'Easy', key: 2 },
         { value: 'Average', key: 3 },
-        { value: 'Difficult', key: 4 },
+        { value: 'Difficult', key: 5 },
       ],
       offer_option: [
         { value: 'No', key: 1 },
@@ -96,6 +97,7 @@ class AddInterview extends Component {
         { value: 'Yes, and I accepted', key: 3 },
       ],
       qaCount: 1,
+      interview_added: 0,
     });
   }
 
@@ -163,6 +165,9 @@ class AddInterview extends Component {
         console.log('Status Code : ', response.status);
         if (response.status === 200) {
           alert('Interview added');
+          this.setState({
+            interview_added: 1,
+          });
         }
       })
       .catch((error) => {
@@ -173,7 +178,11 @@ class AddInterview extends Component {
 
   render() {
     let qaTag = null;
+    let redirectVar = null;
 
+    if (this.state && this.state.interview_added) {
+      redirectVar = <Redirect to='/student/contributions/interviews' />;
+    }
     if (this.state && this.state.qaCount) {
       let nameList = [];
       for (let i = 0; i < this.state.qaCount; i++) {
@@ -182,6 +191,7 @@ class AddInterview extends Component {
       qaTag = nameList.map((name) => {
         return (
           <div>
+            {redirectVar}
             <Form.Group>
               <Form.Control
                 as='textarea'

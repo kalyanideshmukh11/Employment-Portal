@@ -95,7 +95,15 @@ class SearchCompany extends Component {
                   </div>
                   <div class='col-md-8'>
                     <Card.Title>
-                      <Link to={`/student/interview/${value.id}`}>
+                      <Link
+                        to={{
+                          pathname: '/student/tabs',
+                          companyName: value.name,
+                          companyID: value.id,
+                          category: 'interviews',
+                        }}
+                      >
+                        {/*`/student/interview/list/${value.id}`*/}
                         <h4 className='ml-3' style={{ color: 'green' }}>
                           {value.name && (
                             <span>
