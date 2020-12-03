@@ -101,7 +101,9 @@ class HomeTabs extends Component {
                   Overview{' '}
                 </Button>
                 <Button
-                  onClick={() => this.loadComp(<Comp str='sfsdg'></Comp>)}
+                  onClick={() =>
+                    this.loadComp(<Comp str='This is Jobs Tab'></Comp>)
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',

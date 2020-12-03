@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/navbar_student';
 import backendServer from '../../../webConfig';
 import axios from 'axios';
+import Loader from 'react-loader-spinner';
 
 class SearchCompany extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       pager: {},
       pageOfItems: [],
     };
@@ -29,6 +31,7 @@ class SearchCompany extends Component {
       .then((response) => {
         console.log(response);
         this.setState({
+          loading: false,
           pager: response.data.pager,
           pageOfItems: response.data.items,
         });
@@ -44,11 +47,42 @@ class SearchCompany extends Component {
   }
   render() {
     const { pager, pageOfItems } = this.state;
-    let renderOutput = (
-      <h3>
-        <b>No results found</b>
-      </h3>
-    );
+    let renderOutput = <div></div>;
+    //   <div
+    //     style={{
+    //       width: 500,
+    //       position: 'relative',
+    //       left: '50%',
+    //       top: '50%',
+    //       // transform: 'translate(-50%, -50%)',
+    //     }}
+    //   >
+    //     <Loader type='Puff' color='#00b32d' height={70} width={100} />
+    //   </div>
+    // );
+    if (this.state.loading) {
+      renderOutput = (
+        <div
+          style={{
+            width: 500,
+            position: 'relative',
+            left: '50%',
+            top: '50%',
+            // transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <Loader type='Puff' color='#00b32d' height={70} width={100} />
+        </div>
+      );
+    }
+
+    if (!pageOfItems) {
+      renderOutput = (
+        <h3>
+          <b>No results found</b>
+        </h3>
+      );
+    }
     if (pageOfItems && pageOfItems.length > 0) {
       renderOutput = [];
       for (var i = 0; i < pageOfItems.length; i++) {
@@ -179,6 +213,28 @@ class SearchCompany extends Component {
                 Showing Results for "{this.props.match.params.keyword}"
               </h4>
             </div>
+            {/* {this.state.loading ? (
+              <div
+                style={{
+                  width: 500,
+                  position: 'relative',
+                  left: '50%',
+                  top: '50%',
+                  // transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <Loader type='Puff' color='#00b32d' height={70} width={100} />
+              </div>
+            ) : (
+              // <Chart
+              //   options={this.state.options}
+              //   series={this.state.series}
+              //   type='bar'
+              //   width='500'
+              // />
+              // { renderOutput }
+              Object.entries({ renderOutput })
+            )} */}
             {renderOutput}
             <div className='card text-center m-3'>
               <div className='card-footer pb-0 pt-3'>

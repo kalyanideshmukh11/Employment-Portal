@@ -33,6 +33,7 @@ import CompanyOverview from './Student/CompanyOverview/companyOverview';
 import JobsTab from './Student/Jobs/jobsTab';
 import JobDetails from './Student/Job/JobDetails';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
+import ReviewsPerday from './Admin/Dashboard/reviewsPerday';
 
 class Main extends Component {
   render() {
@@ -135,6 +136,7 @@ class Main extends Component {
           component={adminCompanyReview}
         />
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
+        <Route exact path='/reviewcount' component={ReviewsPerday} />
       </div>
     );
   }

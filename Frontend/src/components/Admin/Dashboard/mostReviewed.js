@@ -10,20 +10,20 @@ class ApexChart extends Component {
 
     this.state = {
       loading: true,
-      options: {
-        chart: {
-          id: 'basic-bar',
-        },
-        xaxis: {
-          categories: ['a', 'b', 'c'],
-        },
-      },
-      series: [
-        {
-          name: 'series-1',
-          data: [1, 5, 3],
-        },
-      ],
+      // options: {
+      //   chart: {
+      //     id: 'basic-bar',
+      //   },
+      //   xaxis: {
+      //     categories: ['a', 'b', 'c'],
+      //   },
+      // },
+      // series: [
+      //   {
+      //     name: 'series-1',
+      //     data: [1, 5, 3],
+      //   },
+      // ],
     };
     this.getData();
   }
@@ -49,7 +49,6 @@ class ApexChart extends Component {
             },
           ],
         });
-        // this.forceUpdate();
       }
     });
   }
