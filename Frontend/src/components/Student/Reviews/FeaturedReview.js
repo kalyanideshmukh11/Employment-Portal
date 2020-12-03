@@ -22,7 +22,6 @@ export const FeaturedReview = (props) => {
 
     const list = (
       <div>
-        <hr />
         <Button
           class='button button1'
           style={{
@@ -76,7 +75,7 @@ export const FeaturedReview = (props) => {
   } else {
     return (
       <div>
-        <p>Loading featured review.</p>
+        <p></p>
       </div>
     );
   }

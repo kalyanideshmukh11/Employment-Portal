@@ -146,9 +146,8 @@ salaryItems = () => {
     return (
       <React.Fragment>
         <Row> 
-            <h4 style={{ color: '#3BB143', float: 'left' }}> Salary range of all the job title</h4>
-            <Col  md={{ span: 6, offset: 0 }}>
-                <div class='row w-100 bg-light text-dark mt-5 p-5 shadow rounded' >
+            <Col  md={{ span: 6, offset: 3 }}>
+                <div class='row w-100  mt-5 p-5  border rounded'>
                   {renderOutput}
                 </div>
                   {paginateElem}

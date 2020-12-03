@@ -26,7 +26,7 @@ class HomeTabs extends Component {
         this.state = {
           loadComponent: (
             <CompanyOverview
-              companyID={this.props.location.companyID}
+              companyID={this.props.location.companyID} companyName={this.props.location.companyName}
             ></CompanyOverview>
           ),
         };
@@ -86,7 +86,7 @@ class HomeTabs extends Component {
                   onClick={() =>
                     this.loadComp(
                       <CompanyOverview
-                        companyID={this.props.location.companyID}
+                        companyID={this.props.location.companyID} companyName={this.props.location.companyName}
                       ></CompanyOverview>
                     )
                   }

@@ -10,8 +10,7 @@ class SalaryList extends Component {
   }
   render(){
       return(
-      <div className='container' style={{ paddingRight: '60%' }}>
-        <hr/>
+      <div className='container'>
       <p style={{marginLeft: '10px', fontSize: '20px',color: '#1355a9',fontWeight: 'bold'}}>
         {' '}
         { this.props.salary_items._id.job_title}
