@@ -137,13 +137,13 @@ async function getReviewDetails(msg, callback) {
   });
 }
 
+
 async function companyReviews(msg, callback) {
   let err = {};
   let response = {};
-  console.log('In companyReviews service. Msg: ', msg);
-  console.log(msg.body);
+  console.log('In company reviews service. Msg: ', msg);
 
-  redisClient.get('allReviews', function (err, data) {
+  redisClient.get('companyReviews', function (err, data) {
     if (err) {
       console.log('error');
       response.status = 400;
@@ -157,21 +157,55 @@ async function companyReviews(msg, callback) {
     // }
     else {
       console.log('fetching from mongoDb');
-      Review.find({ company: msg.body }, function (err, doc) {
-        if (err || !doc) {
-          response.status = 400;
-        } else {
-          console.log(doc)
-          //redisClient.setex("allReviews", 36000, JSON.stringify(doc));
-          response.status = 200;
-          response.data = doc;
-          //console.log(response)
-          return callback(null, response);
-        }
+      Review.find({ company: msg.body, approvedstatus: "Approved"})
+      .then ((rev) => {
+         //redisClient.setex("companyReviews", 36000, JSON.stringify(rev));
+        response.status = 200;
+        response.data = rev;
+        response.message = 'REVIEW_FETCHED';
+        return callback(null, response);
+      })
+      .catch((err) => {
+        console.log(err);
       });
     }
-  });
+})
 }
+// async function companyReviews(msg, callback) {
+//   let err = {};
+//   let response = {};
+//   console.log('In companyReviews service. Msg: ', msg);
+//   console.log(msg.body);
+
+//   redisClient.get('allReviews', function (err, data) {
+//     if (err) {
+//       console.log('error');
+//       response.status = 400;
+//     }
+//     // else if (data) {
+//     //     console.log("fetching from redis cache");
+//     //     console.log(data);
+//     //     response.data = (JSON.parse(data));
+//     //     console.log(response);
+//     //     return callback( null, response)
+//     // }
+//     else {
+//       console.log('fetching from mongoDb');
+//       Review.find({ company: msg.body }, {approvedstatus: "Approved"} function (err, doc) {
+//         if (err || !doc) {
+//           response.status = 400;
+//         } else {
+//           console.log(doc)
+//           //redisClient.setex("allReviews", 36000, JSON.stringify(doc));
+//           response.status = 200;
+//           response.data = doc;
+//           //console.log(response)
+//           return callback(null, response);
+//         }
+//       });
+//     }
+//   });
+// }
 
 async function updateFavFeatured(msg, callback) {
   let err = {};

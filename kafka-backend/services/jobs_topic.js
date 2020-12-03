@@ -145,7 +145,7 @@ async function getJobsStatistics(msg, callback) {
   });
 
   await Jobs.aggregate([
-    { $match: { title: 'Data Scientist, Analytics' } },
+    { $match: { title: msg.body } },
     { $project: { _id: 0, count: { $size: '$applied_students' } } },
   ])
     .then((data) => {
@@ -187,6 +187,7 @@ async function searchJobTitle(msg, callback) {
     });
 }
 
+
 async function getApplicantId(msg, callback) {
   let err = {};
   let response = {};
@@ -211,6 +212,7 @@ async function getApplicantId(msg, callback) {
     });
 }
 
+
 async function getExploreJobs(msg, callback) {
   let err = {};
   let response = {};
@@ -230,7 +232,6 @@ async function getExploreJobs(msg, callback) {
     }
   });
 }
-
 
 async function applyToJob(msg, callback) {
   let err = {};

@@ -86,14 +86,7 @@ class StudentNavbar extends Component {
                 <Dropdown.Item eventKey='Interviews'>Interviews</Dropdown.Item>
               </DropdownButton>
             </InputGroup>
-
-            <FormControl
-              style={{ marginLeft: '5mm' }}
-              type='text'
-              placeholder='Location'
-              className='mr-sm-4'
-              onChange
-            />
+            
             <Button variant='success'>Search</Button>
           </Form>
           <Nav>
