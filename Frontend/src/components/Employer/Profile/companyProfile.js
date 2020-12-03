@@ -45,7 +45,7 @@ render() {
                         <Button href = '/company/home' style={{backgroundColor: "transparent", color: "green", border: "none", fontSize: "23px" }}> Overview </Button>
                         <Button href = '/company/jobs'style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #A9A9A9", fontSize: "23px"}}> Jobs </Button>
                         <Button href = '/company/reviews' style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #A9A9A9", fontSize: "23px"}}> Reviews </Button>
-                        {/* <Button style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Applicants </Button> */}
+                        {/*<Button style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Applicants </Button> */}
                         <Button href = '/company/profileUpdate' style={{float: "right", marginLeft: "500px", backgroundColor: "green", border: "green"}}> Update profile details</Button>
                     </div>
                 </div>

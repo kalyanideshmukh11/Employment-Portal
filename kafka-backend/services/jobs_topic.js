@@ -1,5 +1,6 @@
 const Jobs = require('../models/jobs');
 const paginate = require('jw-paginate');
+const pool = require('../config/sqlConfig');
 
 module.exports.jobsService = function (msg, callback) {
   console.log('In jobs service path', msg.path);
@@ -24,8 +25,8 @@ module.exports.jobsService = function (msg, callback) {
       searchJobTitle(msg, callback);
       break;
     
-    case 'getApplicantId':
-      getApplicantId(msg, callback);
+    case 'getDemographics':
+      getDemographics(msg, callback);
       break;
 
     case 'getExploreJobs':
@@ -82,17 +83,6 @@ async function getJobsStatistics(msg, callback) {
   console.log(msg.body);
   console.log(start);
 
-  
-  // await Jobs.find({
-  //   _id: msg.body,
-  //   // posted_date: {$elemMatch: { $lt: 11/29/2019 }},
-  // }).count()
-  // .then((data) =>
-  //   {
-  //     count.jobsCount = data
-  //   })
-  // console.log(response);
-
   await Jobs.aggregate([
     { $match: { title: 'Data Scientist, Analytics' } },
     { $unwind: '$applied_students' },
@@ -111,13 +101,16 @@ async function getJobsStatistics(msg, callback) {
       count.selectedCount = data
     })
 
-  await Jobs.aggregate([
-    { $match: { title: 'Data Scientist, Analytics' } },
-    {$project: {_id: 0, count: {$size: '$applied_students'}}}
-  ])
-  .then((data) => {
-    count.applicantCount = data[0].applicants
-  })
+  await Jobs.find({ title: 'Data Scientist, Analytics' }, 
+    {'applied_students.sql_student_id':1, _id: 0})
+    .then((data) => {
+      let applicantId = [];
+      for(const key of Object.keys(data[0]._doc)){
+        applicantId = data[0]._doc[key].map( val => val.sql_student_id)
+      }
+      console.log(applicantId)
+      count.applicantId = applicantId;
+    })
   .then(() => {
     console.log(count);
     response.status = 200;
@@ -154,30 +147,6 @@ async function searchJobTitle(msg, callback) {
 }
 
 
-async function getApplicantId(msg, callback) {
-  let err = {};
-  let response = {};
-  console.log('In get applicant ID for admin details topic. Msg: ', msg);
-  console.log(msg.body);
-  await Jobs.find({ title: 'Data Scientist, Analytics' }, 
-    {'applied_students.sql_student_id':1, _id: 0})
-    .then((data) => {
-      let applicantId = [];
-      for(const key of Object.keys(data[0]._doc)){
-        applicantId = data[0]._doc[key].map( val => 
-          val.sql_student_id)
-      }
-      console.log(applicantId)
-      response.status = 200;
-      response.data = applicantId;
-      return callback(null, response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
-
-
 async function getExploreJobs(msg, callback) {
   let err = {};
   let response = {};
@@ -197,6 +166,8 @@ async function getExploreJobs(msg, callback) {
     }
   })
 }
+
+
 async function applyToJob(msg, callback) {
   let err = {};
   let response = {};
@@ -233,4 +204,27 @@ async function applyToJob(msg, callback) {
     err.data = 'Error in Data';
     return callback(err, null);
   }
+}
+
+async function getDemographics(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log("In get job demographics topic service. Msg: ", msg);
+  console.log(msg.body);
+
+  let sql = `CALL get_applicantDemographics('${msg.body}');`;
+  console.log(sql)
+    pool.query(sql, (err, result) => {
+      if (err) {
+        err.status = 400;
+        return callback(null, err)
+      }
+      if (result && result.length > 0 && result[0][0]) {
+        console.log(result);
+        response.status = 200;
+        response.message = "APPLICANTDETAILS_FETCHED";
+        response.data = (JSON.stringify(result));
+        return callback(null, response)
+      };
+    });
 }
