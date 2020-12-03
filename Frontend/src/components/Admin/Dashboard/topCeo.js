@@ -5,7 +5,7 @@ import backendServer from '../../../webConfig';
 import Loader from 'react-loader-spinner';
 import { noAuto } from '@fortawesome/fontawesome-svg-core';
 
-class TopRated extends Component {
+class TopCeo extends Component {
   constructor(props) {
     super(props);
 
@@ -16,7 +16,7 @@ class TopRated extends Component {
   }
 
   getData() {
-    axios.get(`${backendServer}admin/toprated`).then((response) => {
+    axios.get(`${backendServer}admin/topceo`).then((response) => {
       console.log(response);
       if (response.status === 200) {
         this.setState({
@@ -33,11 +33,10 @@ class TopRated extends Component {
           series: [
             {
               name: 'Rating',
-              data: response.data.avgrating,
+              data: response.data.count,
             },
           ],
         });
-        // this.forceUpdate();
       }
     });
   }
@@ -77,4 +76,4 @@ class TopRated extends Component {
   }
 }
 
-export default TopRated;
+export default TopCeo;

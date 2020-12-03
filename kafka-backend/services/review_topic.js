@@ -49,6 +49,12 @@ exports.reviewService = function (msg, callback) {
     case 'updateHelpful':
       updateHelpful(msg, callback);
       break;
+    case 'topStudents':
+      TopStudents(msg, callback);
+      break;
+    case 'topCeo':
+      TopCeo(msg, callback);
+      break;
   }
 };
 
@@ -205,15 +211,10 @@ async function updateFavFeatured(msg, callback) {
 }
 
 async function ReviewsPerDay(msg, callback) {
-  console.log('In ReviewsPerDay: ');
-  console.log(Object.keys(msg.body));
-  let ids = Object.keys(msg.body);
-  const page = parseInt(msg.page) || 1;
+  var d = new Date();
+
   await Review.aggregate(
     [
-      // {
-      //   $match: { sql_company_id: { $in: ids } },
-      // },
       {
         $group: {
           _id: {
@@ -223,22 +224,22 @@ async function ReviewsPerDay(msg, callback) {
           },
           reviews: { $sum: 1 },
         },
-        // $project: { $sql_company_id: 1 },
-        // $group: {
-        //   _id: '$sql_company_id',
-        //   avgrating: { $avg: '$rating' },
-        //   // reviews: 1,
-        // },
+      },
+      {
+        $match: {
+          '_id.month': { $eq: d.getMonth() },
+          '_id.day': { $eq: d.getDay() },
+          '_id.year': { $eq: d.getFullYear() },
+        },
+      },
+      {
+        $count: 'total',
       },
     ],
     function (err, results) {
       console.log('Results:', results);
-      // for (var each of results) {
-      //   msg.body[each._id].reviews = each.reviews;
-      //   // msg.body[each._id].rating = each.rating;
-      // }
-      // console.log('msg.body:', msg.body);
-      callback(null, results);
+      let output = { total: results.total ? results.total : 0 };
+      callback(null, output);
     }
   );
 }
@@ -256,23 +257,12 @@ async function MostReviewed(msg, callback) {
       {
         $group: {
           _id: '$sql_company_id',
-          // _id: {
-          //   month: { $month: '$date' },
-          //   day: { $dayOfMonth: '$date' },
-          //   year: { $year: '$date' },
-          // },
+
           reviews: { $sum: 1 },
-          // avgrating: { $avg: '$rating' },
         },
       },
       {
         $sort: { reviews: -1 },
-        // $project: { $sql_company_id: 1 },
-        // $group: {
-        //   _id: '$sql_company_id',
-        //   avgrating: { $avg: '$rating' },
-        //   // reviews: 1,
-        // },
       },
     ],
     function (err, results) {
@@ -290,14 +280,9 @@ async function MostReviewed(msg, callback) {
         msg.body[each._id].reviews = each.reviews;
         let val = { [msg.body[each._id].name]: msg.body[each._id] };
         output.push(val);
-        // msg.body[each._id].rating = each.rating;
       }
       let final_output = { names: names, reviews: reviews };
       console.log('Results:', results);
-      // var msg = [];
-      // msg.push(msg.body);
-      // console.log('msg.body:', msg);
-      // console.log('type:', typeof msg);
       callback(null, final_output);
     }
   );
@@ -316,23 +301,12 @@ async function TopRated(msg, callback) {
       {
         $group: {
           _id: '$sql_company_id',
-          // _id: {
-          //   month: { $month: '$date' },
-          //   day: { $dayOfMonth: '$date' },
-          //   year: { $year: '$date' },
-          // },
-          // reviews: { $sum: 1 },
+
           avgrating: { $avg: '$rating' },
         },
       },
       {
         $sort: { avgrating: -1 },
-        // $project: { $sql_company_id: 1 },
-        // $group: {
-        //   _id: '$sql_company_id',
-        //   avgrating: { $avg: '$rating' },
-        //   // reviews: 1,
-        // },
       },
     ],
     function (err, results) {
@@ -350,14 +324,9 @@ async function TopRated(msg, callback) {
         msg.body[each._id].avgrating = each.avgrating;
         let val = { [msg.body[each._id].name]: msg.body[each._id] };
         output.push(val);
-        // msg.body[each._id].rating = each.rating;
       }
       let final_output = { names: names, avgrating: avgrating };
       console.log('Results:', results);
-      // var msg = [];
-      // msg.push(msg.body);
-      // console.log('msg.body:', msg);
-      // console.log('type:', typeof msg);
       callback(null, final_output);
     }
   );
@@ -504,4 +473,81 @@ async function updateHelpful(msg, callback) {
         console.log(err);
       });
   }
+}
+
+async function TopStudents(msg, callback) {
+  await Review.aggregate(
+    [
+      {
+        $match: { approvedstatus: { $eq: 'Approved' } },
+      },
+      {
+        $group: {
+          _id: { sql_student_id: '$sql_student_id' },
+
+          number: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { number: -1 },
+      },
+    ],
+    function (err, results) {
+      console.log('Results:', results);
+      // let output = [];
+      if (results.length > 5) {
+        results = results.slice(0, 5);
+      }
+      let number = [];
+      let student_ids = [];
+      let output = {};
+      for (var each of results) {
+        output[each._id.sql_student_id] = each.number;
+        student_ids.push(each._id.sql_student_id);
+        number.push(parseInt(each.number));
+      }
+      let final_output = { student_ids: student_ids, number: number };
+      callback(null, output);
+    }
+  );
+}
+
+async function TopCeo(msg, callback) {
+  console.log('In top rated company: ');
+  console.log(Object.keys(msg.body));
+  let ids = Object.keys(msg.body);
+  const page = parseInt(msg.page) || 1;
+  await Review.aggregate(
+    [
+      {
+        $match: { ceo_rating: { $eq: 1 } },
+      },
+      {
+        $group: {
+          _id: '$sql_company_id',
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+    ],
+    function (err, results) {
+      console.log('Results:', results);
+      let output = [];
+      if (results.length > 5) {
+        results = results.slice(0, 5);
+      }
+      let count = [];
+      let names = [];
+      console.log('msg.body:', msg.body);
+      for (var each of results) {
+        names.push(msg.body[each._id].ceo_name);
+        count.push(parseInt(each.count));
+      }
+      let final_output = { names: names, count: count };
+
+      callback(null, final_output);
+    }
+  );
 }

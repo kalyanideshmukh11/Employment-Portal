@@ -141,7 +141,7 @@ async function searchJobTitle(msg, callback) {
       console.log('length:', items.length);
       response.status = 200;
       // response.data = data;
-      const pager = paginate(items.length, page, 2);
+      const pager = paginate(items.length, page, 3);
       const pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
       response.data = { pager: pager, items: pageOfItems };
       return callback(null, response);

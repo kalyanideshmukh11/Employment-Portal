@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/navbar_student';
 import backendServer from '../../../webConfig';
 import axios from 'axios';
+import Loader from 'react-loader-spinner';
 
 class SearchJob extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       pager: {},
       pageOfItems: [],
     };
@@ -29,6 +31,7 @@ class SearchJob extends Component {
         console.log('JOB SEARCH!!!!!!1');
         console.log(response.data);
         this.setState({
+          loading: false,
           pager: response.data.pager,
           pageOfItems: response.data.items,
         });
@@ -46,11 +49,28 @@ class SearchJob extends Component {
 
   render() {
     const { pager, pageOfItems } = this.state;
-    let renderOutput = (
-      <h3>
-        <b>No results found</b>
-      </h3>
-    );
+    let renderOutput = <div></div>;
+    if (this.state.loading) {
+      renderOutput = (
+        <div
+          style={{
+            width: 500,
+            position: 'relative',
+            left: '50%',
+            top: '50%',
+            // transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <Loader type='Puff' color='#00b32d' height={70} width={100} />
+        </div>
+      );
+    } else if (!pageOfItems || pageOfItems.length < 1) {
+      renderOutput = (
+        <h3>
+          <b>No results found</b>
+        </h3>
+      );
+    }
     console.log('Page of items:', pageOfItems);
 
     if (pageOfItems && pageOfItems.length > 0) {
