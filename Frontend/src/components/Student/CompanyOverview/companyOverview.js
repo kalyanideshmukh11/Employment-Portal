@@ -113,8 +113,6 @@ render() {
             <React.Fragment>
             <div class='row w-100  mt-5 p-5  border rounded'>
             <div class='col-xs-12' style={{marginLeft: "15%"}}>
-                <h3 style={{color:'green'}}> {this.state.user.name} </h3>
-                <hr />
                 <h5 style={{margin:"0px"}}> Website</h5>
                 <p> {this.props.companyInfo.website} </p>
                 <h5 style={{margin:"0px"}}> Company Size </h5>
@@ -124,7 +122,7 @@ render() {
                 <h5 style={{margin:"0px"}}> Revenue </h5>
                 <p> {this.props.companyInfo.revenue} </p>
             </div>
-            <div class='col-xs-3' style={{textAlign: "left", height: "100%", marginLeft: "40%", marginTop: "5%"}}>
+            <div class='col-xs-3' style={{textAlign: "left", height: "100%", marginLeft: "40%", marginTop: "0%"}}>
                 <div style={{marginLeft: "10px"}}>
                     <h5 style={{margin:"0px"}}> Headquarters </h5>
                     <p> {this.props.companyInfo.headquarters}</p>
@@ -136,7 +134,7 @@ render() {
                     <p> {this.props.companyInfo.ceo_name} </p>
                 </div>
             </div>
-            <hr />
+           
             <div class='col-xs-3' style={{marginLeft: "15%"}}>
                 <br />
                 <h5 style={{margin:"0px"}}> Mission </h5>

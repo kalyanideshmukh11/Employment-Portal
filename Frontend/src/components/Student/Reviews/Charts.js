@@ -75,7 +75,7 @@ export const Charts = (props) => {
 else{
     return(
         <div>
-            <p>charts progressing</p>
+            <p> </p>
         </div>
     )
 }
