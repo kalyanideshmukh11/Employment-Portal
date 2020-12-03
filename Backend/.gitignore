@@ -8,6 +8,7 @@
 /public/uploads/student/profile_pictures
 /utils/awsS3config.js
 /public/uploads/s3Temp
+/routes/Employer/public
 
 
 # testing
