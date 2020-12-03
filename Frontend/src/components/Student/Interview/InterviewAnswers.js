@@ -28,12 +28,10 @@ class InterviewAnswers extends Component {
   }*/
 
   render() {
-    console.log('this.props.location.state');
-    console.log(this.props.location.state);
     let qaTag = null;
     let qTag = null;
     let ansTag = null;
-    if (this.props && this.props.location.state) {
+    if (this.props && this.props.state) {
       console.log('HERERERERER');
       qTag = (
         <Card style={{ width: '22cm' }}>
@@ -47,15 +45,15 @@ class InterviewAnswers extends Component {
           </Card.Title>
           <Card.Body>
             <Card.Text style={{ color: '#49504C' }}>
-              {this.props.location.state.job_title} Interview
+              {this.props.state.job_title} Interview
             </Card.Text>
             <Card.Text style={{ color: '#49504C' }}>
-              <em>"{this.props.location.state.question}"</em>
+              <em>"{this.props.state.question}"</em>
             </Card.Text>
           </Card.Body>
         </Card>
       );
-      qaTag = this.props.location.state.answers.map((ans) => {
+      qaTag = this.props.state.answers.map((ans) => {
         return <Card.Text style={{ color: '#49504C' }}>{ans.answer}</Card.Text>;
       });
 
@@ -71,7 +69,7 @@ class InterviewAnswers extends Component {
           </Card.Title>
           <Card.Body>
             <Card.Text style={{ color: '#7f7f7f', fontWeight: 'normal' }}>
-              {this.props.location.state.ansCountString}
+              {this.props.state.ansCountString}
             </Card.Text>
             {qaTag}
           </Card.Body>
@@ -80,7 +78,6 @@ class InterviewAnswers extends Component {
     }
     return (
       <div>
-        <CompanyOverviewTab />
         <div style={{ margin: 'auto', width: '50%' }}>
           <div>
             {qTag}

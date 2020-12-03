@@ -16,12 +16,11 @@ import { Redirect } from 'react-router';
 class AdminNavbar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isShow: false,
-      SearchType: 'Companies',
-      searchKeyword: '',
-      redirectVar: null,
-    };
+    this.state = { 
+        isShow: false, 
+        SearchType: 'Companies',
+        searchKeyword: '',
+        redirectVar: null, };
   }
 
   handleOpen = () => {

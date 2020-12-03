@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, Row, Col } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/navbar_student';
 import backendServer from '../../../webConfig';
@@ -84,6 +84,7 @@ class SearchCompany extends Component {
                       <h6 className='ml-3'>
                         {value.rating && <span>{value.rating} </span>}
                         <img
+                        alt = 'rating'
                           height='16'
                           width='16'
                           src='https://upload.wikimedia.org/wikipedia/commons/1/1f/Green_star_41-108-41.svg'

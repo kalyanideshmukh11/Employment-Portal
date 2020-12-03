@@ -5,6 +5,8 @@ import Comp from '../component';
 import CompanyOverview from '../CompanyOverview/companyOverview';
 import ReviewTab from '../Reviews/ReviewTab';
 import AddSalary from '../Salary/AddSalary';
+import Interview from '../Interview/InterviewList';
+import Answers from '../Interview/InterviewAnswers';
 
 class HomeTabs extends Component {
   constructor(props) {
@@ -39,6 +41,16 @@ class HomeTabs extends Component {
           ),
         };
       }
+    } else if (this.props.location.category === 'interviews') {
+      this.state = {
+        loadComponent: (
+          <Interview id={this.props.location.companyID}></Interview>
+        ),
+      };
+    } else if (this.props.location.category === 'answers') {
+      this.state = {
+        loadComponent: <Answers state={this.props.location.state}></Answers>,
+      };
     } else {
       this.state = {
         loadComponent: <Comp str='This is Overview'></Comp>,
@@ -48,6 +60,39 @@ class HomeTabs extends Component {
 
   componentWillReceiveProps(nextProp) {
     console.log('Received: ', nextProp);
+    if (
+      nextProp.location.category &&
+      nextProp.location.category === 'answers'
+    ) {
+      this.setState({
+        loadComponent: <Answers state={nextProp.location.state}></Answers>,
+      });
+    }
+  }
+
+  componentDidMount() {
+    if (
+      this.props.location.category &&
+      this.props.location.category === 'interviews'
+    ) {
+      this.setState({
+        loadComponent: (
+          <Interview id={this.props.location.companyID}></Interview>
+        ),
+      });
+    }
+
+    if (
+      this.props.location.category &&
+      this.props.location.category === 'answers'
+    ) {
+      this.setState({
+        loadComponent: <Answers state={this.props.location.state}></Answers>,
+      });
+    }
+
+    console.log('this.state');
+    console.log(this.state);
   }
   loadComp(param) {
     console.log('Button clicked', param);
@@ -58,6 +103,30 @@ class HomeTabs extends Component {
   render() {
     // TODO add image link
     // var imgSrc = `${backendServer}company/imageUpload/${fileName}`;
+    let loadComponent = null;
+    let addButton = null;
+    if (this.state && this.state.loadComponent) {
+      loadComponent = this.state.loadComponent;
+      if (
+        this.props.location &&
+        this.props.location.category === 'interviews'
+      ) {
+        addButton = (
+          <Button
+            href='/student/interview/add'
+            style={{
+              float: 'right',
+              marginLeft: '470px',
+              backgroundColor: '#1861bf',
+              border: '#1861bf',
+            }}
+          >
+            {' '}
+            Add an Interview
+          </Button>
+        );
+      }
+    }
     return (
       <React.Fragment>
         <Navigationbar />
@@ -179,6 +248,7 @@ class HomeTabs extends Component {
                   {' '}
                   Photos{' '}
                 </Button>
+                {addButton}
               </div>
             </div>
           </div>
@@ -195,8 +265,7 @@ class HomeTabs extends Component {
             <hr />
           </div>
         </div>
-
-        {this.state.loadComponent}
+        {loadComponent}
       </React.Fragment>
     );
   }

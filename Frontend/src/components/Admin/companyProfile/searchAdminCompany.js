@@ -93,7 +93,7 @@ class searchAdminCompany extends Component {
                     </h6>
                   </div>
 
-                  {/* <div class='col-md-2'>
+                  <div class='col-md-2'>
                     <h4>
                       {value.reviews && (
                         <span>
@@ -101,8 +101,8 @@ class searchAdminCompany extends Component {
                         </span>
                       )}
                     </h4>
-                    <Link to={`/student/reviews/${value.name}`}>Reviews</Link>
-                  </div> */}
+                    <Link to={`/admin/statistics/${value.name}`}>View Statictics</Link>
+                  </div>
                 </div>
               </Card.Body>
             </Card>

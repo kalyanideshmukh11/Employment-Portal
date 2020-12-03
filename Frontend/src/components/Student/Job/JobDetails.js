@@ -15,15 +15,31 @@ class JobDetails extends Component {
   handleApplicationModalShow = () => this.setState({ applicationShow: true });
 
   render() {
-    console.log('this.props.location.state');
-    console.log(this.props.location.state);
-    return (
-      <div>
-        <StudentNavbar />
-        <br />
-        <br />
+    let info = null;
+    let detailTag = null;
+    let navBar = null;
+    console.log(this.props);
+    if (this.props.location && this.props.location.state) {
+      console.log('this.props.location.state');
+      console.log(this.props.location.state);
+      info = this.props.location.state;
+      navBar = (
+        <div>
+          <StudentNavbar />
+          <br />
+          <br />
+        </div>
+      );
+    }
+    if (this.props.info) {
+      console.log('this.props.info');
+      console.log(this.props.info);
+      info = this.props.info;
+    }
 
-        <div style={{ margin: 'auto', width: '50%' }}>
+    if (info) {
+      detailTag = (
+        <div style={{ width: '50%' }}>
           <div>
             <Card style={{ width: '22cm' }}>
               <Card.Img variant='top' style={{ width: '15rem' }} src='' />
@@ -34,17 +50,16 @@ class JobDetails extends Component {
                   fontSize: '25px',
                 }}
               >
-                {this.props.location.state.companyName}
+                {info.companyName}
               </Card.Title>
               <div className='d-flex flex-row'>
                 <div style={{ width: '22cm' }}>
                   <Card.Body>
-                    <Card.Text>{this.props.location.state.industry}</Card.Text>
+                    <Card.Text>{info.industry}</Card.Text>
                     <br />
                     <Card.Text>
                       {' '}
-                      {this.props.location.state.city} |{' '}
-                      {this.props.location.state.country}
+                      {info.city} | {info.country}
                     </Card.Text>
                   </Card.Body>
                 </div>
@@ -77,31 +92,35 @@ class JobDetails extends Component {
                   fontSize: '25px',
                 }}
               >
-                {this.props.location.state.title}
+                {info.title}
               </Card.Title>
               <Card.Body>
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Job Description
                 </Card.Text>
-                <Card.Text>{this.props.location.state.description}</Card.Text>
+                <Card.Text>{info.description}</Card.Text>
                 <br />
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Responsibilities
                 </Card.Text>
-                <Card.Text>
-                  {this.props.location.state.responsibilities}
-                </Card.Text>
+                <Card.Text>{info.responsibilities}</Card.Text>
                 <br />
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Qualifications
                 </Card.Text>
-                <Card.Text>{this.props.location.state.qualification}</Card.Text>
+                <Card.Text>{info.qualification}</Card.Text>
               </Card.Body>
             </Card>
             <br />
             <br />
           </div>
         </div>
+      );
+    }
+    return (
+      <div>
+        {navBar}
+        {detailTag}
       </div>
     );
   }
