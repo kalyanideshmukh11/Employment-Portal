@@ -85,6 +85,7 @@ class AdminNavbar extends Component {
           </Form>
           <Nav>
             <Button
+              href = '/admin/allReviews'
               onClick={this.handleSearch}
               variant='success'
               style={{

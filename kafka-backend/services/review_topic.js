@@ -7,6 +7,11 @@ const sqlDB = require('../config/sqlConfig');
 exports.reviewService = function (msg, callback) {
   console.log('In reviewService - path:', msg.path);
   switch (msg.path) {
+
+    case 'getAllReviews':
+      getAllReviews(msg,callback);
+      break;
+
     case 'companyReviews':
       companyReviews(msg, callback);
       break;
@@ -48,6 +53,10 @@ exports.reviewService = function (msg, callback) {
       break;
     case 'updateHelpful':
       updateHelpful(msg, callback);
+      break;
+
+    case 'updateApproved':
+      updateApproved(msg, callback);
       break;
   }
 };
@@ -505,3 +514,60 @@ async function updateHelpful(msg, callback) {
       });
   }
 }
+
+
+async function getAllReviews(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In admin all reviews service. Msg: ', msg);
+
+  redisClient.get('allReviews', function (err, data) {
+    if (err) {
+      console.log('error');
+      response.status = 400;
+    }
+    // else if (data) {
+    //     console.log("fetching from redis cache");
+    //     console.log(data);
+    //     response.data = (JSON.parse(data));
+    //     console.log(response);
+    //     return callback( null, response)
+    // }
+    else {
+      console.log('fetching from mongoDb');
+      Review.find({company: "Google"})
+      .then ((rev) => {
+         //redisClient.setex("allReviews", 36000, JSON.stringify(rev));
+        response.status = 200;
+        response.data = rev;
+        response.message = 'REVIEW_FETCHED';
+        return callback(null, response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+})
+}
+
+async function updateApproved(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In update review approved service. Msg: ', msg);
+
+    await Review.findByIdAndUpdate(
+      { _id: msg.id },
+      { approvedstatus: msg.body },
+      { safe: true, new: true, useFindAndModify: false }
+    )
+      .then((user) => {
+        console.log(user);
+        console.log('Review marks as favourite');
+        response.status = 200;
+        response.message = 'REVIEW_UPDATED';
+        return callback(null, response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }

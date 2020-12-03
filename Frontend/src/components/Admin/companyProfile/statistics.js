@@ -22,7 +22,7 @@ class adminCompanyReport extends Component {
         }
 
         componentWillMount() {
-            axios.get(`${backendServer}admin/company/${this.props.match.params.companyName}`)
+            axios.get(`${backendServer}admin/company/${this.props.match.params.title}`)
             .then(res => {
                 axios.post(`${backendServer}glassdoor/jobs/getDemographics`, res.data.applicantId )
                 .then(res => {

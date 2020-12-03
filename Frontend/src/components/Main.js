@@ -40,6 +40,7 @@ import JobDetails from './Student/Job/JobDetails';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
 import InterviewAnswers from './Student/Interview/InterviewAnswers';
+import adminReview from './Admin/reviewsPhotos/allReviews';
 
 class Main extends Component {
   render() {
@@ -148,12 +149,13 @@ class Main extends Component {
           path='/admin/companyReview/:companyName'
           component={adminCompanyReview}
         />
-        <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
+        <Route exact path='/admin/statistics/:title' component = {adminCompanyReport} />
         {/* <Route exact path='/admin/demographics/:companyName' component = {adminDemographics} /> */}
         <Route exact path='/' component = {nonUserLanding} />
         <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
 
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
+        <Route exact path='/admin/allReviews' component={adminReview} />
         </div>
     );
   }
