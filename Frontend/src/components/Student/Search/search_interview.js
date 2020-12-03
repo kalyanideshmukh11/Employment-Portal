@@ -149,7 +149,7 @@ class SearchCompany extends Component {
                     <h5 className='ml-3' style={{ color: 'grey' }}>
                       {square}
                       <br />
-                      {value.rating && <span>{value.rating} </span>}
+                      {value.rating && <span>{value.rating.toFixed(1)} </span>}
                       {level}
                     </h5>
                   </div>
