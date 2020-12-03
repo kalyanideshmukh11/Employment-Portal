@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Navigationbar from '../Student/Navbar/navbar_company';
-import { Redirect } from 'react-router';
+import Navigationbar from '../../Student/Navbar/navbar_company';
+//import { Redirect } from 'react-router';
 //import { Link } from 'react-router-dom';
 import { Form, Button} from 'react-bootstrap';
 import axios from 'axios';
-import backendServer from '../../webConfig';
+import backendServer from '../../../webConfig';
 //import { bindActionCreators } from 'redux';
 
 class updateCompany extends Component {

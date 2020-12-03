@@ -1,8 +1,8 @@
-import Navigationbar from '../Student/Navbar/navbar_company';
+import Navigationbar from '../../Student/Navbar/navbar_company';
 import React, { Component } from 'react';
 import {CardImg, Button } from 'react-bootstrap';
 import axios from 'axios';
-import backendServer from '../../webConfig';
+import backendServer from '../../../webConfig';
 
 
 class companyProfile extends Component {
@@ -42,10 +42,10 @@ render() {
                         <h6> {this.state.user.street}</h6>
                         <h6> {this.state.user.city}, {this.state.user.state}</h6>
                         <br />
-                        <Button href = '/company' style={{backgroundColor: "transparent", color: "green", border: "none", fontSize: "25px" }}> Overview </Button>
-                        <Button style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Jobs </Button>
-                        <Button href = '/company/reviews' style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Reviews </Button>
-                        <Button style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Applicants </Button>
+                        <Button href = '/company/home' style={{backgroundColor: "transparent", color: "green", border: "none", fontSize: "23px" }}> Overview </Button>
+                        <Button href = '/company/jobs'style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #A9A9A9", fontSize: "23px"}}> Jobs </Button>
+                        <Button href = '/company/reviews' style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #A9A9A9", fontSize: "23px"}}> Reviews </Button>
+                        {/* <Button style={{backgroundColor: "transparent", color: "green", border: "none", borderLeft: "1px solid #e6e6e6", fontSize: "25px"}}> Applicants </Button> */}
                         <Button href = '/company/profileUpdate' style={{float: "right", marginLeft: "500px", backgroundColor: "green", border: "green"}}> Update profile details</Button>
                     </div>
                 </div>

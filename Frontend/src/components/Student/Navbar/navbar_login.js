@@ -2,14 +2,8 @@ import React, { Component } from 'react';
 import {
   Navbar,
   Nav,
-  NavDropdown,
-  Form,
-  FormControl,
   Button,
   Image,
-  DropdownButton,
-  Dropdown,
-  InputGroup,
 } from 'react-bootstrap';
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
 import { Redirect } from 'react-router';
@@ -87,12 +81,15 @@ class LoginNavbar extends Component {
         this.setState({
           redirect: <Redirect to='/student/home' />,
         });
-      }
-      if (localStorage.getItem('type') === 'company') {
+      } else if (localStorage.getItem('type') === 'company') {
         localStorage.setItem('sql_company_id', decoded.id);
         localStorage.setItem('name', decoded.name);
         this.setState({
           redirect: <Redirect to='/company/home' />,
+        });
+      } else if (localStorage.getItem('type') === 'admin') {
+        this.setState({
+          redirect: <Redirect to='/admin/home' />,
         });
       }
     }

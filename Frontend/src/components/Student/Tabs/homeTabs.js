@@ -1,30 +1,132 @@
 import Navigationbar from '../../Student/Navbar/navbar_student';
 import React, { Component } from 'react';
 import { CardImg, Button } from 'react-bootstrap';
-// import axios from 'axios';
-// import backendServer from '../../webConfig';
+import Comp from '../component';
+import CompanyOverview from '../CompanyOverview/companyOverview';
+import ReviewTab from '../Reviews/ReviewTab';
+import AddSalary from '../Salary/AddSalary';
+import Interview from '../Interview/InterviewList';
+import Answers from '../Interview/InterviewAnswers';
 
 class HomeTabs extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      user: {},
-      buttontxt: ' Review',
-    };
+
+    this.loadComp = this.loadComp.bind(this);
+    console.log('props:', this.props);
+    if (this.props.location.category) {
+      if (this.props.location.category === 'reviews') {
+        console.log('in if condition');
+        this.state = {
+          loadComponent: (
+            <ReviewTab
+              companyName={this.props.location.companyName}
+            ></ReviewTab>
+          ),
+        };
+      } else if (this.props.location.category === 'overview') {
+        this.state = {
+          loadComponent: (
+            <CompanyOverview
+              companyID={this.props.location.companyID}
+            ></CompanyOverview>
+          ),
+        };
+      } else if (this.props.location.category === 'salaries') {
+        this.state = {
+          loadComponent: (
+            <AddSalary
+              companyName={this.props.location.companyName}
+            ></AddSalary>
+          ),
+        };
+      }
+    } else if (this.props.location.category === 'interviews') {
+      this.state = {
+        loadComponent: (
+          <Interview id={this.props.location.companyID}></Interview>
+        ),
+      };
+    } else if (this.props.location.category === 'answers') {
+      this.state = {
+        loadComponent: <Answers state={this.props.location.state}></Answers>,
+      };
+    } else {
+      this.state = {
+        loadComponent: <Comp str='This is Overview'></Comp>,
+      };
+    }
   }
 
-  // componentWillMount() {
-  //     axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`)
-  //     .then(res => {
-  //         this.setState({ user: res.data });
-  //     });
-  // }
+  componentWillReceiveProps(nextProp) {
+    console.log('Received: ', nextProp);
+    if (
+      nextProp.location.category &&
+      nextProp.location.category === 'answers'
+    ) {
+      this.setState({
+        loadComponent: <Answers state={nextProp.location.state}></Answers>,
+      });
+    }
+  }
+
+  componentDidMount() {
+    if (
+      this.props.location.category &&
+      this.props.location.category === 'interviews'
+    ) {
+      this.setState({
+        loadComponent: (
+          <Interview id={this.props.location.companyID}></Interview>
+        ),
+      });
+    }
+
+    if (
+      this.props.location.category &&
+      this.props.location.category === 'answers'
+    ) {
+      this.setState({
+        loadComponent: <Answers state={this.props.location.state}></Answers>,
+      });
+    }
+
+    console.log('this.state');
+    console.log(this.state);
+  }
+  loadComp(param) {
+    console.log('Button clicked', param);
+    this.setState({ loadComponent: param });
+    this.forceUpdate();
+  }
 
   render() {
-    // console.log(this.state.user);
-    //console.log(this.props.user);
-    // var fileName = this.state.user.cphoto_file_name;
+    // TODO add image link
     // var imgSrc = `${backendServer}company/imageUpload/${fileName}`;
+    let loadComponent = null;
+    let addButton = null;
+    if (this.state && this.state.loadComponent) {
+      loadComponent = this.state.loadComponent;
+      if (
+        this.props.location &&
+        this.props.location.category === 'interviews'
+      ) {
+        addButton = (
+          <Button
+            href='/student/interview/add'
+            style={{
+              float: 'right',
+              marginLeft: '470px',
+              backgroundColor: '#1861bf',
+              border: '#1861bf',
+            }}
+          >
+            {' '}
+            Add an Interview
+          </Button>
+        );
+      }
+    }
     return (
       <React.Fragment>
         <Navigationbar />
@@ -44,16 +146,20 @@ class HomeTabs extends Component {
                 </card>
               </div>
               <div class='col-xs-4 profileName' style={{ marginLeft: '200px' }}>
-                <h1>{this.state.user.name}</h1>
-                <h6> {this.state.user.street}</h6>
-                <h6>
-                  {' '}
-                  {this.state.user.city}, {this.state.user.state}
-                </h6>
+                <h1>
+                  <b>{this.props.location.companyName}</b>
+                </h1>
+
                 <br />
 
                 <Button
-                  href='/company'
+                  onClick={() =>
+                    this.loadComp(
+                      <CompanyOverview
+                        companyID={this.props.location.companyID}
+                      ></CompanyOverview>
+                    )
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -65,6 +171,7 @@ class HomeTabs extends Component {
                   Overview{' '}
                 </Button>
                 <Button
+                  onClick={() => this.loadComp(<Comp str='sfsdg'></Comp>)}
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -78,6 +185,13 @@ class HomeTabs extends Component {
                   Jobs{' '}
                 </Button>
                 <Button
+                  onClick={() =>
+                    this.loadComp(
+                      <ReviewTab
+                        companyName={this.props.location.companyName}
+                      ></ReviewTab>
+                    )
+                  }
                   href=''
                   style={{
                     backgroundColor: 'transparent',
@@ -91,6 +205,9 @@ class HomeTabs extends Component {
                   Reviews{' '}
                 </Button>
                 <Button
+                  onClick={() =>
+                    this.loadComp(<Comp str='This is Interviews'></Comp>)
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -103,6 +220,13 @@ class HomeTabs extends Component {
                   Interviews{' '}
                 </Button>
                 <Button
+                  onClick={() =>
+                    this.loadComp(
+                      <AddSalary
+                        companyName={this.props.location.companyName}
+                      ></AddSalary>
+                    )
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -127,21 +251,7 @@ class HomeTabs extends Component {
                   {' '}
                   Photos{' '}
                 </Button>
-
-
-
-                <Button
-                  href='/student/profileUpdate'
-                  style={{
-                    float: 'right',
-                    marginLeft: '500px',
-                    backgroundColor: 'green',
-                    border: 'green',
-                  }}
-                >
-                  {' '}
-                  Add {this.state.buttontxt}
-                </Button>
+                {addButton}
               </div>
             </div>
           </div>
@@ -158,6 +268,7 @@ class HomeTabs extends Component {
             <hr />
           </div> */}
         </div>
+        {loadComponent}
       </React.Fragment>
     );
   }

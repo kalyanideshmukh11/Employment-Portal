@@ -9,7 +9,10 @@ const imageUpload = require('./routes/Employer/imageUpload');
 const reviewRouter = require('./routes/Employer/reviews');
 const interviewRouter = require('./routes/Student/interview');
 const salaryRouter = require('./routes/Student/salary');
+const adminCompanyRouter = require('./routes/Admin/adminCompany');
+const adminRouter = require('./routes/Admin/analytics');
 const studentJobRouter = require('./routes/Student/job');
+const studentReviewRouter= require('./routes/Student/reviews');
 
 app.use('/images', images);
 app.use('/student', studentRouter);
@@ -19,8 +22,12 @@ app.use('/glassdoor/jobs', jobs);
 app.use('/company/imageUpload', imageUpload);
 app.use('/company/reviews', reviewRouter);
 app.use('/student/interview', interviewRouter);
+app.use('/student/salary',salaryRouter);
+app.use('/admin/company', adminCompanyRouter);
 app.use('/student/salary', salaryRouter);
+app.use('/admin', adminRouter);
 app.use('/student/job', studentJobRouter);
+app.use('/student/reviews',studentReviewRouter);
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {

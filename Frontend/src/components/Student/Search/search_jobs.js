@@ -26,6 +26,7 @@ class SearchJob extends Component {
     axios
       .post(`${backendServer}glassdoor/jobs/search/job?page=${page}`, data)
       .then((response) => {
+        console.log('JOB SEARCH!!!!!!1');
         console.log(response.data);
         this.setState({
           pager: response.data.pager,
@@ -75,11 +76,20 @@ class SearchJob extends Component {
                       </h5>
                       <h4 className='ml-3' style={{ color: 'black' }}>
                         <Link
-                          to='student/job/jobdetails'
+                          to={{
+                            pathname: '/student/job/jobdetails',
+                            state: pageOfItems[i],
+                          }}
+                        >
+                          {' '}
+                          {pageOfItems[i].title}
+                        </Link>
+                        {/*<Link
+                          to='../../job/jobdetails'
                           params={{ data: pageOfItems[i] }}
                         >
                           {pageOfItems[i].title}
-                        </Link>
+                        </Link>*/}
                       </h4>
                     </Card.Title>
 

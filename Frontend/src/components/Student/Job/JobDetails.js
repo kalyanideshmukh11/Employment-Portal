@@ -15,13 +15,31 @@ class JobDetails extends Component {
   handleApplicationModalShow = () => this.setState({ applicationShow: true });
 
   render() {
-    return (
-      <div>
-        <StudentNavbar />
-        <br />
-        <br />
+    let info = null;
+    let detailTag = null;
+    let navBar = null;
+    console.log(this.props);
+    if (this.props.location && this.props.location.state) {
+      console.log('this.props.location.state');
+      console.log(this.props.location.state);
+      info = this.props.location.state;
+      navBar = (
+        <div>
+          <StudentNavbar />
+          <br />
+          <br />
+        </div>
+      );
+    }
+    if (this.props.info) {
+      console.log('this.props.info');
+      console.log(this.props.info);
+      info = this.props.info;
+    }
 
-        <div style={{ margin: 'auto', width: '50%' }}>
+    if (info) {
+      detailTag = (
+        <div style={{ width: '50%' }}>
           <div>
             <Card style={{ width: '22cm' }}>
               <Card.Img variant='top' style={{ width: '15rem' }} src='' />
@@ -32,15 +50,17 @@ class JobDetails extends Component {
                   fontSize: '25px',
                 }}
               >
-                Company Name
+                {info.companyName}
               </Card.Title>
               <div className='d-flex flex-row'>
                 <div style={{ width: '22cm' }}>
                   <Card.Body>
-                    <Card.Text>Company Details</Card.Text>
+                    <Card.Text>{info.industry}</Card.Text>
                     <br />
-                    <Card.Text>Company Details</Card.Text>
-                    <br />
+                    <Card.Text>
+                      {' '}
+                      {info.city} | {info.country}
+                    </Card.Text>
                   </Card.Body>
                 </div>
                 <div style={{ float: 'right', padding: '40px 100px 0 0' }}>
@@ -72,31 +92,35 @@ class JobDetails extends Component {
                   fontSize: '25px',
                 }}
               >
-                Job Title
+                {info.title}
               </Card.Title>
               <Card.Body>
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Job Description
                 </Card.Text>
-                <Card.Text>Detailed description. Get from props</Card.Text>
+                <Card.Text>{info.description}</Card.Text>
                 <br />
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Responsibilities
                 </Card.Text>
-                <Card.Text>list of responsibilities. Get from props</Card.Text>
+                <Card.Text>{info.responsibilities}</Card.Text>
                 <br />
                 <Card.Text style={{ fontWeight: 'bold', color: '#49504C' }}>
                   Qualifications
                 </Card.Text>
-                <Card.Text>
-                  list of necessary Qualifications. Get from props
-                </Card.Text>
+                <Card.Text>{info.qualification}</Card.Text>
               </Card.Body>
             </Card>
             <br />
             <br />
           </div>
         </div>
+      );
+    }
+    return (
+      <div>
+        {navBar}
+        {detailTag}
       </div>
     );
   }
