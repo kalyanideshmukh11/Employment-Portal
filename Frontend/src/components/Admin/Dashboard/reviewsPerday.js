@@ -11,21 +11,6 @@ class ReviewsPerday extends Component {
 
     this.state = {
       loading: true,
-      count: null,
-      // options: {
-      //   chart: {
-      //     id: 'basic-bar',
-      //   },
-      //   xaxis: {
-      //     categories: ['a', 'b', 'c'],
-      //   },
-      // },
-      // series: [
-      //   {
-      //     name: 'series-1',
-      //     data: [1, 5, 3],
-      //   },
-      // ],
     };
     this.getData();
   }
@@ -33,25 +18,60 @@ class ReviewsPerday extends Component {
   getData() {
     axios.get(`${backendServer}admin/reviewcount`).then((response) => {
       console.log(response);
-      console.log('total:', response.data.total);
       if (response.status === 200) {
         this.setState({
           loading: false,
           // loading: true,
-          count: response.data.total,
+          options: {
+            chart: {
+              id: 'basic-bar',
+            },
+            xaxis: {
+              categories: ['Review Count'],
+            },
+          },
+          series: [
+            {
+              name: 'Count',
+              // data: [response.data.total],
+              data: [2],
+            },
+          ],
         });
+        // this.forceUpdate();
       }
-      console.log('state:', this.state.count);
     });
   }
 
   render() {
     return (
       <div className='app'>
-        <div>
-          <h3>
-            <b> Today's review count: {this.state.count}</b>
-          </h3>
+        <div className='row'>
+          <div className='mixed-chart'>
+            {this.state.loading ? (
+              <div
+                style={{
+                  width: 500,
+                  height: 300,
+                  position: 'relative',
+                  left: '50%',
+                  top: '50%',
+
+                  // transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <Loader type='Puff' color='#00b32d' height={70} width={100} />
+              </div>
+            ) : (
+              <Chart
+                options={this.state.options}
+                series={this.state.series}
+                type='bar'
+                width='500'
+                height='300'
+              />
+            )}
+          </div>
         </div>
       </div>
     );

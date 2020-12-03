@@ -11,20 +11,6 @@ class TopRated extends Component {
 
     this.state = {
       loading: true,
-      // options: {
-      //   chart: {
-      //     id: 'basic-bar',
-      //   },
-      //   xaxis: {
-      //     categories: ['a', 'b', 'c'],
-      //   },
-      // },
-      // series: [
-      //   {
-      //     name: 'series-1',
-      //     data: [1, 5, 3],
-      //   },
-      // ],
     };
     this.getData();
   }
@@ -65,6 +51,7 @@ class TopRated extends Component {
               <div
                 style={{
                   width: 500,
+                  height: 300,
                   position: 'relative',
                   left: '50%',
                   top: '50%',
@@ -80,6 +67,7 @@ class TopRated extends Component {
                 series={this.state.series}
                 type='bar'
                 width='500'
+                height='300'
               />
             )}
           </div>

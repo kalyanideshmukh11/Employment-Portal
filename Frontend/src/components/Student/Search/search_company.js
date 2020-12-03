@@ -48,18 +48,6 @@ class SearchCompany extends Component {
   render() {
     const { pager, pageOfItems } = this.state;
     let renderOutput = <div></div>;
-    //   <div
-    //     style={{
-    //       width: 500,
-    //       position: 'relative',
-    //       left: '50%',
-    //       top: '50%',
-    //       // transform: 'translate(-50%, -50%)',
-    //     }}
-    //   >
-    //     <Loader type='Puff' color='#00b32d' height={70} width={100} />
-    //   </div>
-    // );
     if (this.state.loading) {
       renderOutput = (
         <div
@@ -74,9 +62,7 @@ class SearchCompany extends Component {
           <Loader type='Puff' color='#00b32d' height={70} width={100} />
         </div>
       );
-    }
-
-    if (!pageOfItems) {
+    } else if (!pageOfItems || pageOfItems.length < 1) {
       renderOutput = (
         <h3>
           <b>No results found</b>
@@ -118,7 +104,7 @@ class SearchCompany extends Component {
                       <h6 className='ml-3'>
                         {value.rating && <span>{value.rating} </span>}
                         <img
-                        alt = 'rating'
+                          alt='rating'
                           height='16'
                           width='16'
                           src='https://upload.wikimedia.org/wikipedia/commons/1/1f/Green_star_41-108-41.svg'
@@ -214,28 +200,6 @@ class SearchCompany extends Component {
                 Showing Results for "{this.props.match.params.keyword}"
               </h4>
             </div>
-            {/* {this.state.loading ? (
-              <div
-                style={{
-                  width: 500,
-                  position: 'relative',
-                  left: '50%',
-                  top: '50%',
-                  // transform: 'translate(-50%, -50%)',
-                }}
-              >
-                <Loader type='Puff' color='#00b32d' height={70} width={100} />
-              </div>
-            ) : (
-              // <Chart
-              //   options={this.state.options}
-              //   series={this.state.series}
-              //   type='bar'
-              //   width='500'
-              // />
-              // { renderOutput }
-              Object.entries({ renderOutput })
-            )} */}
             {renderOutput}
             <div className='card text-center m-3'>
               <div className='card-footer pb-0 pt-3'>

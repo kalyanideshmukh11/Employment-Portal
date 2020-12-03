@@ -6,6 +6,7 @@ import TopCeo from './topCeo';
 import TopStudents from './topStudents';
 import ReviewsPerday from './reviewsPerday';
 import '../../../Admin.css';
+import AdminLoginCheck from '../adminLoginCheck';
 
 class AnalyticsHome extends Component {
   constructor(props) {
@@ -18,13 +19,14 @@ class AnalyticsHome extends Component {
   render() {
     return (
       <React.Fragment>
+        <AdminLoginCheck />
         <Navbar />
-        <div>
+        {/* <div>
           <ReviewsPerday></ReviewsPerday>
-        </div>
+        </div> */}
 
-        <div class='content'>
-          <div id='div1'>
+        <div class='row'>
+          <div class='col-md-4'>
             <div>
               <h3>
                 <b>Top 5 most reviewed companies:</b>
@@ -32,15 +34,7 @@ class AnalyticsHome extends Component {
               <ApexChart></ApexChart>
             </div>
           </div>
-          <div id='div2'>
-            <div>
-              <h3>
-                <b>Top 10 CEO's:</b>
-              </h3>
-              <TopCeo></TopCeo>
-            </div>
-          </div>
-          <div id='div3'>
+          <div class='col-md-4'>
             <div>
               <h3>
                 <b>Top 5 most rated companies:</b>
@@ -48,12 +42,38 @@ class AnalyticsHome extends Component {
               <TopRated></TopRated>
             </div>
           </div>
-          <div id='div4'>
+          <div class='col-md-4'>
             <div>
               <h3>
                 <b>Top 5 students based on total accepted reviews made:</b>
               </h3>
               <TopStudents></TopStudents>
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-4'>
+            <div>
+              <h3>
+                <b>Top 10 most viewed companies:</b>
+              </h3>
+              <TopCeo></TopCeo>
+            </div>
+          </div>
+          <div class='col-md-4'>
+            <div>
+              <h3>
+                <b>Top 10 CEO's:</b>
+              </h3>
+              <TopCeo></TopCeo>
+            </div>
+          </div>
+          <div class='col-md-4'>
+            <div>
+              <h3>
+                <b>Number of reviews today:</b>
+              </h3>
+              <ReviewsPerday></ReviewsPerday>
             </div>
           </div>
         </div>
