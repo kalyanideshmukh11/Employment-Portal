@@ -36,6 +36,7 @@ import nonUserCompanyReview from './nonUser/nonUserReviews';
 import CompanyOverview from './Student/CompanyOverview/companyOverview';
 import JobsTab from './Student/Jobs/jobsTab';
 import JobDetails from './Student/Job/JobDetails';
+import PhotosTab from './Student/Photos/photosTab';
 import JobHome from './Student/Job/JobHome';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
@@ -133,6 +134,10 @@ class Main extends Component {
         />
         <Route exact path='/student/jobs/:companyName' component={JobsTab} />
         <Route exact path='/student/tabs' component={HomeTabs} />
+        <Route exact path='/student/tabs/photos' component={PhotosTab} />
+        <Route exact path='/student/job/jobdetails' component={JobDetails} />
+
+
         <Route exact path='/admin/home' component={AnalyticsHome} />
         <Route
           exact

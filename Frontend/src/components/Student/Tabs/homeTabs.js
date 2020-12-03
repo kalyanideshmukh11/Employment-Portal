@@ -7,6 +7,7 @@ import ReviewTab from '../Reviews/ReviewTab';
 import AddSalary from '../Salary/AddSalary';
 import Interview from '../Interview/InterviewList';
 import Answers from '../Interview/InterviewAnswers';
+import PhotosTab from '../Photos/photosTab'
 
 class HomeTabs extends Component {
   constructor(props) {
@@ -51,7 +52,12 @@ class HomeTabs extends Component {
       this.state = {
         loadComponent: <Answers state={this.props.location.state}></Answers>,
       };
-    } else {
+     }else if (this.props.location.category === 'photos') {
+      this.state = {
+        loadComponent: <PhotosTab companyID={this.props.location.companyID}></PhotosTab>,
+      };
+    }  
+    else {
       this.state = {
         loadComponent: <Comp str='This is Overview'></Comp>,
       };
@@ -151,6 +157,7 @@ class HomeTabs extends Component {
                 </h1>
 
                 <br />
+
                 <Button
                   onClick={() =>
                     this.loadComp(
@@ -179,6 +186,7 @@ class HomeTabs extends Component {
                     border: 'none',
                     borderLeft: '1px solid #e6e6e6',
                     fontSize: '25px',
+                    
                   }}
                 >
                   {' '}
@@ -238,7 +246,13 @@ class HomeTabs extends Component {
                   {' '}
                   Salaries{' '}
                 </Button>
-                <Button
+                <Button class = 'tab_button'
+                
+                onClick={() =>
+                    this.loadComp(
+                      <PhotosTab companyID={this.props.location.companyID}></PhotosTab>
+                    )
+                  }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -254,7 +268,7 @@ class HomeTabs extends Component {
               </div>
             </div>
           </div>
-          <div class='row' style={{ marginLeft: '10px' }}>
+          {/* <div class='row' style={{ marginLeft: '10px' }}>
             <div
               class='col-xs-3'
               style={{
@@ -265,7 +279,7 @@ class HomeTabs extends Component {
               }}
             ></div>
             <hr />
-          </div>
+          </div> */}
         </div>
         {loadComponent}
       </React.Fragment>

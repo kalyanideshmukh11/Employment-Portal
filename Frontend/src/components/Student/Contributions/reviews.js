@@ -5,22 +5,44 @@ import {Button, Card, Table} from 'react-bootstrap'
 import axios from 'axios'
 import backendServer from "../../../webConfig"
 import StarRatings from 'react-star-ratings';
+import ReactPaginate from 'react-paginate';
+
 
 class ReviewContribution extends Component{
  constructor(props){
      super(props)
          this.state = {
-            company_reviews: []
+            company_reviews: [],
+            offset: 0,
+            perPage: 3,
+            currentPage: 0
      }
+     this.handlePageClick = this.handlePageClick.bind(this);
+
  }
+ handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState({
+        currentPage: selectedPage,
+        offset: offset
+    }, () => {
+        this.componentWillMount()
+    });
+
+};
  componentWillMount = () => {
     axios.get(`${backendServer}student/studentReviews/${localStorage.getItem("sql_student_id")}`,
     {headers: { Authorization: `${localStorage.getItem("token")}` }
     })
     .then(response => {
+        const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.state.company_reviews = []
         this.setState({
-            company_reviews: this.state.company_reviews.concat(response.data) ,
-        })
+            company_reviews: this.state.company_reviews.concat(slice),
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
+        });
 
     })
 
@@ -77,7 +99,7 @@ class ReviewContribution extends Component{
      } else {
          details = (
          <tr>
-            <td colSpan="2" style={{padding: "10px 10px 10px 10px", color:"#33333", verticalAlign:"middle"}}> Please add your interview experiences to show it here.</td>
+            <td colSpan="3" style={{padding: "10px 10px 10px 10px", color:"#33333", verticalAlign:"middle"}}> Please add your reviews to show it here.</td>
          </tr>)
         review_contributions_count = (
                     <div>
@@ -85,6 +107,28 @@ class ReviewContribution extends Component{
                         You have <span style={{fontWeight:"600"}}>no</span> contributions in job/company reviews.
                     </div>
                 )
+         }
+         let paginateElem = null
+         if(this.state.company_reviews.length > 0){
+             paginateElem = (
+                 <div style= {{marginLeft:"5mm", marginRight:"5mm"}}>
+                 <hr />
+                 <ReactPaginate
+                 previousLabel={"prev"}
+                 nextLabel={"next"}
+                 breakLabel={"..."}
+                 breakClassName={"break-me"}
+                 pageCount={this.state.pageCount}
+                 marginPagesDisplayed={2}
+                 pageRangeDisplayed={5}
+                 onPageChange={this.handlePageClick}
+                 containerClassName={"pagination"}
+                 subContainerClassName={"pages pagination"}
+                 activeClassName={"active"}
+                 />
+                 
+                 </div>
+             )
          }
 
      return(
@@ -133,9 +177,10 @@ class ReviewContribution extends Component{
                 </Card.Text>
 
             </Card.Body>
-            
+            {paginateElem}
             </Card>               
-            
+            <br />
+            <br />   
         
     </div>
     </div>

@@ -145,7 +145,7 @@ class LoginNavbar extends Component {
       <div>
         {redirectVar}
         <Navbar bg='transparent' expand='lg'>
-          <Navbar.Brand href='/student/home'>
+          <Navbar.Brand href='/student/login'>
             <Image src={glassdorNavIco} style={{ width: '200px' }} />
           </Navbar.Brand>
           <Nav className='ml-auto'>
