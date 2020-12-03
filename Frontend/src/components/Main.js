@@ -120,7 +120,7 @@ class Main extends Component {
           component={ReviewTab}
         />
         <Route exact path='/student/addreviews' component={AddReview} />
-        <Route exact path='/company/report' component={companyReport}/>
+        <Route exact path='/company/report/:title' component={companyReport}/>
         <Route
           exact
           path='/student/salary/:companyName'
@@ -149,7 +149,7 @@ class Main extends Component {
           path='/admin/companyReview/:companyName'
           component={adminCompanyReview}
         />
-        <Route exact path='/admin/statistics/:title' component = {adminCompanyReport} />
+        <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
         {/* <Route exact path='/admin/demographics/:companyName' component = {adminDemographics} /> */}
         <Route exact path='/' component = {nonUserLanding} />
         <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
