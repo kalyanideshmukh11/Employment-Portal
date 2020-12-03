@@ -186,7 +186,7 @@ class StudentNavbar extends Component {
                 Demographics
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item
+              <NavDropdown.Item onClick={()=>{localStorage.setItem('contri-list', 'salaries')}}
                 href='/student/contributions/salaries'
                 style={{ padding: '15px 15px 15px 15px' }}
               >

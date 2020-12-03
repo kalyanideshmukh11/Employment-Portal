@@ -6,6 +6,8 @@
 .pnp.js
 /public/uploads/student/resumes
 /public/uploads/student/profile_pictures
+/utils/awsS3config.js
+/public/uploads/s3Temp
 
 
 # testing

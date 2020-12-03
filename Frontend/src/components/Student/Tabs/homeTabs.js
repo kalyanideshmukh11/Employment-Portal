@@ -21,7 +21,7 @@ class HomeTabs extends Component {
   // }
 
   render() {
-    console.log(this.state.user);
+    // console.log(this.state.user);
     //console.log(this.props.user);
     // var fileName = this.state.user.cphoto_file_name;
     // var imgSrc = `${backendServer}company/imageUpload/${fileName}`;
@@ -51,6 +51,7 @@ class HomeTabs extends Component {
                   {this.state.user.city}, {this.state.user.state}
                 </h6>
                 <br />
+
                 <Button
                   href='/company'
                   style={{
@@ -70,6 +71,7 @@ class HomeTabs extends Component {
                     border: 'none',
                     borderLeft: '1px solid #e6e6e6',
                     fontSize: '25px',
+                    
                   }}
                 >
                   {' '}
@@ -112,7 +114,8 @@ class HomeTabs extends Component {
                   {' '}
                   Salaries{' '}
                 </Button>
-                <Button
+                <Button class = 'tab_button'
+                href='/student/tabs/photos'
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',
@@ -124,8 +127,11 @@ class HomeTabs extends Component {
                   {' '}
                   Photos{' '}
                 </Button>
+
+
+
                 <Button
-                  href='/company/profileUpdate'
+                  href='/student/profileUpdate'
                   style={{
                     float: 'right',
                     marginLeft: '500px',
@@ -139,7 +145,7 @@ class HomeTabs extends Component {
               </div>
             </div>
           </div>
-          <div class='row' style={{ marginLeft: '10px' }}>
+          {/* <div class='row' style={{ marginLeft: '10px' }}>
             <div
               class='col-xs-3'
               style={{
@@ -150,7 +156,7 @@ class HomeTabs extends Component {
               }}
             ></div>
             <hr />
-          </div>
+          </div> */}
         </div>
       </React.Fragment>
     );
