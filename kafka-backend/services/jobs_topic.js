@@ -36,6 +36,10 @@ module.exports.jobsService = function (msg, callback) {
     case 'apply_job':
       applyToJob(msg, callback);
       break;
+
+    case 'getAdminJobStatistics':
+      getAdminJobStatistics(msg, callback);
+      break;
   }
 };
 
@@ -84,7 +88,7 @@ async function getJobsStatistics(msg, callback) {
   console.log(start);
 
   await Jobs.aggregate([
-    { $match: { title: 'Data Scientist, Analytics' } },
+    { $match: { title: msg.body } },
     { $unwind: '$applied_students' },
     { $unwind: { path: '$applied_students.application_status' } },
 
@@ -101,7 +105,7 @@ async function getJobsStatistics(msg, callback) {
       count.selectedCount = data
     })
 
-  await Jobs.find({ title: 'Data Scientist, Analytics' }, 
+  await Jobs.find({ title: msg.body }, 
     {'applied_students.sql_student_id':1, _id: 0})
     .then((data) => {
       let applicantId = [];
@@ -227,4 +231,55 @@ async function getDemographics(msg, callback) {
         return callback(null, response)
       };
     });
+}
+
+//Admin demographics topic
+async function getAdminJobStatistics(msg, callback) {
+  let err = {};
+  let response = {};
+  let count = {};
+  let start = new Date();
+  start.setDate(start.getDate() - 365);
+  start = start.toLocaleDateString();
+  console.log('In get job details topic. Msg: ', msg);
+  console.log(msg.body);
+  console.log(start);
+
+  await Jobs.aggregate([
+    { $match: { companyName: msg.body } },
+    { $unwind: '$applied_students' },
+    { $unwind: { path: '$applied_students.application_status' } },
+
+    {
+      $group: {
+        _id: '$applied_students.application_status',
+        Frequency: { $sum: 1 },
+      },
+    },
+  ])
+  .then((data) =>
+    {
+      console.log(data)
+      count.selectedCount = data
+    })
+
+  await Jobs.find({ companyName: msg.body }, 
+    {'applied_students.sql_student_id':1, _id: 0})
+    .then((data) => {
+      let applicantId = [];
+      for(const key of Object.keys(data[0]._doc)){
+        applicantId = data[0]._doc[key].map( val => val.sql_student_id)
+      }
+      console.log(applicantId)
+      count.applicantId = applicantId;
+    })
+  .then(() => {
+    console.log(count);
+    response.status = 200;
+    response.data = count;
+    return callback(null, response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 }

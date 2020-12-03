@@ -48,7 +48,6 @@ class companyReport extends Component {
         }
 
 render() {
-    console.log(this.state.sexualOrient)
     let ethnicitylabels = [];
     for(let i = 0; i<this.state.ethnicity.length; i++) {
         ethnicitylabels.push(this.state.ethnicity[i].ethnicity);
@@ -239,33 +238,32 @@ return(
         <br />
         <h1> {this.props.match.params.title}'s report</h1>
         <hr />
-        <br />
         <div>
             <MDBContainer>
-                <h5>Job Statistics</h5>
+                <h4>Applicant Statistics</h4>
             <Pie data = {companyData.dataPie}   />
-            {/* <p style={{fontWeight: "light",fontSize: "40px", marginLeft: "60px",  padding: "0px"}}>Job statistics</p>
-            <p style={{fontWeight: "light",fontSize: "25px", marginLeft: "60px",  padding: "0px"}}>Selected applicants: {this.state.selected}</p>
-            <p style={{fontWeight: "light",fontSize: "25px", marginLeft: "60px",  padding: "0px"}}>Rejected applicants: {this.state.rejected}</p> */}
             </MDBContainer>
         </div>
+        <br />
+        <h4> Applicant Demographics </h4>
+        <hr />
         <div style={{display: "flex", justifyContent: "space-between"}}>
         <div>
             <MDBContainer>
-                <h5> Ethnicity</h5>
+                <h6> Ethnicity</h6>
             <Pie data = {ethnicityData.dataPie}   />
             </MDBContainer>
         </div>
         <div>
             <MDBContainer>
-                <h5> Gender</h5>
+                <h6> Gender</h6>
             <Pie data = {genderData.dataPie}   />
             </MDBContainer>
         </div>
 
         <div>
             <MDBContainer>
-                <h5> Sexual Orientation</h5>
+                <h6> Sexual Orientation</h6>
             <Pie data = {sexualOrientData.dataPie}   />
             </MDBContainer>
         </div>
@@ -273,21 +271,21 @@ return(
         <div style={{display: "flex", justifyContent: "space-between"}}>
         <div>
             <MDBContainer>
-                <h5> Disability</h5>
+                <h6> Disability</h6>
             <Pie data = {disabilityData.dataPie}   />
             </MDBContainer>
         </div>
 
         <div>
             <MDBContainer>
-                <h5> Parent caregiver</h5>
+                <h6> Parent caregiver</h6>
             <Pie data = {parentData.dataPie}   />
             </MDBContainer>
         </div>
 
         <div>
             <MDBContainer>
-                <h5> Veteran status</h5>
+                <h6> Veteran status</h6>
             <Pie data = {veteranData.dataPie}   />
             </MDBContainer>
         </div>
