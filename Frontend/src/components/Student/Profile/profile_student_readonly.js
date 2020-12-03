@@ -182,42 +182,96 @@ class StudentProfileRO extends Component {
     if (details.education) {
       education = <EducationData />;
     }
-    if (this.state.tags) {
+    if (this.state.tags && this.state.tags.length) {
+      tags.push(
+        <div>
+          <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
+            What job titles are you looking for?
+          </h6>
+          <p>
+            <strong>Job title</strong> -{' '}
+          </p>{' '}
+        </div>,
+      );
+
       for (let i = 0; i < this.state.tags.length; i++) {
         tags.push(<li>{this.state.tags[i].text}</li>);
       }
     }
 
-    if (this.state.select_job_types) {
+    if (this.state.select_job_types && this.state.select_job_types.length) {
+      select_job_types.push(
+        <div>
+          <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
+            {' '}
+            What types of jobs are you open to?
+          </h6>
+          <p>
+            <strong>Job Types</strong> -{' '}
+          </p>
+        </div>,
+      );
       for (let i = 0; i < this.state.select_job_types.length; i++) {
         select_job_types.push(<li>{this.state.select_job_types[i].type}</li>);
       }
     }
 
-    if (this.state.tags_location) {
+    if (this.state.tags_location && this.state.tags_location.length) {
+      tags_location.push(
+        <div>
+          <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
+            {' '}
+            Where would you prefer to work?
+          </h6>
+        </div>,
+      );
       for (let i = 0; i < this.state.tags_location.length; i++) {
         tags_location.push(<li>{this.state.tags_location[i].text}</li>);
       }
     }
 
-    if (this.state.industry_select) {
+    if (this.state.industry_select && this.state.industry_select.length) {
+      industry_select.push(
+        <div>
+          <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
+            {' '}
+            What industries and company sizes do you prefer?
+          </h6>
+        </div>,
+      );
       for (let i = 0; i < this.state.industry_select.length; i++) {
         industry_select.push(<li>{this.state.industry_select[i].type}</li>);
       }
     }
 
-    if (this.state.company_size) {
+    if (this.state.company_size && this.state.company_size.length) {
+      company_size.push(
+        <div>
+          <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
+            {' '}
+            Company size
+          </h6>{' '}
+        </div>,
+      );
       for (let i = 0; i < this.state.company_size.length; i++) {
         company_size.push(<li>{this.state.company_size[i].type}</li>);
       }
     }
 
-    if (this.state.tags_dreamCompany) {
+    if (this.state.tags_dreamCompany && this.state.tags_dreamCompany.length) {
+      tags_dreamCompany.push(
+        <div>
+          <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
+            {' '}
+            What are your top 5 dream companies to work for?
+          </h6>
+        </div>,
+      );
       for (let i = 0; i < this.state.tags_dreamCompany.length; i++) {
         tags_dreamCompany.push(<li>{this.state.tags_dreamCompany[i].text}</li>);
       }
     }
-    console.log(this.state);
+
     return (
       <React.Fragment>
         <Navbar />
@@ -354,51 +408,53 @@ class StudentProfileRO extends Component {
               Job Preferences
             </h4>
             <hr />
-            <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
-              {' '}
-              Where are you in your job search?
-            </h6>
-            <p>Job Search Status - {this.state.selected_job_search_status}</p>
+            {this.state.selected_job_search_status && (
+              <div>
+                <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
+                  {' '}
+                  Where are you in your job search?
+                </h6>
+                <p>
+                  Job Search Status - {this.state.selected_job_search_status}
+                </p>
+              </div>
+            )}
             <br />
-            <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
-              What job titles are you looking for?
-            </h6>
-            <p>
-              <strong>Job title</strong> -{' '}
-            </p>
+
             {tags}
             <br />
             <br />
-            <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
-              {' '}
-              What types of jobs are you open to?
-            </h6>
-            <p>
-              <strong>Job Types</strong> -{' '}
-            </p>
+
             {select_job_types}
             <br />
             <br />
-            <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
-              What is your target salary range?
-            </h6>
-            <div class='row'>
-              <div class='col-md-3'>
-                <p>
-                  <strong>From</strong> - ${this.state.from_salary}
-                </p>
+            {this.state.from_salary && (
+              <div>
+                <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
+                  What is your target salary range?
+                </h6>
+                <div class='row'>
+                  <div class='col-md-3'>
+                    <p>
+                      <strong>From</strong> - ${this.state.from_salary}
+                    </p>
+                  </div>
+                  <div class='col-md-3'>
+                    <p>
+                      <strong>To</strong> - ${this.state.to_salary}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div class='col-md-3'>
-                <p>
-                  <strong>To</strong> - {this.state.to_salary}
-                </p>
-              </div>
-            </div>
+            )}
             <div class='row'>
               <div class='col-9'>
-                <p>
-                  <strong>Pay Period</strong> - {this.state.selected_pay_period}
-                </p>
+                {this.state.selected_pay_period && (
+                  <p>
+                    <strong>Pay Period</strong> -{' '}
+                    {this.state.selected_pay_period}
+                  </p>
+                )}
               </div>
             </div>
             <br />
@@ -409,61 +465,50 @@ class StudentProfileRO extends Component {
                 Company Preferences
               </h4>
               <hr />
-              <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
-                {' '}
-                Where would you prefer to work?
-              </h6>
               {tags_location}
               <br />
               <div class='row'>
                 <div class='col-4'>
-                  <FormControlLabel
-                    style={{ marginTop: '3mm' }}
-                    control={
-                      <Checkbox
-                        name='relocation'
-                        color='primary'
-                        style={{ color: 'green' }}
-                        onChange={this.handleCheckBox}
-                        checked={this.state.relocation}
-                      />
-                    }
-                    label="I'm open to relocation"
-                  />
+                  {this.state.relocation && (
+                    <FormControlLabel
+                      style={{ marginTop: '3mm' }}
+                      control={
+                        <Checkbox
+                          name='relocation'
+                          color='primary'
+                          style={{ color: 'green' }}
+                          onChange={this.handleCheckBox}
+                          checked={this.state.relocation}
+                        />
+                      }
+                      label="I'm open to relocation"
+                    />
+                  )}
                 </div>
                 <div class='col-4'>
-                  <FormControlLabel
-                    style={{ marginTop: '3mm' }}
-                    control={
-                      <Checkbox
-                        name='remote'
-                        color='primary'
-                        style={{ color: 'green' }}
-                        onChange={this.handleCheckBox}
-                        checked={this.state.remote}
-                      />
-                    }
-                    label='I want to work remotely'
-                  />
+                  {this.state.remote && (
+                    <FormControlLabel
+                      style={{ marginTop: '3mm' }}
+                      control={
+                        <Checkbox
+                          name='remote'
+                          color='primary'
+                          style={{ color: 'green' }}
+                          onChange={this.handleCheckBox}
+                          checked={this.state.remote}
+                        />
+                      }
+                      label='I want to work remotely'
+                    />
+                  )}
                 </div>
               </div>
               <br />
-              <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
-                {' '}
-                What industries and company sizes do you prefer?
-              </h6>
+
               {industry_select}
               <br />
-              <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
-                {' '}
-                Company size
-              </h6>
               {company_size}
               <br />
-              <h6 style={{ fontWeight: 'bold', color: '#49504C' }}>
-                {' '}
-                What are your top 5 dream companies to work for?
-              </h6>
               {tags_dreamCompany}
               <br />
             </div>

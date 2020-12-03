@@ -12,6 +12,7 @@ import axios from 'axios';
 import backendServer from '../../../webConfig';
 import ReactPaginate from 'react-paginate';
 import '../../../Pagination.css';
+import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
 
 class ApplicantDetails extends Component {
   constructor(props) {
@@ -39,11 +40,10 @@ class ApplicantDetails extends Component {
       _id: e.target.id,
       status: e.target.value,
     };
+    console.log(args);
     this.props.updateApplicantStatus(args);
-    if (this.props.status === 'Updated') {
-      const args = this.props.location.state.job_id;
-      this.props.getJobApplicantDetails(args);
-    }
+
+    window.location.reload();
   };
 
   openResume = (e) => {
