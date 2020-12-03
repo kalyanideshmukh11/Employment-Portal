@@ -1,11 +1,9 @@
 import Navigationbar from '../../Student/Navbar/navbar_company';
 import React, { Component } from 'react';
-import {Button} from 'react-bootstrap';
 import { MDBContainer } from "mdbreact";
 import { Pie } from "react-chartjs-2";
 import axios from 'axios';
 import backendServer from '../../../webConfig';
-import { Link } from 'react-router-dom';
 
 class companyReport extends Component {
 
