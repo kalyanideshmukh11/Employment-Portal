@@ -16,7 +16,7 @@ class JobList extends Component {
               <Card.Title>
               <Link to={`/student/job/jobdetails`}
                           params={{ data: this.props.company_jobs }}
-                        >
+                          style={{ textDecoration: 'none', color: '#1355a9' }}>
                           {this.props.company_jobs.title}
                         </Link>
                 <Card.Body>
