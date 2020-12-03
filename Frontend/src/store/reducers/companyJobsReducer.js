@@ -8,6 +8,7 @@ import {
 const initialState = {
   status: {},
   jobs: {},
+  data: {},
 };
 
 export default function (state = initialState, action) {
@@ -17,7 +18,7 @@ export default function (state = initialState, action) {
     case GET_ALL_JOBS:
       return { ...state, jobs: action.payload };
     case GET_JOB_APPLICANT_DETAILS:
-      return { ...state, jobs: action.payload };
+      return { ...state, data: action.payload };
     case UPDATE_APPLICANT_STATUS:
       return { ...state, status: action.payload };
     default:

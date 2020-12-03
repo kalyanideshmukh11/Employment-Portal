@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from '../../Student/Navbar/navbar_company';
-import { Card } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -8,17 +8,30 @@ import {
   getJobApplicantDetails,
   updateApplicantStatus,
 } from '../../../store/actions/companyJobsAction';
+import axios from 'axios';
+import backendServer from '../../../webConfig';
+import ReactPaginate from 'react-paginate';
+import '../../../Pagination.css';
 
 class ApplicantDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      offset: 0,
+      perPage: 5,
+      currentPage: 0,
+      pageCount: null,
+    };
+    this.initailFunc();
     this.changeHandler = this.changeHandler.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
-  componentDidMount() {
+  initailFunc() {
     const args = this.props.location.state.job_id;
     this.props.getJobApplicantDetails(args);
+    console.log('hello');
+    console.log(this.props.applied_students);
   }
 
   changeHandler = (e) => {
@@ -33,63 +46,138 @@ class ApplicantDetails extends Component {
     }
   };
 
+  openResume = (e) => {
+    const resume_data = {};
+    console.log(e.target.id);
+    resume_data.resume = e.target.id;
+    axios
+      .post(`${backendServer}student/openResume/`, resume_data, {
+        responseType: 'blob',
+      })
+      .then((response) => {
+        let file_extension = resume_data.resume.substr(
+          resume_data.resume.length - 3,
+        );
+        if (file_extension === 'pdf') {
+          var file = new Blob([response.data], { type: 'application/pdf' });
+          const fileUrl = URL.createObjectURL(file);
+          console.log(fileUrl);
+          window.open(fileUrl);
+        } else if (file_extension === 'doc') {
+          var file = new Blob([response.data], { type: 'application/msword' });
+          const fileUrl = URL.createObjectURL(file);
+          window.open(fileUrl);
+        } else {
+          var file = new Blob([response.data], {
+            type:
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          });
+          const fileUrl = URL.createObjectURL(file);
+          window.open(fileUrl);
+        }
+      });
+  };
+  handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState({
+      currentPage: selectedPage,
+      offset: offset,
+    });
+  };
+
   render() {
     let renderOutput = [];
-    let applied_students = this.props.jobs.applied_students;
-    console.log(applied_students);
-    if (this.props && applied_students && applied_students.length > 0) {
-      for (var i = 0; i < applied_students.length; i++) {
-        const id = applied_students[i]._id;
+    console.log(this.props.applied_students);
+    const slice = this.props.applied_students;
+    let paginationElement = (
+      <ReactPaginate
+        previousLabel={'< Previous'}
+        nextLabel={'Next >'}
+        breakLabel={<span className='gap'>...</span>}
+        pageCount={1}
+        onPageChange={this.handlePageClick}
+        forcePage={this.state.currentPage}
+        containerClassName={'pagination'}
+        previousLinkClassName={'previous_page'}
+        nextLinkClassName={'next_page'}
+        disabledClassName={'disabled'}
+        activeClassName={'active'}
+      />
+    );
+    if (
+      this.props &&
+      this.props.applied_students &&
+      this.props.applied_students.length > 0
+    ) {
+      for (var i = 0; i < slice.length; i++) {
+        const id = slice[i]._id;
+        const filename = slice[i].resume_file_name;
         renderOutput.push(
           <div className='container' style={{ paddingRight: '60%' }}>
             <div className='col-md-12'>
-              <Card.Title>
-                <Link
-                  to={{
-                    pathname: '/company/jobs/applicantdetails/viewapplicant',
-                    state: {
-                      student_id: applied_students[i].sql_student_id,
-                    },
-                  }}>
-                  <a href='#'>
-                    {applied_students[i].first_name}{' '}
-                    {applied_students[i].last_name}
-                  </a>
-                </Link>
-                <Card.Body>
-                  {applied_students[i].resume_file_name && (
-                    <h6>Resume - {applied_students[i].resume_file_name}</h6>
-                  )}
-                  {applied_students[i].cover_file_name && (
-                    <h6>
-                      Cover Letter - {applied_students[i].cover_file_name}
-                    </h6>
-                  )}
-                  {applied_students[i].application_status && (
-                    <h6>
-                      Application Status -{' '}
-                      {applied_students[i].application_status}
-                    </h6>
-                  )}
+              <Card.Body>
+                <h6>
+                  Applicant Name -{' '}
+                  <Link
+                    to={{
+                      pathname: '/company/jobs/applicantdetails/viewapplicant',
+                      state: {
+                        student_id: slice[i].sql_student_id,
+                      },
+                    }}>
+                    <a href='#'>
+                      {slice[i].first_name} {slice[i].last_name}
+                    </a>
+                  </Link>
+                </h6>
+                {slice[i].resume_file_name && (
                   <h6>
-                    Change Status -{' '}
-                    <select
-                      id={id}
-                      onChange={this.changeHandler}
-                      value={this.state.value}>
-                      <option value='select'>Select</option>
-                      <option value='Submitted'>Submitted</option>
-                      <option value='Reviewed'>Reviewed</option>
-                      <option value='Initial Screening'>
-                        Initial Screening
-                      </option>
-                      <option value='Interviewing'>Interviewing</option>
-                      <option value='Hired'>Hired</option>
-                      <option value='Rejected'>Rejected</option>
-                    </select>
+                    {' '}
+                    Resume -
+                    <Button
+                      variant='link'
+                      onClick={this.openResume}
+                      style={{ textDecoration: 'none' }}>
+                      <h6 id={filename}>
+                        {slice[i].resume_file_name.split('split')[1]}{' '}
+                      </h6>
+                    </Button>
                   </h6>
-                </Card.Body>
-              </Card.Title>
+                )}
+                {slice[i].cover_file_name && (
+                  <h6>
+                    Cover Letter -
+                    <Button
+                      variant='link'
+                      onClick={this.openResume}
+                      style={{ textDecoration: 'none' }}>
+                      <h6 id={filename}>
+                        {slice[i].cover_file_name.split('split')[1]}{' '}
+                      </h6>
+                    </Button>
+                  </h6>
+                )}
+                {slice[i].application_status && (
+                  <h6>Application Status - {slice[i].application_status}</h6>
+                )}
+                <h6>
+                  Change Status -{' '}
+                  <select
+                    id={id}
+                    onChange={this.changeHandler}
+                    value={this.state.value}>
+                    <option value='select'>Select</option>
+                    <option value='Submitted'>Submitted</option>
+                    <option value='Reviewed'>Reviewed</option>
+                    <option value='Initial Screening'>Initial Screening</option>
+                    <option value='Interviewing'>Interviewing</option>
+                    <option value='Hired'>Hired</option>
+                    <option value='Rejected'>Rejected</option>
+                  </select>
+                </h6>
+              </Card.Body>
               <hr />
             </div>
           </div>,
@@ -107,10 +195,18 @@ class ApplicantDetails extends Component {
                 className='pl-3'>
                 Job Applicants
               </h3>
+              <span style={{ float: 'right' }}>
+                <Link
+                  to={{
+                    pathname: `/admin/statistics/${this.props.location.state.title}`,
+                  }}>
+                  <Button variant='success'>View Job Statistics</Button>
+                </Link>
+              </span>
               <br />
             </div>
-
             {renderOutput}
+            <center style={{ paddingLeft: '12%' }}>{paginationElement}</center>
           </div>
         </div>
       </React.Fragment>
@@ -121,12 +217,12 @@ class ApplicantDetails extends Component {
 ApplicantDetails.propTypes = {
   getJobApplicantDetails: PropTypes.func.isRequired,
   updateApplicantStatus: PropTypes.func.isRequired,
-  jobs: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
   status: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  jobs: state.jobs.jobs,
+  applied_students: state.jobs.data.applied_students,
   status: state.jobs.status,
 });
 

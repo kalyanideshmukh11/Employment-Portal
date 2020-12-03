@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import Navbar from '../../Student/Navbar/navbar_company';
 import { Link } from 'react-router-dom';
-import { Form, Button, ButtonGroup } from 'react-bootstrap';
+import { Form, Button, ButtonGroup, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import CurrencyInput from 'react-currency-input-field';
+import { Redirect } from 'react-router';
 import { insertNewJobDetails } from '../../../store/actions/companyJobsAction';
 
 class AddJob extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      redirect: false,
+    };
     this.changeHandler = this.changeHandler.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,9 +42,12 @@ class AddJob extends Component {
       description: this.state.description,
       responsibilities: this.state.responsibilities,
       qualification: this.state.qualification,
+      fromSalary: this.state.fromSalary,
+      toSalary: this.state.toSalary,
       industry: this.state.industry,
       country: this.state.country,
       workType: this.state.workType,
+      jobType: this.state.jobType,
       address: this.state.address,
       city: this.state.city,
       state: this.state.state,
@@ -50,11 +57,46 @@ class AddJob extends Component {
     };
     console.log(jobData);
     this.props.insertNewJobDetails(jobData);
+    if (this.props.status === 'Inserted Successfully') {
+      alert('Inserted Successfully');
+      this.setState({
+        redirect: true,
+      });
+    }
   }
 
+  fromCurrency = (e) => {
+    this.setState({
+      fromSalary: e,
+    });
+  };
+
+  toCurrency = (e) => {
+    this.setState({
+      toSalary: e,
+    });
+  };
+
+  handleDropdownChange = (e) => {
+    this.setState({
+      jobType: e.target.value,
+    });
+  };
+
   render() {
+    let redirectVar = null;
+    if (this.state.redirect === true) {
+      redirectVar = (
+        <Redirect
+          to={{
+            pathname: '/company/jobs',
+          }}
+        />
+      );
+    }
     return (
       <React.Fragment>
+        {redirectVar}
         <Navbar />
         <div className='container'>
           <div className='row'>
@@ -122,6 +164,49 @@ class AddJob extends Component {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>
+                    <strong>Salary Range</strong>
+                  </Form.Label>
+                  <Form.Row>
+                    <Col Col xs='auto' className='my-1'>
+                      <Form.Label>
+                        <strong>From</strong>
+                      </Form.Label>
+                      <CurrencyInput
+                        name='fromSalary'
+                        groupSeparator=','
+                        decimalSeparator='.'
+                        turnOffSeparators={false}
+                        style={{
+                          borderRadius: '4px',
+                          border: '1px solid #cccccc',
+                          height: '10mm',
+                        }}
+                        prefix='$'
+                        onChange={this.fromCurrency}
+                      />
+                    </Col>
+                    <Col xs='auto' className='my-1'>
+                      <Form.Label>
+                        <strong>To</strong>
+                      </Form.Label>
+                      <CurrencyInput
+                        name='toSalary'
+                        groupSeparator=','
+                        decimalSeparator='.'
+                        turnOffSeparators={false}
+                        style={{
+                          borderRadius: '4px',
+                          border: '1px solid #cccccc',
+                          height: '10mm',
+                        }}
+                        prefix='$'
+                        onChange={this.toCurrency}
+                      />
+                    </Col>
+                  </Form.Row>
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>
                     <strong>Industry</strong>
                   </Form.Label>
                   <Form.Control
@@ -139,6 +224,9 @@ class AddJob extends Component {
                     onChange={this.changeHandler}></Form.Control>
                 </Form.Group>
                 <Form.Group>
+                  <Form.Label>
+                    <strong>Work Type</strong>
+                  </Form.Label>
                   <Form.Check
                     name='remote'
                     label='Remote'
@@ -151,6 +239,21 @@ class AddJob extends Component {
                     value='In Person'
                     onChange={this.handleCheckboxChange}
                   />
+                </Form.Group>
+                <Form.Label>
+                  <strong>Job Type</strong>
+                </Form.Label>
+                <Form.Group>
+                  <select
+                    onChange={this.handleDropdownChange}
+                    value={this.state.value}>
+                    <option value='select'>Select</option>
+                    <option value='Full-time'>Full-time</option>
+                    <option value='Part-time'>Part-time</option>
+                    <option value='Contract'>Contract</option>
+                    <option value='Internship'>Internship</option>
+                    <option value='Temporary'>Temporary</option>
+                  </select>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>

@@ -7,7 +7,7 @@ module.exports.jobsService = function (msg, callback) {
     case 'insertJobDetails':
       insertJobDetails(msg, callback);
       break;
-    case 'getAllJobs':
+    case 'getAllCompanyJobs':
       getAllCompanyJobs(msg, callback);
       break;
     case 'getJobApplicants':
@@ -129,18 +129,18 @@ async function getExploreJobs(msg, callback) {
 
   console.log('In get job topic. Msg: ', msg);
   console.log(msg.state);
-  await Jobs.find({state: msg.state}, (error, result) => {
-    if(error){
-      err.message = error
-      err.status = 500
+  await Jobs.find({ state: msg.state }, (error, result) => {
+    if (error) {
+      err.message = error;
+      err.status = 500;
       return callback(null, error);
-    } else if (result){
-      response.status = 200
-      response.message = 'EXPLORE_JOBS'
-      response.data = (result)
-      return callback(null, response)
+    } else if (result) {
+      response.status = 200;
+      response.message = 'EXPLORE_JOBS';
+      response.data = result;
+      return callback(null, response);
     }
-  })
+  });
 }
 async function applyToJob(msg, callback) {
   let err = {};
