@@ -6,7 +6,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const itemStorage = multer.diskStorage ({
-    destination: path.join(__dirname, '..') + '/public/uploads/company',
+    destination: path.join(__dirname, '../..') + '/public/uploads/company',
     filename: (req, file, cb) => {
         cb(null, file.originalname);
     }
@@ -27,13 +27,16 @@ router.post("/company", upload.single("image"), (req, res) => {
 
 router.get('/:filename', (req, res) => {
     console.log("hiii")
-    const image = path.join(__dirname, '..') + 
+    const image = path.join(__dirname, '../..') + 
     '/public/uploads/company/' + 
     req.params.filename;
     console.log(image);
 
     if(fs.existsSync(image)) {
         res.sendFile(image);
+    } else {
+        res.sendFile(path.join(__dirname, '../..') + 
+        '/public/uploads/company/' + 'companyPlaceholder.png')
     }
 });
 

@@ -33,10 +33,11 @@ import adminCompanyReport from './Admin/companyProfile/statistics';
 //import adminDemographics from './Admin/companyProfile/demographics';
 import nonUserLanding from './nonUser/landingPage';
 import nonUserCompanyReview from './nonUser/nonUserReviews';
-import ApexChart from './Admin/Dashboard/mostReviewed';
 import CompanyOverview from './Student/CompanyOverview/companyOverview';
 import JobsTab from './Student/Jobs/jobsTab';
 import JobDetails from './Student/Job/JobDetails';
+import PhotosTab from './Student/Photos/photosTab';
+import JobHome from './Student/Job/JobHome';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
 import InterviewAnswers from './Student/Interview/InterviewAnswers';
@@ -133,6 +134,10 @@ class Main extends Component {
         />
         <Route exact path='/student/jobs/:companyName' component={JobsTab} />
         <Route exact path='/student/tabs' component={HomeTabs} />
+        <Route exact path='/student/tabs/photos' component={PhotosTab} />
+        <Route exact path='/student/job/jobdetails' component={JobDetails} />
+
+
         <Route exact path='/admin/home' component={AnalyticsHome} />
         <Route
           exact
@@ -150,13 +155,19 @@ class Main extends Component {
           component={adminCompanyReview}
         />
         <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
-        {/* <Route exact path='/admin/demographics/:companyName' component = {adminDemographics} /> */}
         <Route exact path='/' component = {nonUserLanding} />
         <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
 
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
         <Route exact path='/admin/allReviews' component={adminReview} />
-        </div>
+        <Route exact path='/' component={nonUserLanding} />
+        <Route
+          exact
+          path='/reviews/:companyName'
+          component={nonUserCompanyReview}
+        />
+        <Route exact path='/student/job/home' component={JobHome} />
+      </div>
     );
   }
 }

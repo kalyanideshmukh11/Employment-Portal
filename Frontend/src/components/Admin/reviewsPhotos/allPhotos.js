@@ -1,6 +1,6 @@
 import Navigationbar from '../../Student/Navbar/navbar_admin';
 import React, { Component } from 'react';
-import {Button, Modal, Card} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
 // import { FormInput } from 'react-native-elements'

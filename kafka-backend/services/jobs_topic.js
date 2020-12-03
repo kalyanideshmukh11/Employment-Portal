@@ -143,26 +143,7 @@ async function getJobsStatistics(msg, callback) {
   .catch((err) => {
     console.log(err);
   });
-
-  await Jobs.aggregate([
-    { $match: { title: msg.body } },
-    { $project: { _id: 0, count: { $size: '$applied_students' } } },
-  ])
-    .then((data) => {
-      count.applicantCount = data[0].applicants;
-    })
-    .then(() => {
-      console.log(count);
-      response.status = 200;
-      response.data = count;
-      return callback(null, response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 }
-
-
 
 async function searchJobTitle(msg, callback) {
   let err = {};
@@ -177,7 +158,7 @@ async function searchJobTitle(msg, callback) {
       console.log('length:', items.length);
       response.status = 200;
       // response.data = data;
-      const pager = paginate(items.length, page, 2);
+      const pager = paginate(items.length, page, 3);
       const pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
       response.data = { pager: pager, items: pageOfItems };
       return callback(null, response);
@@ -186,7 +167,6 @@ async function searchJobTitle(msg, callback) {
       console.log(err);
     });
 }
-
 
 async function getApplicantId(msg, callback) {
   let err = {};
@@ -211,7 +191,6 @@ async function getApplicantId(msg, callback) {
       console.log(err);
     });
 }
-
 
 async function getExploreJobs(msg, callback) {
   let err = {};

@@ -5,6 +5,8 @@ import {Button, Card, Table} from 'react-bootstrap'
 import axios from 'axios'
 import backendServer from "../../../webConfig"
 import StarRatings from 'react-star-ratings';
+import ReactPaginate from 'react-paginate';
+
 
 
 
@@ -12,19 +14,39 @@ class InterviewContribution extends Component{
  constructor(props){
      super(props)
          this.state = {
-            interview_reviews: []
+            interview_reviews: [],
+            offset: 0,
+            perPage: 3,
+            currentPage: 0
 
      }
+     this.handlePageClick = this.handlePageClick.bind(this);
+
  }
+ handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState({
+        currentPage: selectedPage,
+        offset: offset
+    }, () => {
+        this.componentWillMount()
+    });
+
+};
 
  componentWillMount = () => {
     axios.get(`${backendServer}student/studentInterviews/${localStorage.getItem("sql_student_id")}`,
     {headers: { Authorization: `${localStorage.getItem("token")}` }
     })
     .then(response => {
+        const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.state.interview_reviews = []
         this.setState({
-            interview_reviews: this.state.interview_reviews.concat(response.data) ,
-        })
+            interview_reviews: this.state.interview_reviews.concat(slice),
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
+        });
 
     })
 
@@ -64,6 +86,28 @@ class InterviewContribution extends Component{
          <tr>
             <td colSpan="2" style={{padding: "10px 10px 10px 10px", color:"#33333", verticalAlign:"middle"}}> Please add your interview experiences to show it here.</td>
          </tr>)
+         }
+         let paginateElem = null
+         if(this.state.interview_reviews.length > 0){
+             paginateElem = (
+                 <div style= {{marginLeft:"5mm", marginRight:"5mm"}}>
+                 <hr />
+                 <ReactPaginate
+                 previousLabel={"prev"}
+                 nextLabel={"next"}
+                 breakLabel={"..."}
+                 breakClassName={"break-me"}
+                 pageCount={this.state.pageCount}
+                 marginPagesDisplayed={2}
+                 pageRangeDisplayed={5}
+                 onPageChange={this.handlePageClick}
+                 containerClassName={"pagination"}
+                 subContainerClassName={"pages pagination"}
+                 activeClassName={"active"}
+                 />
+                 
+                 </div>
+             )
          }
 
      return(
@@ -108,7 +152,7 @@ class InterviewContribution extends Component{
                 </Card.Text>
 
             </Card.Body>
-            
+            {paginateElem}
             </Card>
             <br />
             <br/>               
