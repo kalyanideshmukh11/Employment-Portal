@@ -118,7 +118,7 @@ class ResumeDisplay extends Component{
                 <div class='col-9'>
                     <Button variant='link'
                     onClick={this.openResume} style={{textDecoration: 'none'}}>
-                    <span style={{fontSize: "1.08rem", fontWeight: "420"}}> {this.props.resumes.resume.split("!***!")[1]}  </span>
+                    <span style={{fontSize: "1.08rem", fontWeight: "420"}}> {this.props.resumes.resume.split("nameSplitter")[1]}  </span>
                     </Button> {primary_tag}
                 </div>
                 <div class='col-3'>

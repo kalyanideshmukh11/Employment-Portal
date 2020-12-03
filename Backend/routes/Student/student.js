@@ -7,11 +7,13 @@ var kafka = require('../../kafka/client');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs')
+const uploadToS3 = require('../../utils/awsS3bucketUpload');
+const { constants } = require('buffer');
 
 const storage = multer.diskStorage({
   destination: path.join(__dirname, '../..') + '/public/uploads/student/resumes',
   filename: (req, file, cb) => {
-      cb(null, 'student' + req.params.id + '-' + 'resume' + "-" + Date.now() + '!***!' + file.originalname);
+      cb(null, 'student' + req.params.id + '-' + 'resume' + "-" + Date.now() + 'nameSplitter' + file.originalname);
   }
 });
 
@@ -23,7 +25,7 @@ const upload = multer({
 const image_storage = multer.diskStorage({
   destination: path.join(__dirname, '../..') + '/public/uploads/student/profile_pictures',
   filename: (req, file, cb) => {
-      cb(null, 'student' + req.params.id + '-' + 'resume' + "-" + Date.now() + '!***!' + file.originalname);
+      cb(null, 'student' + req.params.id + '-' + 'resume' + "-" + Date.now() + 'nameSplitter' + file.originalname);
   }
 });
 
@@ -31,6 +33,22 @@ const upload_image = multer({
   storage: image_storage,
   limits: { fileSize: 1000000 },
 }).single("file");
+
+
+const company_image_storage = multer.diskStorage({
+  destination: path.join(__dirname, '../..') + '/public/uploads/s3Temp',
+  filename: (req, file, cb) => {
+      cb(null, 'company' + req.params.id + '-' + 'photo' + "-" + Date.now() + 'nameSplitter' + file.originalname);
+  }
+});
+
+
+const upload_company_image = multer({
+  storage: company_image_storage,
+  limits: { fileSize: 1000000 },
+}).array("company_images", 20)
+
+
 
 app.post('/register', student.create);
 app.post('/login', student.validate);
@@ -397,4 +415,74 @@ app.get('/getProfilePicture/:id', (req, res) => {
   })
 
 });
+
+app.post('/addCompanyPictures/:id', checkAuth, (req, res) => {
+  var promises=[];
+  upload_company_image(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      console.log(err)
+        return res.status(500).json(err)
+    } else if (err) {
+      console.log(err)
+        return res.status(500).json(err)
+    } else {
+      for(var i=0; i<req.files.length; i++){
+        var file = req.files[i];
+        promises.push(uploadToS3(file, 'companyPhotos', req.body.sql_company_id));
+    } 
+    Promise.all(promises).then(function(data){
+      let s3Arr = [], s3Obj = {};
+      data.forEach(url => {
+        s3Obj = {}
+        s3Obj.sql_student_id = req.body.sql_student_id,
+        s3Obj.s3Url = url;
+        s3Arr.push(s3Obj);
+      });
+      kafka.make_request("photos_topic", { "path": "uploadCompanyPhoto", 'companyId': req.body.sql_company_id, 'data': s3Arr}, function (err, results) {
+        console.log("In make request call back", results);
+        if (err) {
+          console.log("Inside err");
+          return res.status(500).send(err);
+        } else {
+            console.log("Inside Jobs explore data")
+            return res.status(200).send(results.data)
+        }
+      })
+
+      }).catch(function(err){
+        console.log(err)
+      }) 
+    }
+
+
+    })
+})
+
+app.get('/getCompanyPhotos/:id', checkAuth, (req, res) => {
+  kafka.make_request("photos_topic", { "path": "getCompanyPhotos", 'companyId': req.params.id}, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(500).send(err);
+      } else {
+          console.log("Inside Jobs explore data")
+          return res.status(200).send(results.data)
+      }
+    })
+})
+
+app.get('/getStudentPhotos/:id', checkAuth, (req, res) => {
+  kafka.make_request("photos_topic", { "path": "getStudentPhotos", 'studentId': req.params.id}, function (err, results) {
+      console.log("In make request call back", results);
+      if (err) {
+        console.log("Inside err");
+        return res.status(500).send(err);
+      } else {
+          console.log("Inside Jobs explore data")
+          return res.status(200).send(results.data)
+      }
+    })
+})
+
+
 module.exports = app;

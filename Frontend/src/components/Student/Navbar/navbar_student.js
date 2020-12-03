@@ -66,10 +66,6 @@ class StudentNavbar extends Component {
   };
 
   handleLogout = () => {
-    // localStorage.removeItem('sql_student_id');
-    // localStorage.removeItem('first_name');
-    // localStorage.removeItem('last_name');
-    // localStorage.removeItem('type');
     localStorage.clear();
     this.setState({
       redirectVar: <Redirect to='/student/login' />,
@@ -121,7 +117,7 @@ class StudentNavbar extends Component {
                 title=''
                 name='searchType'
                 menuAlign='right'
-                style={{ width: '9cm', marginLeft: '0.1mm' }}
+                style={{ width: '0cm', marginLeft: '0.1mm' }}
                 onSelect={this.SearchType}
               >
                 <Dropdown.Item eventKey='Jobs'>Jobs</Dropdown.Item>
@@ -137,13 +133,14 @@ class StudentNavbar extends Component {
               placeholder='Location'
               className='mr-sm-4'
             /> */}
-            <Button onClick={this.search} variant='success'>
+            <Button onClick={this.search} variant='success'
+            style={{marginLeft: "2cm"}}>
               Search
             </Button>
           </Form>
           <Nav>
             <NavDropdown
-              style={{ marginLeft: '1cm' }}
+              style={{ marginLeft: '1.5cm' }}
               title={
                 <i
                   className='far fa-user-circle'
@@ -193,7 +190,7 @@ class StudentNavbar extends Component {
                 Demographics
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item
+              <NavDropdown.Item onClick={()=>{localStorage.setItem('contri-list', 'salaries')}}
                 href='/student/contributions/salaries'
                 style={{ padding: '15px 15px 15px 15px' }}
               >

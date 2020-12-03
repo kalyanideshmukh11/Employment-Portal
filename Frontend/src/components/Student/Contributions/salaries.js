@@ -5,23 +5,44 @@ import {Button, Card, Table} from 'react-bootstrap'
 import axios from 'axios'
 import backendServer from "../../../webConfig"
 import AddSalaryModalForm from './addSalaryModalForm'
+import ReactPaginate from 'react-paginate';
 
 class SalaryContribution extends Component{
  constructor(props){
      super(props)
          this.state = {
             salary_reviews: [],
-            add_salary_modal_form: false
+            add_salary_modal_form: false,
+            offset: 0,
+            perPage: 5,
+            currentPage: 0
      }
+     this.handlePageClick = this.handlePageClick.bind(this);
+
  }
+ handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState({
+        currentPage: selectedPage,
+        offset: offset
+    }, () => {
+        this.componentWillMount()
+    });
+
+};
  componentWillMount = () => {
     axios.get(`${backendServer}student/studentSalaries/${localStorage.getItem("sql_student_id")}`,
     {headers: { Authorization: `${localStorage.getItem("token")}` }
     })
     .then(response => {
+        const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.state.salary_reviews = []
         this.setState({
-            salary_reviews: this.state.salary_reviews.concat(response.data) ,
-        })
+            salary_reviews: this.state.salary_reviews.concat(slice),
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
+        });
 
     })
 
@@ -56,6 +77,28 @@ class SalaryContribution extends Component{
            <td colSpan="2" style={{padding: "10px 10px 10px 10px", color:"#33333", verticalAlign:"middle"}}> Please add your salaries to show it here.</td>
         </tr>)
         }
+        let paginateElem = null
+    if(this.state.salary_reviews.length > 0){
+        paginateElem = (
+            <div style= {{marginLeft:"5mm", marginRight:"5mm"}}>
+            <hr />
+            <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+            />
+            
+            </div>
+        )
+    }
      return(
         <div>
             <StudentNavbar />
@@ -97,9 +140,11 @@ class SalaryContribution extends Component{
                 </Card.Text>
 
             </Card.Body>
-            
+            {paginateElem}         
+
             </Card>               
-            
+            <br />
+            <br />   
         
     </div>
     </div>
