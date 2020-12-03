@@ -1,5 +1,8 @@
 const Jobs = require('../models/jobs');
 const paginate = require('jw-paginate');
+/*const {
+  getAllJobs,
+} = require('../../Frontend/src/store/actions/companyJobsAction');*/
 
 module.exports.jobsService = function (msg, callback) {
   console.log('In jobs service path', msg.path);
@@ -23,7 +26,7 @@ module.exports.jobsService = function (msg, callback) {
     case 'searchJob':
       searchJobTitle(msg, callback);
       break;
-    
+
     case 'getApplicantId':
       getApplicantId(msg, callback);
       break;
@@ -34,6 +37,10 @@ module.exports.jobsService = function (msg, callback) {
 
     case 'apply_job':
       applyToJob(msg, callback);
+      break;
+
+    case 'getJobs':
+      getJobs(msg, callback);
       break;
   }
 };
@@ -82,7 +89,6 @@ async function getJobsStatistics(msg, callback) {
   console.log(msg.body);
   console.log(start);
 
-  
   // await Jobs.find({
   //   _id: msg.body,
   //   // posted_date: {$elemMatch: { $lt: 11/29/2019 }},
@@ -104,31 +110,28 @@ async function getJobsStatistics(msg, callback) {
         Frequency: { $sum: 1 },
       },
     },
-  ])
-  .then((data) =>
-    {
-      console.log(data)
-      count.selectedCount = data
-    })
+  ]).then((data) => {
+    console.log(data);
+    count.selectedCount = data;
+  });
 
   await Jobs.aggregate([
     { $match: { title: 'Data Scientist, Analytics' } },
-    {$project: {_id: 0, count: {$size: '$applied_students'}}}
+    { $project: { _id: 0, count: { $size: '$applied_students' } } },
   ])
-  .then((data) => {
-    count.applicantCount = data[0].applicants
-  })
-  .then(() => {
-    console.log(count);
-    response.status = 200;
-    response.data = count;
-    return callback(null, response);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+    .then((data) => {
+      count.applicantCount = data[0].applicants;
+    })
+    .then(() => {
+      console.log(count);
+      response.status = 200;
+      response.data = count;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
-
 
 async function searchJobTitle(msg, callback) {
   let err = {};
@@ -153,21 +156,21 @@ async function searchJobTitle(msg, callback) {
     });
 }
 
-
 async function getApplicantId(msg, callback) {
   let err = {};
   let response = {};
   console.log('In get applicant ID for admin details topic. Msg: ', msg);
   console.log(msg.body);
-  await Jobs.find({ title: 'Data Scientist, Analytics' }, 
-    {'applied_students.sql_student_id':1, _id: 0})
+  await Jobs.find(
+    { title: 'Data Scientist, Analytics' },
+    { 'applied_students.sql_student_id': 1, _id: 0 }
+  )
     .then((data) => {
       let applicantId = [];
-      for(const key of Object.keys(data[0]._doc)){
-        applicantId = data[0]._doc[key].map( val => 
-          val.sql_student_id)
+      for (const key of Object.keys(data[0]._doc)) {
+        applicantId = data[0]._doc[key].map((val) => val.sql_student_id);
       }
-      console.log(applicantId)
+      console.log(applicantId);
       response.status = 200;
       response.data = applicantId;
       return callback(null, response);
@@ -175,8 +178,7 @@ async function getApplicantId(msg, callback) {
     .catch((err) => {
       console.log(err);
     });
-  }
-
+}
 
 async function getExploreJobs(msg, callback) {
   let err = {};
@@ -184,18 +186,18 @@ async function getExploreJobs(msg, callback) {
 
   console.log('In get job topic. Msg: ', msg);
   console.log(msg.state);
-  await Jobs.find({state: msg.state}, (error, result) => {
-    if(error){
-      err.message = error
-      err.status = 500
+  await Jobs.find({ state: msg.state }, (error, result) => {
+    if (error) {
+      err.message = error;
+      err.status = 500;
       return callback(null, error);
-    } else if (result){
-      response.status = 200
-      response.message = 'EXPLORE_JOBS'
-      response.data = (result)
-      return callback(null, response)
+    } else if (result) {
+      response.status = 200;
+      response.message = 'EXPLORE_JOBS';
+      response.data = result;
+      return callback(null, response);
     }
-  })
+  });
 }
 async function applyToJob(msg, callback) {
   let err = {};
@@ -233,4 +235,18 @@ async function applyToJob(msg, callback) {
     err.data = 'Error in Data';
     return callback(err, null);
   }
+}
+
+async function getJobs(msg, callback) {
+  let err = {};
+  let response = {};
+  await Jobs.find()
+    .then((data) => {
+      response.status = 200;
+      response.data = data;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
