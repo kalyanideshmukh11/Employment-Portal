@@ -197,9 +197,23 @@ class InterviewList extends Component {
           return (
             <div>
               <Card.Text style={{ color: '#49504C' }}>{que.question}</Card.Text>
-              <Link
+              {/*<Link
                 to={{
                   pathname: '/student/interview/answers',
+                  state: {
+                    job_title: interviewCard.job_title,
+                    question: que.question,
+                    answers: que.answers,
+                    ansCountString: ansTag,
+                  },
+                }}
+              >*/}
+              <Link
+                to={{
+                  pathname: '/student/tabs',
+                  companyName: interviewCard.companyName,
+                  companyID: interviewCard.sql_company_id,
+                  category: 'answers',
                   state: {
                     job_title: interviewCard.job_title,
                     question: que.question,

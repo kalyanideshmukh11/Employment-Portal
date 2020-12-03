@@ -6,6 +6,7 @@ import CompanyOverview from '../CompanyOverview/companyOverview';
 import ReviewTab from '../Reviews/ReviewTab';
 import AddSalary from '../Salary/AddSalary';
 import Interview from '../Interview/InterviewList';
+import Answers from '../Interview/InterviewAnswers';
 
 class HomeTabs extends Component {
   constructor(props) {
@@ -46,6 +47,10 @@ class HomeTabs extends Component {
           <Interview id={this.props.location.companyID}></Interview>
         ),
       };
+    } else if (this.props.location.category === 'answers') {
+      this.state = {
+        loadComponent: <Answers state={this.props.location.state}></Answers>,
+      };
     } else {
       this.state = {
         loadComponent: <Comp str='This is Overview'></Comp>,
@@ -55,6 +60,14 @@ class HomeTabs extends Component {
 
   componentWillReceiveProps(nextProp) {
     console.log('Received: ', nextProp);
+    if (
+      nextProp.location.category &&
+      nextProp.location.category === 'answers'
+    ) {
+      this.setState({
+        loadComponent: <Answers state={nextProp.location.state}></Answers>,
+      });
+    }
   }
 
   componentDidMount() {
@@ -68,6 +81,16 @@ class HomeTabs extends Component {
         ),
       });
     }
+
+    if (
+      this.props.location.category &&
+      this.props.location.category === 'answers'
+    ) {
+      this.setState({
+        loadComponent: <Answers state={this.props.location.state}></Answers>,
+      });
+    }
+
     console.log('this.state');
     console.log(this.state);
   }
