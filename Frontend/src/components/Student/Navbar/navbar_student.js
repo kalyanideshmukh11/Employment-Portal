@@ -31,29 +31,33 @@ class StudentNavbar extends Component {
   }
 
   search = () => {
-    if (this.state.SearchType === 'Jobs') {
-      let url = '/student/search/job/' + this.state.searchKeyword;
-      this.setState({
-        redirectVar: <Redirect to={url} />,
-      });
-    }
-    if (this.state.SearchType === 'Companies') {
-      let url = '/student/search/company/' + this.state.searchKeyword;
-      this.setState({
-        redirectVar: <Redirect to={url} />,
-      });
-    }
-    if (this.state.SearchType === 'Interviews') {
-      let url = '/student/search/interview/' + this.state.searchKeyword;
-      this.setState({
-        redirectVar: <Redirect to={url} />,
-      });
-    }
-    if (this.state.SearchType === 'Salaries') {
-      let url = '/student/search/salary/' + this.state.searchKeyword;
-      this.setState({
-        redirectVar: <Redirect to={url} />,
-      });
+    if (!this.state.searchKeyword) {
+      return;
+    } else {
+      if (this.state.SearchType === 'Jobs') {
+        let url = '/student/search/job/' + this.state.searchKeyword;
+        this.setState({
+          redirectVar: <Redirect to={url} />,
+        });
+      }
+      if (this.state.SearchType === 'Companies') {
+        let url = '/student/search/company/' + this.state.searchKeyword;
+        this.setState({
+          redirectVar: <Redirect to={url} />,
+        });
+      }
+      if (this.state.SearchType === 'Interviews') {
+        let url = '/student/search/interview/' + this.state.searchKeyword;
+        this.setState({
+          redirectVar: <Redirect to={url} />,
+        });
+      }
+      if (this.state.SearchType === 'Salaries') {
+        let url = '/student/search/salary/' + this.state.searchKeyword;
+        this.setState({
+          redirectVar: <Redirect to={url} />,
+        });
+      }
     }
   };
 
@@ -133,8 +137,11 @@ class StudentNavbar extends Component {
               placeholder='Location'
               className='mr-sm-4'
             /> */}
-            <Button onClick={this.search} variant='success'
-            style={{marginLeft: "2cm"}}>
+            <Button
+              onClick={this.search}
+              variant='success'
+              style={{ marginLeft: '2cm' }}
+            >
               Search
             </Button>
           </Form>
@@ -190,7 +197,10 @@ class StudentNavbar extends Component {
                 Demographics
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={()=>{localStorage.setItem('contri-list', 'salaries')}}
+              <NavDropdown.Item
+                onClick={() => {
+                  localStorage.setItem('contri-list', 'salaries');
+                }}
                 href='/student/contributions/salaries'
                 style={{ padding: '15px 15px 15px 15px' }}
               >

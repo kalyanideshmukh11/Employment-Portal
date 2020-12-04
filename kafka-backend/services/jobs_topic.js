@@ -27,7 +27,7 @@ module.exports.jobsService = function (msg, callback) {
     case 'searchJob':
       searchJobTitle(msg, callback);
       break;
-    
+
     case 'getDemographics':
       getDemographics(msg, callback);
       break;
@@ -124,25 +124,27 @@ async function getJobsStatistics(msg, callback) {
     count.selectedCount = data;
   });
 
-  await Jobs.find({ title: msg.body }, 
-    {'applied_students.sql_student_id':1, _id: 0})
+  await Jobs.find(
+    { title: msg.body },
+    { 'applied_students.sql_student_id': 1, _id: 0 }
+  )
     .then((data) => {
       let applicantId = [];
-      for(const key of Object.keys(data[0]._doc)){
-        applicantId = data[0]._doc[key].map( val => val.sql_student_id)
+      for (const key of Object.keys(data[0]._doc)) {
+        applicantId = data[0]._doc[key].map((val) => val.sql_student_id);
       }
-      console.log(applicantId)
+      console.log(applicantId);
       count.applicantId = applicantId;
     })
-  .then(() => {
-    console.log(count);
-    response.status = 200;
-    response.data = count;
-    return callback(null, response);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+    .then(() => {
+      console.log(count);
+      response.status = 200;
+      response.data = count;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 async function searchJobTitle(msg, callback) {
@@ -158,7 +160,7 @@ async function searchJobTitle(msg, callback) {
       console.log('length:', items.length);
       response.status = 200;
       // response.data = data;
-      const pager = paginate(items.length, page, 3);
+      const pager = paginate(items.length, page, 5);
       const pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
       response.data = { pager: pager, items: pageOfItems };
       return callback(null, response);
@@ -254,24 +256,24 @@ async function applyToJob(msg, callback) {
 async function getDemographics(msg, callback) {
   let err = {};
   let response = {};
-  console.log("In get job demographics topic service. Msg: ", msg);
+  console.log('In get job demographics topic service. Msg: ', msg);
   console.log(msg.body);
 
   let sql = `CALL get_applicantDemographics('${msg.body}');`;
-  console.log(sql)
-    pool.query(sql, (err, result) => {
-      if (err) {
-        err.status = 400;
-        return callback(null, err)
-      }
-      if (result && result.length > 0 && result[0][0]) {
-        console.log(result);
-        response.status = 200;
-        response.message = "APPLICANTDETAILS_FETCHED";
-        response.data = (JSON.stringify(result));
-        return callback(null, response)
-      };
-    });
+  console.log(sql);
+  pool.query(sql, (err, result) => {
+    if (err) {
+      err.status = 400;
+      return callback(null, err);
+    }
+    if (result && result.length > 0 && result[0][0]) {
+      console.log(result);
+      response.status = 200;
+      response.message = 'APPLICANTDETAILS_FETCHED';
+      response.data = JSON.stringify(result);
+      return callback(null, response);
+    }
+  });
 }
 
 //Admin demographics topic
@@ -297,34 +299,33 @@ async function getAdminJobStatistics(msg, callback) {
         Frequency: { $sum: 1 },
       },
     },
-  ])
-  .then((data) =>
-    {
-      console.log(data)
-      count.selectedCount = data
-    })
+  ]).then((data) => {
+    console.log(data);
+    count.selectedCount = data;
+  });
 
-  await Jobs.find({ companyName: msg.body }, 
-    {'applied_students.sql_student_id':1, _id: 0})
+  await Jobs.find(
+    { companyName: msg.body },
+    { 'applied_students.sql_student_id': 1, _id: 0 }
+  )
     .then((data) => {
       let applicantId = [];
-      for(const key of Object.keys(data[0]._doc)){
-        applicantId = data[0]._doc[key].map( val => val.sql_student_id)
+      for (const key of Object.keys(data[0]._doc)) {
+        applicantId = data[0]._doc[key].map((val) => val.sql_student_id);
       }
-      console.log(applicantId)
+      console.log(applicantId);
       count.applicantId = applicantId;
     })
-  .then(() => {
-    console.log(count);
-    response.status = 200;
-    response.data = count;
-    return callback(null, response);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+    .then(() => {
+      console.log(count);
+      response.status = 200;
+      response.data = count;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
-
 
 async function getJobs(msg, callback) {
   let err = {};
