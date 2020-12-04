@@ -31,6 +31,18 @@ class StudentNavbar extends Component {
   }
 
   search = () => {
+    if (this.state.SearchType === 'Jobs') {
+      this.setState({
+        redirectVar: (
+          <Redirect
+            to={{
+              pathname: '/student/job/home',
+              state: { search_param: this.state.searchKeyword },
+            }}
+          />
+        ),
+      });
+    }
     if (!this.state.searchKeyword) {
       return;
     } else {
@@ -40,18 +52,6 @@ class StudentNavbar extends Component {
           redirectVar: <Redirect to={url} />,
         });
       }*/
-      if (this.state.SearchType === 'Jobs') {
-        this.setState({
-          redirectVar: (
-            <Redirect
-              to={{
-                pathname: '/student/job/home',
-                state: { search_param: this.state.searchKeyword },
-              }}
-            />
-          ),
-        });
-      }
       if (this.state.SearchType === 'Companies') {
         let url = '/student/search/company/' + this.state.searchKeyword;
         this.setState({

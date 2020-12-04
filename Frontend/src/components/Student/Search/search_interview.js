@@ -27,7 +27,9 @@ class SearchCompany extends Component {
     const params = new URLSearchParams(pageParam);
     const page = parseInt(params.get('page')) || 1;
     axios
-      .post(`${backendServer}company/search/interview?page=${page}`, data)
+      .post(`${backendServer}company/search/interview?page=${page}`, data, {
+        headers: { Authorization: `${localStorage.getItem('token')}` },
+      })
       .then((response) => {
         console.log(response);
         this.setState({
