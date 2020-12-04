@@ -1,16 +1,101 @@
 import React, {Component} from 'react';
 import ContributionsSidebar from '../Navbar/contributions_sideBar'
 import StudentNavbar from '../Navbar/navbar_student'
-import {Button, Card, Table} from 'react-bootstrap'
+import {Button, Card, Table, Image} from 'react-bootstrap'
+import axios from 'axios'
+import backendServer from "../../../webConfig"
+import ReactPaginate from 'react-paginate';
+
+
 
 class PhotosContribution extends Component{
  constructor(props){
      super(props)
          this.state = {
-
+            offset: 0,
+            photos: [],
+            perPage: 5,
+            currentPage: 0
      }
+     this.handlePageClick = this.handlePageClick.bind(this);
+
+ }
+ handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState({
+        currentPage: selectedPage,
+        offset: offset
+    }, () => {
+        this.componentWillMount()
+    });
+
+};
+
+ componentWillMount = () => {
+    axios.get(`${backendServer}student/getStudentPhotos/${localStorage.getItem("sql_student_id")}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }
+    })
+    .then(response => {
+        const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.state.photos = []
+        this.setState({
+            photos: this.state.photos.concat(slice),
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
+        });
+
+    })
+
  }
  render(){
+    let details= null;
+
+    if(this.state.photos.length > 0){
+       details = this.state.photos.map(photos => {
+           return(
+               <tr>
+                   <td>{
+                       <div>
+                        <Image src={photos.s3Url} style={{width:"5cm", height:"3cm", padding:"5px 5px 10px 50px"}}/>
+                       </div>}</td>
+   
+                   <td style={{textAlign: "center", verticalAlign:"middle"}}>{photos.date.split('T')[0]}</td>
+                   
+                   <td style={{textAlign: "center", verticalAlign:"middle", fontWeight: "600"}}>{photos.review_status}</td>
+
+                   
+               </tr>
+           )
+       })
+    } else {
+        details = (
+            <tr>
+               <td colSpan="3" style={{padding: "10px 10px 10px 10px", color:"#33333", verticalAlign:"middle"}}> Please upload photos to show it here.</td>
+            </tr>)
+    }
+    let paginateElem = null
+    if(this.state.photos.length > 0){
+        paginateElem = (
+            <div style= {{marginLeft:"5mm", marginRight:"5mm"}}>
+            <hr />
+            <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+            />
+            
+            </div>
+        )
+    }
      return(
         <div>
             <StudentNavbar />
@@ -27,7 +112,7 @@ class PhotosContribution extends Component{
             </Card.Title>
             
                 <Card.Text>
-                    <Button style={{backgroundColor: '#1861bf', borderColor: "#1861bf"}} href=''>
+                    <Button style={{backgroundColor: '#1861bf', borderColor: "#1861bf"}} href='/student/tabs/photos'>
                         Add Photos
                     </Button>
                 </Card.Text>
@@ -47,12 +132,18 @@ class PhotosContribution extends Component{
 
                         </tr>
                     </thead>
+                    <tbody>
+                        {details}
+                    </tbody>
                     </Table>
                 </Card.Text>
 
             </Card.Body>
-            
-            </Card>               
+            {paginateElem}         
+
+            </Card>     
+            <br />
+            <br /> 
             
         
     </div>

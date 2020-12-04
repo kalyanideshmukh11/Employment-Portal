@@ -11,6 +11,7 @@ var jobsTopic = require('./services/jobs_topic');
 var searchTopic = require('./services/search_topic');
 var interviewTopic = require('./services/interview_topic');
 var salaryTopic = require('./services/salary_topic');
+var companyPhotosTopic = require('./services/photos_topic');
 
 const mongoose = require('mongoose');
 const { mongoDBURI } = require('./config/config');
@@ -88,7 +89,13 @@ function handleTopicRequest(topic_name, fname) {
           response(data, res, producer);
           return;
         });
-        break;
+        break;  
+      case "photos_topic":
+        fname.companyPhotoServices(data.data, function (err, res) {
+          response(data, res, producer)
+          return
+        });
+          break;
     }
   });
 }
@@ -125,3 +132,5 @@ handleTopicRequest('jobs_topic', jobsTopic);
 handleTopicRequest('search_topic', searchTopic);
 handleTopicRequest('salary_topic', salaryTopic);
 handleTopicRequest('interview_topic', interviewTopic);
+handleTopicRequest('photos_topic', companyPhotosTopic);
+

@@ -154,32 +154,24 @@ router.get('/:title/fetchStatistics', (req, res) => {
 });
 module.exports = router;
 
-router.get('/:companyName/fetchApplicantId', (req, res) => {
-  console.log('In admin profile demographics route');
-  kafka.make_request(
-    'jobs_topic',
-    { path: 'getApplicantId', body: req.params.companyName },
-    function (err, results) {
-      if (err) {
-        console.log('Inside err');
-        console.log(err);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('Some error has occured');
+router.post('/getDemographics', (req,res) => {
+  console.log("In you shall trust");
+  console.log(req.body);
+  kafka.make_request("jobs_topic", { "path": "getDemographics", "body": req.body}, function (err, results) {
+    console.log(results);
+    console.log("In make request call back", results);
+    if (err) {
+      console.log("Inside err");
+      console.log(err);
+      return res.status(err.status).send(err.message);
+    } else {
+      //console.log("Inside else", results);
+      if (results.status === 200) {
+        return res.status(results.status).send(results.data);
       } else {
-        console.log(results.data);
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(JSON.stringify(results.data));
+        return res.status(results.status).send(results.errors);
       }
-    },
-  );
-});
-
-router.get('/getDemographics/:applicantId', (req,res) => {
-  console.log(req.params.applicantId);
-  // console.log("In company demographics route");
-  // kafka.make_request(
-  //   'jobs_topic',
-  //   {path: "getDemographics", body: req.params}
-  // )
+    }
+  })
 })
 module.exports = router;

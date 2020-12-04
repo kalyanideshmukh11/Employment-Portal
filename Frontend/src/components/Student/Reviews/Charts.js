@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button, Modal, Form, Alert, Badge } from 'react-bootstrap';
+// import { Card, Button, Modal, Form, Alert, Badge } from 'react-bootstrap';
 import { Doughnut } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 

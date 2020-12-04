@@ -10,7 +10,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Button, Card, Image } from 'react-bootstrap';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
-import profilePicture from '../images/studentPlaceholder.png';
 import BasicProfileModal from './basicProfile_modalForm_student';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -18,6 +17,7 @@ import { getStudentProfile } from '../../../store/actions/studentProfileAction';
 import ExperienceData from './experienceData';
 import SkillsData from './skillsData';
 import EducationData from './educationData';
+import backendServer from '../../../webConfig';
 
 class StudentProfileRO extends Component {
   constructor(props) {
@@ -126,6 +126,13 @@ class StudentProfileRO extends Component {
     let industry_select = [];
     let company_size = [];
     let tags_dreamCompany = [];
+
+    let profilePicture = null;
+    if (this.state) {
+      profilePicture = `${backendServer}student/getProfilePicture/${localStorage.getItem(
+        'sql_student_id',
+      )}`;
+    }
 
     if (details.job_title) {
       job_title = (

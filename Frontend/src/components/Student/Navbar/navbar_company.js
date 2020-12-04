@@ -11,8 +11,8 @@ import {
   Dropdown,
   InputGroup,
 } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
 import { Redirect } from 'react-router';
 
@@ -31,12 +31,9 @@ class StudentNavbar extends Component {
   };
 
   handleLogout = () => {
-    // localStorage.removeItem('sql_company_id');
-    // localStorage.removeItem('name');
-    // localStorage.removeItem('type');
     localStorage.clear();
     this.setState({
-      redirectVar: <Redirect to='/student/login' />,
+      redirectVar: <Redirect to='/company/login' />,
     });
   };
 
@@ -59,7 +56,7 @@ class StudentNavbar extends Component {
               type='text'
               placeholder='Job Title, Keywords, or Company'
               className='mr-sm-3'
-              style={{ width: '10cm' }}
+              style={{ width: '12cm' }}
               onChange
             />
 
@@ -87,17 +84,13 @@ class StudentNavbar extends Component {
               </DropdownButton>
             </InputGroup>
 
-            <FormControl
-              style={{ marginLeft: '5mm' }}
-              type='text'
-              placeholder='Location'
-              className='mr-sm-4'
-              onChange
-            />
-            <Button variant='success'>Search</Button>
+            <Button 
+            style={{marginLeft:"1cm"}}
+            variant='success'>Search</Button>
           </Form>
           <Nav>
             <Button
+            href = '/company/addjob'
               onClick={this.handleSearch}
               style={{
                 marginLeft: '5mm',
@@ -105,6 +98,7 @@ class StudentNavbar extends Component {
                 background: 'transparent',
                 color: '#555555',
                 border: 'none',
+                marginTop:"3mm"
               }}
               type='submit'
             >
@@ -112,13 +106,12 @@ class StudentNavbar extends Component {
               <i className='fas fa-briefcase'></i> Jobs{' '}
             </Button>
             <NavDropdown
-              style={{ marginLeft: '1cm' }}
+              style={{ marginLeft: '1.5cm', marginTop: "2mm" }}
               title={
-                <FontAwesomeIcon
-                  style={{ color: 'black' }}
-                  icon={faUserCircle}
-                  size='2px'
-                />
+                <i
+                  className='far fa-user-circle'
+                  style={{ fontSize: '30px' }}
+                ></i>
               }
               onMouseEnter={this.handleOpen}
               onMouseLeave={this.handleClose}
@@ -127,7 +120,7 @@ class StudentNavbar extends Component {
               variant='light'
             >
               <NavDropdown.Item
-                href='/student/profile'
+                href='/company/profileUpdate'
                 style={{ padding: '15px 15px 15px 15px' }}
                 onClick={() => {
                   localStorage.setItem('active-list', 'profile');
@@ -135,24 +128,8 @@ class StudentNavbar extends Component {
               >
                 Profile
               </NavDropdown.Item>
-              <NavDropdown.Item
-                href='/student/resume'
-                style={{ padding: '15px 15px 15px 15px' }}
-                onClick={() => {
-                  localStorage.setItem('active-list', 'resume');
-                }}
-              >
-                Resumes
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                href='/student/jobPreference'
-                style={{ padding: '15px 15px 15px 15px' }}
-                onClick={() => {
-                  localStorage.setItem('active-list', 'jobPreference');
-                }}
-              >
-                Job Preference
-              </NavDropdown.Item>
+
+
               <NavDropdown.Item
                 href='/student/demographics'
                 style={{ padding: '15px 15px 15px 15px' }}
@@ -162,13 +139,8 @@ class StudentNavbar extends Component {
               >
                 Demographics
               </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item
-                href='/student/contributions'
-                style={{ padding: '10px 15px 10px 15px' }}
-              >
-                Contributions
-              </NavDropdown.Item>
+
+
               <NavDropdown.Divider />
               <NavDropdown.Item
                 onClick={this.handleLogout}
