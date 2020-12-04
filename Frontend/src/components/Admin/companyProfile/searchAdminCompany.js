@@ -77,7 +77,7 @@ class searchAdminCompany extends Component {
                       <h6 className='ml-3'>
                         {value.rating && <span>{value.rating} </span>}
                         <img
-                        alt = 'rating'
+                          alt='rating'
                           height='16'
                           width='16'
                           src='https://upload.wikimedia.org/wikipedia/commons/1/1f/Green_star_41-108-41.svg'
@@ -101,7 +101,9 @@ class searchAdminCompany extends Component {
                         </span>
                       )}
                     </h4>
-                    <Link to={`/admin/statistics/${value.name}`}>View Statictics</Link>
+                    <Link to={`/admin/statistics/${value.name}`}>
+                      View Statictics
+                    </Link>
                   </div>
                 </div>
               </Card.Body>
