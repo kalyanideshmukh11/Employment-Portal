@@ -87,7 +87,7 @@ class PhotosTab extends Component {
     render(){
         let section,
         renderOutput = [];
-        if(this.state.status === "NO_PHOTOS_AVAILABLE"){
+        if(this.state.status === "NO_PHOTOS_AVAILABLE" || this.state.photo_items.length===0){
             renderOutput = (<div style={{padding: "0px 10px 10px 10px", color:"gray", fontSize: "18px"}}>
                 This company has no photos available. Be the first to add them.
             </div>)
@@ -138,7 +138,7 @@ class PhotosTab extends Component {
                 <Card>
                     <div class='row'>
                     <div class='col-12'>
-                        <Button style={{float:"right", marginRight:"20px", marginTop:"20px", marginBottom: "20px"}} variant='success' onClick={this.handleShow}>Add Photos</Button>
+                        <Button style={{float:"right", marginRight:"20px", marginTop:"20px", marginBottom: "20px", backgroundColor:"#1861bf", color:"white"}} onClick={this.handleShow}>Add Photos</Button>
 
                     </div>
 

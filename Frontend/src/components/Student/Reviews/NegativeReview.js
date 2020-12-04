@@ -19,7 +19,20 @@ export const NegativeReview = (props) => {
       }
       return elements;
     };
-
+    const creatCards=(n) => {
+      var elements = [];
+      if(n=== 1) {
+        elements.push(
+          <i className='fa fa-square' aria-hidden='true' style={{ color: 'green' }}></i>,
+        );
+      }
+      if(n=== 0){
+        elements.push(
+          <i className='fa fa-square' aria-hidden='true' style={{ color: 'red' }}></i>,
+        );
+      }
+      return elements;
+    } 
     const list = (
       <div>
         
@@ -44,9 +57,11 @@ export const NegativeReview = (props) => {
         >
           "{negative.headline}"
         </p>
-        <p style={{ marginLeft: '10px' }}>
-          {negative.rating}.0 {createElements(negative.rating)}
-        </p>
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <p style={{marginLeft: "10px"}}>{negative.rating}.0 {createElements(negative.rating)}</p>
+                    <p style={{marginLeft: "10px"}}>Recommends {creatCards(negative.ceo_rating)}</p>
+                    <p style={{marginLeft: "10px"}}>Approves of CEO {creatCards(negative.recommended)}</p>
+                    </div>
         <p style={{ marginLeft: '10px' }}> {negative.description}</p>
         <p style={{ fontWeight: 'bold', marginLeft: '10px', padding: '0px' }}>
           Pros

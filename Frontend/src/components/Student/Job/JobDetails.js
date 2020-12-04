@@ -18,6 +18,7 @@ class JobDetails extends Component {
     let info = null;
     let detailTag = null;
     let navBar = null;
+    let disableApply = false;
     console.log(this.props);
     if (this.props.location && this.props.location.state) {
       console.log('this.props.location.state');
@@ -38,6 +39,15 @@ class JobDetails extends Component {
     }
 
     if (info) {
+      //find student
+      let student_id = localStorage.getItem('sql_student_id');
+      for (let i = 0; i < info.applied_students.length; i++) {
+        if (info.applied_students[i].sql_student_id === student_id) {
+          disableApply = true;
+          break;
+        }
+      }
+
       detailTag = (
         <div style={{ width: '50%' }}>
           <div>
@@ -67,6 +77,7 @@ class JobDetails extends Component {
                   <Button
                     variant='primary'
                     onClick={this.handleApplicationModalShow}
+                    disabled={disableApply}
                   >
                     <div className='d-flex flex-row'>
                       <FontAwesomeIcon

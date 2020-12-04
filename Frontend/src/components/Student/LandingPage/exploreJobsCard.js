@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBriefcase, faBuilding, faMapMarkerAlt, faScroll} from '@fortawesome/free-solid-svg-icons'
 import {Card} from 'react-bootstrap'
@@ -23,7 +24,8 @@ class ExploreJobsCard extends Component {
                     <Card.Body>
                     <Card.Title>
                     <FontAwesomeIcon icon={faBriefcase} size='sm' /> 
-                        <a href='student/job/jobdetails' style={{textDecorationLine:"none"}}><span style={{fontSize: '18px', fontWeight: "400", fontFamily:"helvetica", padding:"10px 10px 0px 5px"}}> {this.props.job_items.title} </span> </a> 
+                    <Link to={{pathname: '/student/job/jobdetails', state: this.props.job_items}}> {this.props.job_items.title}</Link>
+                        {/* <a href='student/job/jobdetails' style={{textDecorationLine:"none"}}><span style={{fontSize: '18px', fontWeight: "400", fontFamily:"helvetica", padding:"10px 10px 0px 5px"}}> {this.props.job_items.title} </span> </a>  */}
                     </Card.Title>
 
                     <Card.Text>
