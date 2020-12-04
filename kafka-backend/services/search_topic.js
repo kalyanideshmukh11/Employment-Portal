@@ -77,7 +77,7 @@ async function searchByCompany(msg, callback) {
         msg.body[each._id].interviews = each.interviews;
       }
       console.log('msg.body:', msg.body);
-      const pager = paginate(ids.length, page, 1);
+      const pager = paginate(ids.length, page, 5);
       const pageOfItems = Object.keys(msg.body)
         .slice(pager.startIndex, pager.endIndex + 1)
         .map((key) => msg.body[key]);
