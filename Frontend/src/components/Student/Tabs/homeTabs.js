@@ -56,7 +56,10 @@ class HomeTabs extends Component {
     } else if (this.props.location.category === 'photos') {
       this.state = {
         loadComponent: (
-          <PhotosTab companyID={this.props.location.companyID}></PhotosTab>
+          <PhotosTab
+            companyID={this.props.location.companyID}
+            companyName={this.props.location.companyName}
+          ></PhotosTab>
         ),
       };
     } else {
@@ -253,6 +256,7 @@ class HomeTabs extends Component {
                     this.loadComp(
                       <PhotosTab
                         companyID={this.props.location.companyID}
+                        companyName={this.props.location.companyName}
                       ></PhotosTab>
                     )
                   }

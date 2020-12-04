@@ -24,6 +24,7 @@ class InterviewList extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.id)
     axios
       .get(`${backendServer}student/interview/get/${this.props.id}`)
       .then((response) => {

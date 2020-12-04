@@ -11,9 +11,14 @@ module.exports.jobsService = function (msg, callback) {
     case 'insertJobDetails':
       insertJobDetails(msg, callback);
       break;
-
     case 'getAllCompanyJobs':
       getAllCompanyJobs(msg, callback);
+      break;
+    case 'getJobApplicants':
+      getJobApplicantsDetails(msg, callback);
+      break;
+    case 'updateApplicantStatus':
+      updateApplicantStatus(msg, callback);
       break;
 
     case 'getJobsStatistics':
@@ -87,6 +92,45 @@ async function getAllCompanyJobs(msg, callback) {
     });
 }
 
+async function getJobApplicantsDetails(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In get job details topic. Msg: ', msg);
+  console.log(msg.body);
+  await Jobs.find({ _id: msg.body }, { _id: 0, applied_students: 1 })
+    .then((data) => {
+      response.status = 200;
+      response.data = data;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+async function updateApplicantStatus(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In get job details topic. Msg: ', msg);
+  console.log(msg.body.status);
+  await Jobs.findOneAndUpdate(
+    { 'applied_students._id': msg.body._id },
+    {
+      $set: {
+        'applied_students.$.application_status': msg.body.status,
+      },
+    },
+    { safe: true, new: true, useFindAndModify: false },
+  )
+    .then((data) => {
+      response.status = 200;
+      response.message = 'Updated';
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 async function getJobsStatistics(msg, callback) {
   let err = {};
   let response = {};
@@ -177,7 +221,7 @@ async function getApplicantId(msg, callback) {
   console.log(msg.body);
   await Jobs.find(
     { title: 'Data Scientist, Analytics' },
-    { 'applied_students.sql_student_id': 1, _id: 0 }
+    { 'applied_students.sql_student_id': 1, _id: 0 },
   )
     .then((data) => {
       let applicantId = [];
@@ -232,7 +276,7 @@ async function applyToJob(msg, callback) {
             application_status: msg.body.application_status,
           },
         },
-      }
+      },
     )
       .then((applyJob) => {
         console.log(applyJob);

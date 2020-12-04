@@ -98,7 +98,7 @@ app.get('/home/:id', checkAuth, (req, res) => {
   );
 });
 
-app.get('/profile/:id', checkAuth, (req, res) => {
+app.get('/profile/:id', (req, res) => {
   kafka.make_request(
     'studentProfile_topic',
     { path: 'getStudentProfiledata', userId: req.params.id },
@@ -541,6 +541,7 @@ app.post('/addCompanyPictures/:id', checkAuth, (req, res) => {
             'photos_topic',
             {
               path: 'uploadCompanyPhoto',
+              company_name: req.body.company_name,
               companyId: req.body.sql_company_id,
               data: s3Arr,
             },

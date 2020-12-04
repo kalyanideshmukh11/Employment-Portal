@@ -131,7 +131,8 @@ class PhotosTab extends Component {
         
         return(
             <div>
-                <UploadImageModalForm show={this.state.showModal} onHide={this.handleClose} />
+                <UploadImageModalForm show={this.state.showModal} onHide={this.handleClose} companyID={this.props.companyID}
+                companyName={this.props.companyName} />
 
                 <div class='col-11' style={{padding: "20px 10px 30px 225px"}}>
                 <Card>
