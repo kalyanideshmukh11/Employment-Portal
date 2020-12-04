@@ -7,7 +7,8 @@ import ReviewTab from '../Reviews/ReviewTab';
 import AddSalary from '../Salary/AddSalary';
 import Interview from '../Interview/InterviewList';
 import Answers from '../Interview/InterviewAnswers';
-import PhotosTab from '../Photos/photosTab'
+import PhotosTab from '../Photos/photosTab';
+import backendServer from '../../../webConfig';
 
 class HomeTabs extends Component {
   constructor(props) {
@@ -52,12 +53,13 @@ class HomeTabs extends Component {
       this.state = {
         loadComponent: <Answers state={this.props.location.state}></Answers>,
       };
-     }else if (this.props.location.category === 'photos') {
+    } else if (this.props.location.category === 'photos') {
       this.state = {
-        loadComponent: <PhotosTab companyID={this.props.location.companyID}></PhotosTab>,
+        loadComponent: (
+          <PhotosTab companyID={this.props.location.companyID}></PhotosTab>
+        ),
       };
-    }  
-    else {
+    } else {
       this.state = {
         loadComponent: <Comp str='This is Overview'></Comp>,
       };
@@ -108,7 +110,7 @@ class HomeTabs extends Component {
 
   render() {
     // TODO add image link
-    // var imgSrc = `${backendServer}company/imageUpload/${fileName}`;
+    var imgSrc = `${backendServer}company/imageUpload/${this.props.location.filename}`;
     let loadComponent = null;
     let addButton = null;
     if (this.state && this.state.loadComponent) {
@@ -146,7 +148,7 @@ class HomeTabs extends Component {
                 <card>
                   <CardImg
                     style={{ height: '200px', width: '175px' }}
-                    // src={imgSrc}
+                    src={imgSrc}
                     className='profileImg'
                   />
                 </card>
@@ -186,7 +188,6 @@ class HomeTabs extends Component {
                     border: 'none',
                     borderLeft: '1px solid #e6e6e6',
                     fontSize: '25px',
-                    
                   }}
                 >
                   {' '}
@@ -246,11 +247,13 @@ class HomeTabs extends Component {
                   {' '}
                   Salaries{' '}
                 </Button>
-                <Button class = 'tab_button'
-                
-                onClick={() =>
+                <Button
+                  class='tab_button'
+                  onClick={() =>
                     this.loadComp(
-                      <PhotosTab companyID={this.props.location.companyID}></PhotosTab>
+                      <PhotosTab
+                        companyID={this.props.location.companyID}
+                      ></PhotosTab>
                     )
                   }
                   style={{
