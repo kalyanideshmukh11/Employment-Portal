@@ -15,7 +15,7 @@ export const insertNewReviewDetails = (reviewData) => (dispatch) => {
         type: NEW_REVIEW_POSTING,
         payload: response.data,
       }),
-      console.log("inside add review")
+      
     )
     .catch((error) => {
       console.log(error);

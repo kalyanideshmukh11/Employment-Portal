@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Navbar from '../../Student/Navbar/navbar_student';
-import {Form, Button, ButtonGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import {Container,Col,Row, Form, Button, ButtonGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { insertNewReviewDetails } from '../../../store/actions/studentReviewAction';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faThumbsUp,faThumbsDown,faMinus} from '@fortawesome/free-solid-svg-icons';
 class AddReview extends Component {
   constructor(props) {
     super(props);
@@ -41,9 +43,7 @@ class AddReview extends Component {
       ceo_rating: this.state.ceo_rating,
       recommended: this.state.recommended,
     };
-    console.log("checking inside add review.")
     console.log(reviewData);
-
     this.props.insertNewReviewDetails(reviewData);
     //fix redirection on submit
     if(this.props.status === "Inserted Sucessfully"){
@@ -181,7 +181,7 @@ class AddReview extends Component {
                   />
                   </Form.Group>
                     <ButtonGroup aria-label='First group' className='mt-2'>
-                  <Button variant='success'href='/student/contributions/reviews' type='submit'>
+                  <Button variant='success' type='submit'>
                     Submit Review
                   </Button>
                 </ButtonGroup>
