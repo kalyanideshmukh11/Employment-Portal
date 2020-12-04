@@ -1,38 +1,12 @@
 import React, { Component } from 'react';
-import StudentNavbar from '../Navbar/navbar_student';
-import CompanyOverviewTab from '../Tabs/homeTabs';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareSquare } from '@fortawesome/free-solid-svg-icons';
-import { Button, Card } from 'react-bootstrap';
-import axios from 'axios';
-import backendServer from '../../../webConfig';
-import { Link } from 'react-router-dom';
+import { Card } from 'react-bootstrap';
 
 class InterviewAnswers extends Component {
-  /*componentDidMount() {
-    axios
-      .get(
-        `${backendServer}student/interview/get/${this.props.location.state.id}`
-      )
-      .then((response) => {
-        if (response.data) {
-          this.setState({
-            interviews: response.data,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log('Error');
-        console.log(error);
-      });
-  }*/
-
   render() {
     let qaTag = null;
     let qTag = null;
     let ansTag = null;
     if (this.props && this.props.state) {
-      console.log('HERERERERER');
       qTag = (
         <Card style={{ width: '22cm' }}>
           <Card.Title

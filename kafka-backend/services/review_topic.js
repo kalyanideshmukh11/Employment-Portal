@@ -22,6 +22,7 @@ exports.reviewService = function (msg, callback) {
     case 'getStudentReviews':
       getStudentReviews(msg, callback);
       break;
+
     case 'reviewsPerDay':
       ReviewsPerDay(msg, callback);
       break;
@@ -540,6 +541,7 @@ async function updateApproved(msg, callback) {
       console.log(err);
     });
 }
+
 async function TopStudents(msg, callback) {
   await Review.aggregate(
     [
