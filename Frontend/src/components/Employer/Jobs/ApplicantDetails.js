@@ -11,28 +11,35 @@ import {
 import axios from 'axios';
 import backendServer from '../../../webConfig';
 import ReactPaginate from 'react-paginate';
-import '../../../Pagination.css';
-import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 class ApplicantDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      applicants: [],
       offset: 0,
       perPage: 5,
       currentPage: 0,
       pageCount: null,
+      loading: true,
     };
-    this.initailFunc();
     this.changeHandler = this.changeHandler.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
   }
 
-  initailFunc() {
+  componentDidMount() {
     const args = this.props.location.state.job_id;
     this.props.getJobApplicantDetails(args);
-    console.log('hello');
-    console.log(this.props.applied_students);
+    setTimeout(() => {
+      let filteredData = this.props.applied_students.filter(
+        (applicant) => applicant.application_status !== 'Withdrawn',
+      );
+      this.setState({
+        applicants: filteredData,
+        loading: false,
+      });
+    }, 500);
   }
 
   changeHandler = (e) => {
@@ -88,29 +95,40 @@ class ApplicantDetails extends Component {
   };
 
   render() {
+    console.log(this.state.applicants);
     let renderOutput = [];
-    console.log(this.props.applied_students);
-    const slice = this.props.applied_students;
-    let paginationElement = (
-      <ReactPaginate
-        previousLabel={'< Previous'}
-        nextLabel={'Next >'}
-        breakLabel={<span className='gap'>...</span>}
-        pageCount={1}
-        onPageChange={this.handlePageClick}
-        forcePage={this.state.currentPage}
-        containerClassName={'pagination'}
-        previousLinkClassName={'previous_page'}
-        nextLinkClassName={'next_page'}
-        disabledClassName={'disabled'}
-        activeClassName={'active'}
-      />
-    );
+
     if (
-      this.props &&
-      this.props.applied_students &&
-      this.props.applied_students.length > 0
+      this.state &&
+      this.state.applicants &&
+      this.state.applicants.length > 0
     ) {
+      const slice = this.state.applicants.slice(
+        this.state.offset,
+        this.state.offset + this.state.perPage,
+      );
+      var paginationElement = (
+        <ReactPaginate
+          previousLabel={'Prev'}
+          nextLabel={'Next'}
+          breakLabel={<span className='gap'>...</span>}
+          pageCount={
+            Math.ceil(this.props.applied_students.length / this.state.perPage) >
+            0
+              ? Math.ceil(
+                  this.props.applied_students.length / this.state.perPage,
+                )
+              : 1
+          }
+          onPageChange={this.handlePageClick}
+          forcePage={this.state.currentPage}
+          containerClassName={'pagination'}
+          previousLinkClassName={'previous_page'}
+          nextLinkClassName={'next_page'}
+          disabledClassName={'disabled'}
+          activeClassName={'active'}
+        />
+      );
       for (var i = 0; i < slice.length; i++) {
         const id = slice[i]._id;
         const filename = slice[i].resume_file_name;
@@ -183,6 +201,14 @@ class ApplicantDetails extends Component {
           </div>,
         );
       }
+    } else {
+      renderOutput = (
+        <div
+          class='center'
+          style={{ position: 'fixed', top: '55%', left: '50%' }}>
+          <ScaleLoader size={50} color={'green'} loading={this.state.loading} />
+        </div>
+      );
     }
     return (
       <React.Fragment>
