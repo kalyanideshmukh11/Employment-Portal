@@ -1,6 +1,7 @@
 const Jobs = require('../models/jobs');
 const paginate = require('jw-paginate');
 const pool = require('../config/sqlConfig');
+const redisClient = require('../config/redisConfig');
 
 module.exports.jobsService = function (msg, callback) {
   console.log('In jobs service path', msg.path);
