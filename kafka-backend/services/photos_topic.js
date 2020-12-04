@@ -20,6 +20,12 @@ exports.companyPhotoServices = function (msg, callback) {
     case 'topVisits':
       topVisits(msg, callback);
       break;
+    case 'getAllPhotos':
+      getAllPhotos(msg, callback);
+      break;
+    case 'approvePhotos':
+      approvePhotos(msg, callback);
+      break;
   }
 };
 
@@ -43,11 +49,9 @@ async function uploadCompanyPhoto(msg, callback) {
         response.data = 'CHANGES_SAVED';
         return callback(null, response);
       } else if (!error1 && !result1) {
-        console.log('OK');
         Company.create(
           {
             sql_company_id: msg.companyId,
-            company_name: msg.company_name,
             photos: msg.data,
           },
           (error2, result2) => {
@@ -62,10 +66,10 @@ async function uploadCompanyPhoto(msg, callback) {
               response.data = 'CHANGES_SAVED';
               return callback(null, response);
             }
-          }
+          },
         );
       }
-    }
+    },
   );
 }
 
@@ -99,7 +103,7 @@ async function getCompanyPhotos(msg, callback) {
         response.data = 'NO_PHOTOS_AVAILABLE';
         return callback(null, response);
       }
-    }
+    },
   );
 }
 
@@ -181,9 +185,9 @@ async function incrementVisits(msg, callback) {
             console.log(result2);
             return callback(null, result2);
           }
-        }
+        },
       );
-    }
+    },
   );
 }
 
@@ -209,5 +213,66 @@ async function topVisits(msg, callback) {
       } else {
         return callback(null, { msg: 'error' });
       }
+    });
+}
+
+async function getAllPhotos(msg, callback) {
+  let error = {},
+    response = {};
+  console.log('IN COMPANY PHOTOS TOPIC', msg);
+  Company.find({}, { _id: 0, photos: 1 }, (err, result) => {
+    if (err) {
+      error.message = err;
+      error.status = 500;
+      return callback(null, error);
+    } else if (result) {
+      console.log(typeof result);
+      let tempArr = [],
+        tempObj = {};
+      var output = [];
+      result.forEach((res) => {
+        tempObj = {};
+        tempObj.photos = res.photos;
+        tempArr.push(tempObj);
+      });
+      tempArr.forEach((item) => {
+        output.push(item.photos);
+      });
+      tempArr.forEach((item) => {
+        output.push(item.photos);
+      });
+      let photos_arr_obj = [];
+      for (const key of Object.keys(output)) {
+        photos_arr_obj = photos_arr_obj.concat(output[key]);
+      }
+      response.status = 200;
+      response.message = 'PHOTO_UPLOADED';
+      response.data = photos_arr_obj;
+      return callback(null, response);
+    }
+  });
+}
+
+async function approvePhotos(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In update photo approved service. Msg: ', msg);
+  await Company.findOneAndUpdate(
+    { 'photos._id': msg.id },
+    {
+      $set: {
+        'photos.$.review_status': msg.body,
+      },
+    },
+    { safe: true, new: true, useFindAndModify: false },
+  )
+    .then((user) => {
+      console.log(user);
+      response.status = 200;
+      response.message = 'PHOTO_UPDATED';
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
     });
 }

@@ -66,6 +66,7 @@ async function insertSalaryDetails(msg, callback) {
         error.status = 500;
         return callback(null, error);
       } else {
+        console.log(result)
         companyId = result[0][0].id;
 
         let iObj = new Salary({
