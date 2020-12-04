@@ -17,6 +17,7 @@ import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
 import companyReviews from './Employer/Reviews/companyReviews';
 import AddInterview from './Student/Interview/AddInterview';
+import ApplicantDetails from './Employer/Jobs/ApplicantDetails';
 import SearchJob from './Student/Search/search_jobs';
 import SearchCompany from './Student/Search/search_company';
 import SearchInterview from './Student/Search/search_interview';
@@ -87,6 +88,11 @@ class Main extends Component {
         <Route exact path='/company/profileUpdate' component={updateCompany} />
         <Route exact path='/company/addjob' component={AddJob} />
         <Route exact path='/company/jobs' component={Jobs} />
+        <Route
+          exact
+          path='/company/jobs/applicantdetails'
+          component={ApplicantDetails}
+        />
         <Route exact path='/company/reviews' component={companyReviews} />
         <Route exact path='/student/interview/add' component={AddInterview} />
         <Route exact path='/student/interview/list' component={InterviewList} />

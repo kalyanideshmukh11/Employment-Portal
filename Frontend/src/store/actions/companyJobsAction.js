@@ -8,6 +8,9 @@ import backendServer from '../../webConfig';
 import axios from 'axios';
 
 export const insertNewJobDetails = (jobData) => (dispatch) => {
+  axios.defaults.headers.common['authorization'] = localStorage.getItem(
+    'token',
+  );
   axios
     .post(`${backendServer}glassdoor/jobs/`, jobData)
     .then((response) =>
@@ -22,6 +25,9 @@ export const insertNewJobDetails = (jobData) => (dispatch) => {
 };
 
 export const getAllJobs = (args) => (dispatch) => {
+  axios.defaults.headers.common['authorization'] = localStorage.getItem(
+    'token',
+  );
   axios
     .get(`${backendServer}glassdoor/jobs/${args}/fetchjobs/`)
     .then((response) =>
@@ -36,6 +42,9 @@ export const getAllJobs = (args) => (dispatch) => {
 };
 
 export const getJobApplicantDetails = (args) => (dispatch) => {
+  axios.defaults.headers.common['authorization'] = localStorage.getItem(
+    'token',
+  );
   axios
     .get(`${backendServer}glassdoor/jobs/${args}/applicantdetails/`)
     .then((response) =>
@@ -50,6 +59,9 @@ export const getJobApplicantDetails = (args) => (dispatch) => {
 };
 
 export const updateApplicantStatus = (args) => (dispatch) => {
+  axios.defaults.headers.common['authorization'] = localStorage.getItem(
+    'token',
+  );
   axios
     .post(`${backendServer}glassdoor/jobs/applicantstatus/update`, args)
     .then((response) =>
