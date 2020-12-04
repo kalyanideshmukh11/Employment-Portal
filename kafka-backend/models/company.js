@@ -12,7 +12,8 @@ var companySchema = new schema(
       review_status: {type: String, required: true, default: "Pending"},
       date: { type: mongoose.Schema.Types.Date, default: Date.now() },
     }],
-    sql_company_id: {type: Number}
+    sql_company_id: {type: Number},
+    company_name: {type: String}
   },
   {
     versionKey: false,

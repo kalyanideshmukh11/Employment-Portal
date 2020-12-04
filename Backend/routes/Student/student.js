@@ -67,7 +67,7 @@ app.get('/home/:id', checkAuth, (req, res) => {
 })
 
 
-app.get('/profile/:id', checkAuth, (req, res) => {
+app.get('/profile/:id', (req, res) => {
   kafka.make_request(
     'studentProfile_topic',
     { path: 'getStudentProfiledata', userId: req.params.id },
@@ -438,7 +438,7 @@ app.post('/addCompanyPictures/:id', checkAuth, (req, res) => {
         s3Obj.s3Url = url;
         s3Arr.push(s3Obj);
       });
-      kafka.make_request("photos_topic", { "path": "uploadCompanyPhoto", 'companyId': req.body.sql_company_id, 'data': s3Arr}, function (err, results) {
+      kafka.make_request("photos_topic", { "path": "uploadCompanyPhoto", 'company_name': req.body.company_name, 'companyId': req.body.sql_company_id, 'data': s3Arr}, function (err, results) {
         console.log("In make request call back", results);
         if (err) {
           console.log("Inside err");
