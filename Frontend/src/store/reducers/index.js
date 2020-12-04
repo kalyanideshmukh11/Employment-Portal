@@ -8,10 +8,10 @@ import companyOverviewReducer from './studentCompanyOverview';
 import studentJobsReducer from './studentJobsReducer';
 export default combineReducers({
   jobs: companyJobsReducer,
-  reviews:companyReviewReducer,
+  reviews: companyReviewReducer,
   studentProfile: studentProfileReducer,
   review: studentReviewReducer,
   salary: studentSalaryReducer,
-  companyOverview:companyOverviewReducer,
+  companyOverview: companyOverviewReducer,
   student_jobs: studentJobsReducer,
 });

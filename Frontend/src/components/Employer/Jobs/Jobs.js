@@ -2,24 +2,39 @@ import React, { Component } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
-import Navbar from '../../Student/Navbar/navbar_student';
+import Navbar from '../../Student/Navbar/navbar_company';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAllJobs } from '../../../store/actions/companyJobsAction';
+import ReactPaginate from 'react-paginate';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 class Jobs extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      alljobs: [],
       showModal: false,
+      offset: 0,
+      perPage: 5,
+      currentPage: 0,
+      pageCount: null,
+      loading: true,
     };
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const args = localStorage.getItem('name');
     this.props.getAllJobs(args);
+    setTimeout(() => {
+      this.setState({
+        alljobs: this.props.jobs,
+        loading: false,
+      });
+    }, 500);
   }
 
   handleOpenModal(arg) {
@@ -35,17 +50,54 @@ class Jobs extends Component {
     this.setState({ showModal: false });
   }
 
+  handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState({
+      currentPage: selectedPage,
+      offset: offset,
+    });
+  };
+
   render() {
     let renderOutput = [];
-    if (this.props && this.props.jobs && this.props.jobs.length > 0) {
-      for (var i = 0; i < this.props.jobs.length; i++) {
-        const job_id = this.props.jobs[i]._id;
+
+    if (this.state && this.state.alljobs && this.state.alljobs.length > 0) {
+      const slice = this.state.alljobs.slice(
+        this.state.offset,
+        this.state.offset + this.state.perPage,
+      );
+      var paginationElement = (
+        <ReactPaginate
+          previousLabel={'Prev'}
+          nextLabel={'Next'}
+          breakLabel={<span className='gap'>...</span>}
+          pageCount={
+            Math.ceil(this.props.jobs.length / this.state.perPage) > 0
+              ? Math.ceil(this.props.jobs.length / this.state.perPage)
+              : 1
+          }
+          onPageChange={this.handlePageClick}
+          forcePage={this.state.currentPage}
+          containerClassName={'pagination'}
+          previousLinkClassName={'previous_page'}
+          nextLinkClassName={'next_page'}
+          disabledClassName={'disabled'}
+          activeClassName={'active'}
+        />
+      );
+
+      for (var i = 0; i < slice.length; i++) {
+        console.log(slice[i]);
+        const job_id = slice[i]._id;
+
         renderOutput.push(
           <div className='container' style={{ paddingRight: '60%' }}>
             <div className='col-md-12'>
               <Card.Title>
                 <a href='#' onClick={() => this.handleOpenModal(job_id)}>
-                  Job Title - {this.props.jobs[i].title}
+                  Job Title - {slice[i].title}
                 </a>
                 <Modal
                   isOpen={this.state.showModal}
@@ -56,7 +108,6 @@ class Jobs extends Component {
                   {this.state.jobdata && (
                     <Card.Title style={{ marginLeft: '15px' }}>
                       {this.state.jobdata.title}
-                      <span>2</span>
                     </Card.Title>
                   )}
                   <Card.Body>
@@ -134,25 +185,30 @@ class Jobs extends Component {
                   </button>
                 </Modal>
                 <Card.Body>
-                  <h6>
-                    <a href='#' style={{ color: 'black' }}>
-                      No of Applicants
-                    </a>{' '}
-                    - 2
-                  </h6>
-                  {this.props.jobs[i].industry && (
-                    <h6>Industry - {this.props.jobs[i].industry}</h6>
+                  {slice[i].applied_students && (
+                    <Link
+                      to={{
+                        pathname: '/company/jobs/applicantdetails',
+                        state: {
+                          job_id: slice[i]._id,
+                          title: slice[i].title,
+                        },
+                      }}>
+                      <h6>
+                        <a href='#' style={{ color: 'black' }}>
+                          No of Applicants - {slice[i].applied_students.length}
+                        </a>{' '}
+                      </h6>
+                    </Link>
                   )}
-                  {this.props.jobs[i].posted_date && (
-                    <h6>Posted date - {this.props.jobs[i].posted_date}</h6>
+
+                  {slice[i].industry && <h6>Industry - {slice[i].industry}</h6>}
+                  {slice[i].posted_date && (
+                    <h6>Posted date - {slice[i].posted_date}</h6>
                   )}
                   <h6>
-                    {this.props.jobs[i].city && (
-                      <span>{this.props.jobs[i].city},</span>
-                    )}
-                    {this.props.jobs[i].state && (
-                      <span> {this.props.jobs[i].state}</span>
-                    )}
+                    {slice[i].city && <span>{slice[i].city},</span>}
+                    {slice[i].state && <span> {slice[i].state}</span>}
                   </h6>
                 </Card.Body>
               </Card.Title>
@@ -161,6 +217,14 @@ class Jobs extends Component {
           </div>,
         );
       }
+    } else {
+      renderOutput = (
+        <div
+          class='center'
+          style={{ position: 'fixed', top: '55%', left: '50%' }}>
+          <ScaleLoader size={50} color={'green'} loading={this.state.loading} />
+        </div>
+      );
     }
     return (
       <React.Fragment>
@@ -183,6 +247,7 @@ class Jobs extends Component {
               </span>
             </div>
             {renderOutput}
+            <center style={{ paddingLeft: '12%' }}>{paginationElement}</center>
           </div>
         </div>
       </React.Fragment>
