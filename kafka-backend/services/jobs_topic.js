@@ -284,10 +284,6 @@ async function applyToJob(msg, callback) {
       } else {
         studentFName = result[0][0].first_name;
         studentLName = result[0][0].last_name;
-        console.log('studentFName');
-        console.log('studentLName');
-        console.log(studentFName);
-        console.log(studentLName);
         await Jobs.findByIdAndUpdate(
           { _id: msg.body.job_id },
           {
@@ -304,7 +300,6 @@ async function applyToJob(msg, callback) {
           }
         )
           .then((applyJob) => {
-            console.log(applyJob);
             console.log('Applied to job');
             response.status = 200;
             response.message = 'APPLIED';
@@ -465,8 +460,6 @@ async function searchJobHome(msg, callback) {
     }
     if (result && result.length > 0 && result[0][0]) {
       var companies = result[0];
-      console.log('companies');
-      //console.log(companies);
       await Jobs.find({
         $or: [
           { title: new RegExp(msg.body.search_param, 'gi') },
@@ -512,31 +505,6 @@ async function searchJobHome(msg, callback) {
         });
     }
   });
-
-  /*console.log('In job search Home. Msg: ', msg);
-
-  await Jobs.find({
-    $or: [
-      { title: new RegExp(msg.body.search_param, 'gi') },
-      { companyName: new RegExp(msg.body.search_param, 'gi') },
-    ],
-  })
-    .then((data) => {
-      if (data.length > 0) {
-        response.status = 200;
-        // response.data = data;
-        response.data = data;
-        return callback(null, response);
-      } else {
-        response.status = 500;
-        // response.data = data;
-        response.message = 'NO_RECORD';
-        return callback(null, response);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });*/
 }
 
 async function getStudentAppliedJobs(msg, callback) {

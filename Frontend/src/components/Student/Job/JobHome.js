@@ -341,7 +341,6 @@ class JobHome extends Component {
         }
         count++;
         console.log('imgSrc');
-        console.log(job);
         return (
           <Card border-width='10px' style={{ width: '100%', color: 'black' }}>
             <Button
