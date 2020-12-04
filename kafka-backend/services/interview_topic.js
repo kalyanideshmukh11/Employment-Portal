@@ -134,7 +134,7 @@ async function searchByCompanyInterview(msg, callback) {
         msg.body[each._id].rating = each.rating;
       }
       console.log('msg.body:', msg.body);
-      const pager = paginate(ids.length, page, 1);
+      const pager = paginate(ids.length, page, 5);
       const pageOfItems = Object.keys(msg.body)
         .slice(pager.startIndex, pager.endIndex + 1)
         .map((key) => msg.body[key]);
@@ -150,20 +150,19 @@ async function searchByCompanyInterview(msg, callback) {
 }
 
 async function getStudentReviews(msg, callback) {
-  let err = {}, response = {};
+  let err = {},
+    response = {};
   console.log('get Student Interviews: ', msg);
-  await Interview.find({sql_student_id: msg.userId}, (result, error) => {
-    if(error){
-      err.message = error
-      err.status = 500
+  await Interview.find({ sql_student_id: msg.userId }, (result, error) => {
+    if (error) {
+      err.message = error;
+      err.status = 500;
       return callback(null, error);
-    } else if(result){
-      response.status = 200
-      response.message = 'STUDENT_INTERVIEWS'
-      response.data = JSON.stringify(result)
-      return callback(null, response)
+    } else if (result) {
+      response.status = 200;
+      response.message = 'STUDENT_INTERVIEWS';
+      response.data = JSON.stringify(result);
+      return callback(null, response);
     }
-  })
-
-
+  });
 }

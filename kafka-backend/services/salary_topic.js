@@ -22,39 +22,36 @@ exports.salaryService = function (msg, callback) {
   }
 };
 
-
 async function getSalaryDetails(msg, callback) {
   let err = {};
   let response = {};
-  console.log("In getSalaryDetails service. Msg: ", msg);
+  console.log('In getSalaryDetails service. Msg: ', msg);
   console.log(msg.body);
   Salary.aggregate([
     {
-      $match:{
-        'company':msg.body
-      }
+      $match: {
+        company: msg.body,
+      },
     },
     {
-      $group:
-        {
-          _id: {job_title:"$job_title", company:"$company"},
-          base_salary: { $avg: "$base_salary" },
-          bonus: { $avg: "$bonus" },
-        }
-    }
-    
-  ]).then((user) => {
-    console.log(user);
-    console.log("average salary");
-    response.status = 200;
-    response.data = user;
-    return callback(null, response);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+      $group: {
+        _id: { job_title: '$job_title', company: '$company' },
+        base_salary: { $avg: '$base_salary' },
+        bonus: { $avg: '$bonus' },
+      },
+    },
+  ])
+    .then((user) => {
+      console.log(user);
+      console.log('average salary');
+      response.status = 200;
+      response.data = user;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
-
 
 async function insertSalaryDetails(msg, callback) {
   let err = {};
@@ -80,7 +77,7 @@ async function insertSalaryDetails(msg, callback) {
           job_title: msg.body.job_title,
           year_of_experience: msg.body.year_of_experience,
           location: msg.body.location,
-          company: msg.body.company,    
+          company: msg.body.company,
         });
         console.log(iObj);
         let newSalary = await iObj.save();
@@ -96,15 +93,14 @@ async function insertSalaryDetails(msg, callback) {
           return callback(null, response);
         }
       }
-      });
-    }catch (error) {
-  console.log(error);
-  err.status = 500;
-  err.data = 'Error in Data';
-  return callback(err, null);
+    });
+  } catch (error) {
+    console.log(error);
+    err.status = 500;
+    err.data = 'Error in Data';
+    return callback(err, null);
   }
 }
-
 
 async function searchBySalary(msg, callback) {
   console.log('In search by salary for a company: ');
@@ -130,7 +126,7 @@ async function searchBySalary(msg, callback) {
         msg.body[each._id].salaries = each.salaries;
       }
       console.log('msg.body:', msg.body);
-      const pager = paginate(ids.length, page, 1);
+      const pager = paginate(ids.length, page, 5);
       const pageOfItems = Object.keys(msg.body)
         .slice(pager.startIndex, pager.endIndex + 1)
         .map((key) => msg.body[key]);
@@ -146,20 +142,19 @@ async function searchBySalary(msg, callback) {
 }
 
 async function getStudentSalaries(msg, callback) {
-  let err = {}, response = {};
+  let err = {},
+    response = {};
   console.log('get Student Interviews: ', msg);
-  await Salary.find({sql_student_id: msg.userId}, (result, error) => {
-    if(error){
-      err.message = error
-      err.status = 500
+  await Salary.find({ sql_student_id: msg.userId }, (result, error) => {
+    if (error) {
+      err.message = error;
+      err.status = 500;
       return callback(null, error);
-    } else if(result){
-      response.status = 200
-      response.message = 'ABOUT_ME'
-      response.data = JSON.stringify(result)
-      return callback(null, response)
+    } else if (result) {
+      response.status = 200;
+      response.message = 'ABOUT_ME';
+      response.data = JSON.stringify(result);
+      return callback(null, response);
     }
-  })
-
-
+  });
 }

@@ -26,7 +26,6 @@ router.post('/', (req, res) => {
   );
 });
 
-
 router.get('/:companyname/fetchjobs', (req, res) => {
   console.log('In company profile jobs route');
   kafka.make_request(
@@ -46,7 +45,6 @@ router.get('/:companyname/fetchjobs', (req, res) => {
     },
   );
 });
-
 
 router.post('/search/job', (req, res) => {
   console.log('In company profile jobs to search');
@@ -112,27 +110,6 @@ router.post('/applicantstatus/update', (req, res) => {
   );
 });
 
-router.get('/:companyName/fetchStatistics', (req, res) => {
-  console.log('In company profile jobs route');
-  kafka.make_request(
-    'jobs_topic',
-    { path: 'getJobsStatistics', body: req.params.companyName },
-    function (err, results) {
-      if (err) {
-        console.log('Inside err');
-        console.log(err);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('Some error has occured');
-      } else {
-        console.log(results);
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(JSON.stringify(results.data[0]));
-      }
-    },
-  );
-});
-
-
 router.get('/:title/fetchStatistics', (req, res) => {
   console.log('In company profile jobs route');
   kafka.make_request(
@@ -154,24 +131,28 @@ router.get('/:title/fetchStatistics', (req, res) => {
 });
 module.exports = router;
 
-router.post('/getDemographics', (req,res) => {
-  console.log("In you shall trust");
+router.post('/getDemographics', (req, res) => {
+  console.log('In you shall trust');
   console.log(req.body);
-  kafka.make_request("jobs_topic", { "path": "getDemographics", "body": req.body}, function (err, results) {
-    console.log(results);
-    console.log("In make request call back", results);
-    if (err) {
-      console.log("Inside err");
-      console.log(err);
-      return res.status(err.status).send(err.message);
-    } else {
-      //console.log("Inside else", results);
-      if (results.status === 200) {
-        return res.status(results.status).send(results.data);
+  kafka.make_request(
+    'jobs_topic',
+    { path: 'getDemographics', body: req.body },
+    function (err, results) {
+      console.log(results);
+      console.log('In make request call back', results);
+      if (err) {
+        console.log('Inside err');
+        console.log(err);
+        return res.status(err.status).send(err.message);
       } else {
-        return res.status(results.status).send(results.errors);
+        //console.log("Inside else", results);
+        if (results.status === 200) {
+          return res.status(results.status).send(results.data);
+        } else {
+          return res.status(results.status).send(results.errors);
+        }
       }
-    }
-  })
-})
+    },
+  );
+});
 module.exports = router;
