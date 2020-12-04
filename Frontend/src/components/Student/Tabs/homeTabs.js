@@ -52,6 +52,7 @@ class HomeTabs extends Component {
     } else if (this.props.location.category === 'answers') {
       this.state = {
         loadComponent: <Answers state={this.props.location.state}></Answers>,
+        showInterviewBtn: 1,
       };
     } else if (this.props.location.category === 'photos') {
       this.state = {
@@ -101,13 +102,12 @@ class HomeTabs extends Component {
         loadComponent: <Answers state={this.props.location.state}></Answers>,
       });
     }
-
-    console.log('this.state');
-    console.log(this.state);
   }
-  loadComp(param) {
-    console.log('Button clicked', param);
-    this.setState({ loadComponent: param });
+  loadComp(param, tag = 'na') {
+    console.log('Button clicked', param, tag);
+    this.setState({
+      loadComponent: param,
+    });
     this.forceUpdate();
   }
 
@@ -115,28 +115,8 @@ class HomeTabs extends Component {
     // TODO add image link
     var imgSrc = `${backendServer}company/imageUpload/${this.props.location.filename}`;
     let loadComponent = null;
-    let addButton = null;
     if (this.state && this.state.loadComponent) {
       loadComponent = this.state.loadComponent;
-      if (
-        this.props.location &&
-        this.props.location.category === 'interviews'
-      ) {
-        addButton = (
-          <Button
-            href='/student/interview/add'
-            style={{
-              float: 'right',
-              marginLeft: '470px',
-              backgroundColor: '#1861bf',
-              border: '#1861bf',
-            }}
-          >
-            {' '}
-            Add an Interview
-          </Button>
-        );
-      }
     }
     return (
       <React.Fragment>
@@ -218,7 +198,12 @@ class HomeTabs extends Component {
                 </Button>
                 <Button
                   onClick={() =>
-                    this.loadComp(<Comp str='This is Interviews'></Comp>)
+                    this.loadComp(
+                      <Interview
+                        id={this.props.location.companyID}
+                      ></Interview>,
+                      'interviews'
+                    )
                   }
                   style={{
                     backgroundColor: 'transparent',
@@ -271,7 +256,6 @@ class HomeTabs extends Component {
                   {' '}
                   Photos{' '}
                 </Button>
-                {addButton}
               </div>
             </div>
           </div>

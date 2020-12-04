@@ -1,8 +1,9 @@
 const express = require('express');
 const kafka = require('../../kafka/client');
 const router = express.Router();
+var { checkAuth } = require('../../config/passport');
 
-router.post('/add', (req, res) => {
+router.post('/add', checkAuth, (req, res) => {
   console.log('In interview route');
   console.log(req.body);
   kafka.make_request(
@@ -26,7 +27,7 @@ router.post('/add', (req, res) => {
   );
 });
 
-router.get('/get/:company_id', (req, res) => {
+router.get('/get/:company_id', checkAuth, (req, res) => {
   console.log(req.params.user_id);
   kafka.make_request(
     'interview_topic',
