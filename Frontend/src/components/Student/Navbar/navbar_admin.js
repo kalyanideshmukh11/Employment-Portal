@@ -16,11 +16,12 @@ import { Redirect } from 'react-router';
 class AdminNavbar extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-        isShow: false, 
-        SearchType: 'Companies',
-        searchKeyword: '',
-        redirectVar: null, };
+    this.state = {
+      isShow: false,
+      SearchType: 'Companies',
+      searchKeyword: '',
+      redirectVar: null,
+    };
   }
 
   handleOpen = () => {
@@ -78,33 +79,30 @@ class AdminNavbar extends Component {
                 color: 'black',
                 borderColor: 'grey',
               }}
-              onClick={this.search}
-            >
+              onClick={this.search}>
               <i class='fas fa-search'></i>
             </Button>
           </Form>
           <Nav>
             <Button
-              href ='/admin/allReviews'
+              href='/admin/allReviews'
               onClick={this.handleSearch}
               variant='success'
               style={{
                 marginLeft: '10mm',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Reviews{' '}
             </Button>
             <Button
-              href ='/admin/allPhotos'
+              href='/admin/allPhotos'
               onClick={this.handleSearch}
               variant='success'
               style={{
                 marginLeft: '10px',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Photos{' '}
             </Button>
@@ -115,8 +113,7 @@ class AdminNavbar extends Component {
               style={{
                 marginLeft: '10px',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Company Profile{' '}
             </Button>
@@ -127,8 +124,7 @@ class AdminNavbar extends Component {
               style={{
                 marginLeft: '10px',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Analytics Dashboard{' '}
             </Button>
@@ -149,8 +145,7 @@ class AdminNavbar extends Component {
             >
               <NavDropdown.Item
                 onClick={this.handleLogout}
-                style={{ padding: '10px 15px 10px 15px' }}
-              >
+                style={{ padding: '10px 15px 10px 15px' }}>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>
