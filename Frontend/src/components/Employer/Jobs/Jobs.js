@@ -7,26 +7,34 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAllJobs } from '../../../store/actions/companyJobsAction';
 import ReactPaginate from 'react-paginate';
-import '../../../Pagination.css';
+import ScaleLoader from 'react-spinners/ScaleLoader';
 
 class Jobs extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      alljobs: [],
       showModal: false,
       offset: 0,
       perPage: 5,
       currentPage: 0,
       pageCount: null,
+      loading: true,
     };
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const args = localStorage.getItem('name');
     this.props.getAllJobs(args);
+    setTimeout(() => {
+      this.setState({
+        alljobs: this.props.jobs,
+        loading: false,
+      });
+    }, 500);
   }
 
   handleOpenModal(arg) {
@@ -54,37 +62,34 @@ class Jobs extends Component {
 
   render() {
     let renderOutput = [];
-    let slice;
 
-    if (this.props && this.props.jobs.length) {
-      slice = this.props.jobs.slice(
+    if (this.state && this.state.alljobs && this.state.alljobs.length > 0) {
+      const slice = this.state.alljobs.slice(
         this.state.offset,
         this.state.offset + this.state.perPage,
       );
-    }
+      var paginationElement = (
+        <ReactPaginate
+          previousLabel={'Prev'}
+          nextLabel={'Next'}
+          breakLabel={<span className='gap'>...</span>}
+          pageCount={
+            Math.ceil(this.props.jobs.length / this.state.perPage) > 0
+              ? Math.ceil(this.props.jobs.length / this.state.perPage)
+              : 1
+          }
+          onPageChange={this.handlePageClick}
+          forcePage={this.state.currentPage}
+          containerClassName={'pagination'}
+          previousLinkClassName={'previous_page'}
+          nextLinkClassName={'next_page'}
+          disabledClassName={'disabled'}
+          activeClassName={'active'}
+        />
+      );
 
-    let paginationElement = (
-      <ReactPaginate
-        previousLabel={'Prev'}
-        nextLabel={'Next'}
-        breakLabel={<span className='gap'>...</span>}
-        pageCount={
-          Math.ceil(this.props.jobs.length / this.state.perPage) > 0
-            ? Math.ceil(this.props.jobs.length / this.state.perPage)
-            : 1
-        }
-        onPageChange={this.handlePageClick}
-        forcePage={this.state.currentPage}
-        containerClassName={'pagination'}
-        previousLinkClassName={'previous_page'}
-        nextLinkClassName={'next_page'}
-        disabledClassName={'disabled'}
-        activeClassName={'active'}
-      />
-    );
-
-    if (this.props && this.props.jobs && this.props.jobs.length > 0) {
-      for (var i = 0; i < this.props.jobs.length; i++) {
+      for (var i = 0; i < slice.length; i++) {
+        console.log(slice[i]);
         const job_id = slice[i]._id;
 
         renderOutput.push(
@@ -212,6 +217,14 @@ class Jobs extends Component {
           </div>,
         );
       }
+    } else {
+      renderOutput = (
+        <div
+          class='center'
+          style={{ position: 'fixed', top: '55%', left: '50%' }}>
+          <ScaleLoader size={50} color={'green'} loading={this.state.loading} />
+        </div>
+      );
     }
     return (
       <React.Fragment>
