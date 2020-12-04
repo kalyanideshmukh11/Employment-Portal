@@ -84,7 +84,6 @@ async function getAllCompanies(msg, callback) {
   let sql = `CALL get_allCompanies();`;
   console.log(sql)
     pool.query(sql, (err, result) => {
-      // console.log(result)
       if (err) {
         err.status = 400;
         return callback(null, err)
@@ -93,8 +92,6 @@ async function getAllCompanies(msg, callback) {
         response.status = 200;
         response.message = "ALLCOMPANY_FETCHED";
         response.data = (result[0]);
-        // console.log(response);
-        // return callback(null, response)
       };
     });
 
