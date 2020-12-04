@@ -41,7 +41,9 @@ class AddReview extends Component {
       ceo_rating: this.state.ceo_rating,
       recommended: this.state.recommended,
     };
+    console.log("checking inside add review.")
     console.log(reviewData);
+
     this.props.insertNewReviewDetails(reviewData);
     //fix redirection on submit
     if(this.props.status === "Inserted Sucessfully"){

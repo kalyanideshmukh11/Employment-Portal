@@ -9,13 +9,13 @@ import axios from 'axios';
 
 export const insertNewReviewDetails = (reviewData) => (dispatch) => {
   axios
-    .post(`${backendServer}student/reviews/`,{headers: { Authorization: `${localStorage.getItem("token")}` }}, reviewData)
+    .post(`${backendServer}student/reviews/`, reviewData)
     .then((response) =>
       dispatch({
         type: NEW_REVIEW_POSTING,
         payload: response.data,
       }),
-      
+      console.log("inside add review")
     )
     .catch((error) => {
       console.log(error);
