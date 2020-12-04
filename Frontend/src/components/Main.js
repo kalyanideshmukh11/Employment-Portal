@@ -171,7 +171,6 @@ class Main extends Component {
           component={nonUserCompanyReview}
         />
 
-        <Route exact path='/student/job/jobdetails' component={JobDetails} />
         <Route exact path='/admin/allReviews' component={adminReview} />
 
         <Route
