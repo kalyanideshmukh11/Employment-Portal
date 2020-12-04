@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(results.message);
       }
-    },
+    }
   );
 });
 
@@ -42,7 +42,7 @@ router.get('/:companyname/fetchjobs', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(JSON.stringify(results.data));
       }
-    },
+    }
   );
 });
 
@@ -62,7 +62,7 @@ router.post('/search/job', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(results.data));
       }
-    },
+    }
   );
 });
 
@@ -82,7 +82,7 @@ router.get('/:job_id/applicantdetails', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(JSON.stringify(results.data[0]));
       }
-    },
+    }
   );
 });
 
@@ -106,7 +106,7 @@ router.post('/applicantstatus/update', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(results.message);
       }
-    },
+    }
   );
 });
 
@@ -126,7 +126,7 @@ router.get('/:title/fetchStatistics', (req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(JSON.stringify(results.data));
       }
-    },
+    }
   );
 });
 module.exports = router;
@@ -152,7 +152,7 @@ router.post('/getDemographics', (req, res) => {
           return res.status(results.status).send(results.errors);
         }
       }
-    },
+    }
   );
 });
 module.exports = router;

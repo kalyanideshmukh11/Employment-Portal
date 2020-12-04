@@ -79,7 +79,7 @@ class JobDetails extends Component {
                   <JobApplicationModal
                     applicationShow={this.state.applicationShow}
                     applicationOnHide={this.handleApplicationClose}
-                    jobDetails={{ _id: '5fbc4a1bbb7db6419013c33e' }}
+                    jobDetails={{ _id: info._id }}
                   />
                 </div>
               </div>

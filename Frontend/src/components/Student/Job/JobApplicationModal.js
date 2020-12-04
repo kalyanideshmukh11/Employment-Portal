@@ -4,14 +4,17 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
 
 class JobApplicationModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
       resumeOptions: [],
-      primaryResume: 'primaryResume.pdf',
-      selected_resume: 'primaryResume.pdf',
+      primaryResume: '',
+      selected_resume: '',
+      placeholder: '',
     };
     this.onClickResume = this.onClickResume.bind(this);
     this.onClickCover = this.onClickCover.bind(this);
@@ -20,6 +23,7 @@ class JobApplicationModal extends Component {
   componentDidMount() {
     console.log('Here');
     let resumeTag = [];
+    let nameSplitter = 'nameSplitter';
     axios.defaults.withCredentials = true;
     axios
       .get(
@@ -37,16 +41,29 @@ class JobApplicationModal extends Component {
 
         if (response.data[0].resumes && response.data[0].resumes.length > 0) {
           for (let i = 0; i < response.data[0].resumes.length; i++) {
+            if (response.data[0].resumes[i].resume.includes('!***!')) {
+              nameSplitter = '!***!';
+            } else {
+              nameSplitter = 'nameSplitter';
+            }
             if (response.data[0].resumes[i].is_primary) {
               this.setState({
                 primaryResume: response.data[0].resumes[i].resume,
+                placeholder: response.data[0].resumes[i].resume.split(
+                  nameSplitter
+                )[1],
               });
             }
-            resumeTag.push({ value: response.data[0].resumes[i].resume });
+
+            resumeTag.push({
+              label: response.data[0].resumes[i].resume.split(nameSplitter)[1],
+              value: response.data[0].resumes[i].resume,
+            });
           }
 
           this.setState({
             resumeOptions: resumeTag,
+            selected_resume: this.state.primaryResume,
           });
         }
       })
@@ -62,32 +79,36 @@ class JobApplicationModal extends Component {
     });
   };
   onClickCover = (e) => {
+    console.log('uploading file');
+    console.log(e.target.files);
     this.setState({
       cover_file: e.target.files[0],
-      cover_file_text: e.target.files[0].name,
     });
   };
 
   applyJob = (e) => {
     e.preventDefault();
-    const data = {
-      resume_file_name: this.state.selected_resume,
-      //cover_file: this.state.cover_file,
-      cover_file_name: this.state.cover_file_text,
-      sql_student_id: localStorage.getItem('sql_student_id'),
-      job_id: this.props.jobDetails._id,
-      application_status: 'Submitted',
-    };
-    /*const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    };*/
+
+    const form_data = new FormData();
+    form_data.append('cover_file', this.state.cover_file);
+    form_data.append('resume_file_name', this.state.selected_resume);
+    form_data.append('sql_student_id', localStorage.getItem('sql_student_id'));
+    form_data.append('job_id', this.props.jobDetails._id);
+    form_data.append('application_status', 'Submitted');
+
     axios
-      .post(`${backendServer}student/job/apply`, data, {
-        headers: { Authorization: `${localStorage.getItem('token')}` },
-      })
+      .post(
+        `${backendServer}student/job/apply/${localStorage.getItem(
+          'sql_student_id'
+        )}`,
+        form_data,
+        {
+          headers: { Authorization: `${localStorage.getItem('token')}` },
+        }
+      )
       .then((response) => {
+        console.log('response');
+        console.log(response);
         this.setState({
           status: response.data,
           server_status: response.status,
@@ -96,12 +117,16 @@ class JobApplicationModal extends Component {
   };
 
   render() {
+    console.log('render');
+    console.log(this.state);
     let error = {
       message: null,
     };
     let success = {
       message: null,
     };
+    console.log('statetete');
+    console.log(this.state);
     if (this.state.status === 'APPLIED') {
       success.message = 'Your application has been submitted';
       setTimeout(function () {
@@ -133,18 +158,31 @@ class JobApplicationModal extends Component {
               <Dropdown
                 options={this.state.resumeOptions}
                 onChange={this.onClickResume}
-                placeholder={this.state.primaryResume}
+                placeholder={this.state.placeholder}
               />
             </Form.Group>
-
             <Form.Group>
-              <Form.File
-                id='exampleFormControlFile1'
-                name='cover_file'
-                label='Cover Letter'
-                accept='.doc,.docx,pdf'
-                onChange={this.onClickCover}
-              />
+              <Form.Label style={{ margin: '0px', padding: '0px' }}>
+                Cover Letter
+              </Form.Label>
+              <Form.File id='formcheck-api-regular'>
+                <Form.File.Label>
+                  <FontAwesomeIcon
+                    style={{ marginLeft: '2.25cm', padding: '' }}
+                    icon={faUpload}
+                    size='3x'
+                  />
+                  <t style={{ fontSize: '15px', marginLeft: '1.65cm' }}>
+                    pdf|doc|docx
+                  </t>
+                </Form.File.Label>
+                <Form.File.Input
+                  onChange={this.onClickCover}
+                  style={{ display: 'inline-block', padding: '5px' }}
+                  accept='.pdf,.doc,.docx'
+                  title=''
+                />
+              </Form.File>
             </Form.Group>
           </Form>
           <div>

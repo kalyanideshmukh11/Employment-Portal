@@ -44,6 +44,7 @@ import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
 import InterviewAnswers from './Student/Interview/InterviewAnswers';
 import adminReview from './Admin/reviewsPhotos/allReviews';
+import AppliedJobs from './Student/Job/AppliedJobs';
 
 class Main extends Component {
   render() {
@@ -148,7 +149,6 @@ class Main extends Component {
         <Route exact path='/student/tabs' component={HomeTabs} />
         <Route exact path='/student/tabs/photos' component={PhotosTab} />
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
-
         <Route exact path='/admin/home' component={AnalyticsHome} />
         <Route
           exact
@@ -165,8 +165,11 @@ class Main extends Component {
           path='/admin/companyReview/:companyName'
           component={adminCompanyReview}
         />
-        <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
-]        <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
+        <Route
+          exact
+          path='/admin/statistics/:companyName'
+          component={adminCompanyReport}
+        />
 
         <Route exact path='/admin/allReviews' component={adminReview} />
         <Route exact path='/' component={nonUserLanding} />
@@ -175,10 +178,8 @@ class Main extends Component {
           path='/reviews/:companyName'
           component={nonUserCompanyReview}
         />
-
-        <Route exact path='/admin/allReviews' component={adminReview} />
-
         <Route exact path='/student/job/home' component={JobHome} />
+        <Route exact path='/student/job/appliedJobs' component={AppliedJobs} />
       </div>
     );
   }

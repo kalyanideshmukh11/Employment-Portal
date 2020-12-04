@@ -137,8 +137,6 @@ class AddInterview extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('print submit state');
-    console.log(this.state);
     let qaList = [];
     for (let i = 0; i < this.state.qaCount; i++) {
       let qa = {
@@ -159,9 +157,10 @@ class AddInterview extends Component {
     };
     console.log(interviewData);
     axios
-      .post(`${backendServer}student/interview/add/`, interviewData)
+      .post(`${backendServer}student/interview/add/`, interviewData, {
+        headers: { Authorization: `${localStorage.getItem('token')}` },
+      })
       .then((response) => {
-        console.log(response.data);
         console.log('Status Code : ', response.status);
         if (response.status === 200) {
           alert('Interview added');
