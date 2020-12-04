@@ -44,6 +44,7 @@ import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
 import InterviewAnswers from './Student/Interview/InterviewAnswers';
 import companyDemographics from './Employer/Report/companyDemographics';
+import adminReview from './Admin/reviewsPhotos/allReviews';
 
 class Main extends Component {
   render() {
@@ -186,6 +187,7 @@ class Main extends Component {
           component={companyDemographics}
         />
         <Route exact path='/student/job/home' component={JobHome} />
+        <Route exact path='/admin/allReviews' component={adminReview} />
       </div>
     );
   }

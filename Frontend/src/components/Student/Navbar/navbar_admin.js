@@ -16,11 +16,12 @@ import { Redirect } from 'react-router';
 class AdminNavbar extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-        isShow: false, 
-        SearchType: 'Companies',
-        searchKeyword: '',
-        redirectVar: null, };
+    this.state = {
+      isShow: false,
+      SearchType: 'Companies',
+      searchKeyword: '',
+      redirectVar: null,
+    };
   }
 
   handleOpen = () => {
@@ -78,20 +79,19 @@ class AdminNavbar extends Component {
                 color: 'black',
                 borderColor: 'grey',
               }}
-              onClick={this.search}
-            >
+              onClick={this.search}>
               <i class='fas fa-search'></i>
             </Button>
           </Form>
           <Nav>
             <Button
+              href='/admin/allReviews'
               onClick={this.handleSearch}
               variant='success'
               style={{
                 marginLeft: '25mm',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Reviews and Photos{' '}
             </Button>
@@ -102,8 +102,7 @@ class AdminNavbar extends Component {
               style={{
                 marginLeft: '5mm',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Company Profile{' '}
             </Button>
@@ -114,8 +113,7 @@ class AdminNavbar extends Component {
               style={{
                 marginLeft: '5mm',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Analytics Dashboard{' '}
             </Button>
@@ -132,12 +130,10 @@ class AdminNavbar extends Component {
               onMouseLeave={this.handleClose}
               show={this.state.isOpen}
               action
-              variant='light'
-            >
+              variant='light'>
               <NavDropdown.Item
                 onClick={this.handleLogout}
-                style={{ padding: '10px 15px 10px 15px' }}
-              >
+                style={{ padding: '10px 15px 10px 15px' }}>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>
