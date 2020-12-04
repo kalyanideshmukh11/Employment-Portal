@@ -85,6 +85,7 @@ handleSendMessage = (e) => {
     .then(response => {
         if(response.status === 200) {
             alert("Message successfully sent")
+            window.location = '/company/reviews'
         }
     })
 }
