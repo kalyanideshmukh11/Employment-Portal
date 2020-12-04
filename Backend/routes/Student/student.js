@@ -534,6 +534,7 @@ app.post('/addCompanyPictures/:id', checkAuth, (req, res) => {
           data.forEach((url) => {
             s3Obj = {};
             (s3Obj.sql_student_id = req.body.sql_student_id),
+             (s3Obj.company_name = req.body.company_name),
               (s3Obj.s3Url = url);
             s3Arr.push(s3Obj);
           });
