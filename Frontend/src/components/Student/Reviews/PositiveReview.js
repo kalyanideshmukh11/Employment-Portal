@@ -22,7 +22,7 @@ export const PositiveReview = (props) => {
 
     const list = (
       <div>
-        <hr />
+       
         <Button
           class='button button1'
           style={{
@@ -76,7 +76,7 @@ export const PositiveReview = (props) => {
   } else {
     return (
       <div>
-        <p>Loading positive review.</p>
+        <p></p>
       </div>
     );
   }

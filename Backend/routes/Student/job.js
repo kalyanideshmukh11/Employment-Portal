@@ -85,6 +85,29 @@ router.get('/all', checkAuth, (req, res) => {
   );
 });
 
+router.get('/:companyName',checkAuth, (req, res) => {
+  console.log('In company jobs route');
+  console.log(req.params.companyName);
+  kafka.make_request(
+    'jobs_topic',
+    {
+      path: 'getAllJobs',
+      body: req.params.companyName,
+    },
+    function (err, results) {
+      if (err) {
+        console.log('Inside err');
+        console.log(err);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Some error has occured');
+      } else {
+        console.log(results);
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(JSON.stringify(results.data));
+      }
+    }
+    );
+  });
 router.get('/search/:search_param', checkAuth, (req, res) => {
   console.log('Search jobs');
   console.log(req.params);
@@ -103,8 +126,8 @@ router.get('/search/:search_param', checkAuth, (req, res) => {
         res.end(JSON.stringify(results.data));
       }
     }
-  );
-});
+    );
+  });
 
 router.get('/getMyJobs/:student_id', checkAuth, (req, res) => {
   console.log('Get my applied jobs');

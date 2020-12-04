@@ -1,6 +1,7 @@
 const express = require('express');
 const kafka = require('../../kafka/client');
 const router = express.Router();
+var { checkAuth } = require('../../config/passport');
 
 router.post('/', (req, res) => {
   console.log('In company profile reviews route');
@@ -26,7 +27,7 @@ router.post('/', (req, res) => {
   );
 });
 
-router.get('/:companyName', (req, res) => {
+router.get('/:companyName',checkAuth, (req, res) => {
     console.log('In company profile reviews route');
     console.log(req.params.companyName);
     kafka.make_request(

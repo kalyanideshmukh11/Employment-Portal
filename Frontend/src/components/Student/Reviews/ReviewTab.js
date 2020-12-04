@@ -1,65 +1,105 @@
 import React, { Component } from 'react';
-import Navbar from '../../Student/Navbar/navbar_student';
-import { Link } from 'react-router-dom';
-import {
-  Container,
-  Col,
-  Row,
-  Form,
-  Dropdown,
-  Button,
-  Alert,
-  ButtonGroup,
-} from 'react-bootstrap';
+import { Col,Row,Button} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  saveReview,
-  saveAverageRating,
-  saveFeaturedReview,
-  saveNegativeReview,
-  savePositiveReview,
-} from '../../../store/actions/studentReviewAction';
+import {saveReview,saveAverageRating,saveFeaturedReview,saveNegativeReview,savePositiveReview} from '../../../store/actions/studentReviewAction';
 import 'react-bootstrap/ModalHeader';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
-import { ReviewList } from './ReviewList';
+import  ReviewList  from './ReviewList';
 import { Charts } from './Charts';
 import { FeaturedReview } from './FeaturedReview';
 import { PositiveReview } from './PositiveReview';
 import { NegativeReview } from './NegativeReview';
+import ReactPaginate from 'react-paginate';
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 class ReviewTab extends Component {
   constructor(props) {
     super(props);
+    this.state = { 
+      offset: 0,
+      review_items: [],
+      perPage: 1,
+      currentPage: 0,
+     loading: true
+     };
     this.changeHandler = this.changeHandler.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    // this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.review_items = this.review_items.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.getReview();
   }
 
   componentDidMount() {
-    this.getReview();
     this.getAverageRating();
     this.getPositiveReview();
     this.getNegativeReview();
     this.getFeaturedReview();
   }
-  getReview = () => {
-    axios
-      .get(`${backendServer}student/reviews/${this.props.companyName}`)
-      .then((res) => {
-        if (res.status === 200) {
-          if (res.data) {
-            this.props.saveReview(res.data);
-            console.log(this.props.review);
-            //this.props.saveEvents(res.data);
+  // getReview = () => {
+  //   axios
+  //     .get(`${backendServer}student/reviews/${this.props.companyName}`)
+  //     .then((res) => {
+  //       if (res.status === 200) {
+  //         if (res.data) {
+  //           this.props.saveReview(res.data);
+  //           console.log(this.props.review);
+  //           //this.props.saveEvents(res.data);
+  //         }
+  //       }
+  //     });
+  // };
+  getReview=()=> {
+    console.log("function called.")
+    setTimeout(() => {
+        axios.get(`${backendServer}student/reviews/${this.props.companyName}`,
+        {headers: { Authorization: `${localStorage.getItem("token")}` }})
+        .then(response => {
+          console.log(response)
+            const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.state.review_items = []
+            this.setState({
+                review_items: this.state.review_items.concat(slice),
+                pageCount: Math.ceil(response.data.length / this.state.perPage),
+                loading: false
+            });
+        })
+    }, 800)
+}
+handlePageClick = (e) => {
+  const selectedPage = e.selected;
+  console.log(selectedPage)
+  const offset = selectedPage * this.state.perPage;
+  this.setState({
+      currentPage: selectedPage,
+      offset: offset
+  }, () => {
+      this.getReview()
+  });
+
+};
+
+review_items = () => {
+  console.log("this is called")
+  var itemsRender = [], items, item;
+  if (this.state && this.state.review_items && this.state.review_items.length > 0) {
+      items = this.state.review_items
+      if (items.length > 0) {
+          for (var i = 0; i < items.length; i++) {
+              item = <ReviewList review_items={items[i]}/>;
+              itemsRender.push(item);
           }
-        }
-      });
-  };
+      }
+      console.log(itemsRender)
+      return itemsRender;
+  } 
+};
 
   getPositiveReview = () => {
     axios
-      .get(`${backendServer}company/reviews/positive/${this.props.companyName}`)
+      .get(`${backendServer}company/reviews/positive/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
       .then((res) => {
         if (res.status === 200) {
           if (res.data) {
@@ -72,7 +112,8 @@ class ReviewTab extends Component {
 
   getNegativeReview = () => {
     axios
-      .get(`${backendServer}company/reviews/negative/${this.props.companyName}`)
+      .get(`${backendServer}company/reviews/negative/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
       .then((res) => {
         if (res.status === 200) {
           if (res.data) {
@@ -84,7 +125,8 @@ class ReviewTab extends Component {
   };
   getFeaturedReview = () => {
     axios
-      .get(`${backendServer}company/reviews/featured/${this.props.companyName}`)
+      .get(`${backendServer}company/reviews/featured/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
       .then((res) => {
         if (res.status === 200) {
           if (res.data) {
@@ -97,7 +139,8 @@ class ReviewTab extends Component {
 
   getAverageRating = () => {
     axios
-      .get(`${backendServer}company/reviews/rating/${this.props.companyName}`)
+      .get(`${backendServer}company/reviews/rating/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
       .then((res) => {
         if (res.status === 200) {
           if (res.data) {
@@ -127,23 +170,11 @@ class ReviewTab extends Component {
     });
   };
 
-  handleCheckboxChange(e) {
-    this.setState({ workType: e.target.value });
-  }
+  // handleCheckboxChange(e) {
+  //   this.setState({ workType: e.target.value });
+  // }
 
-  createElements = (n) => {
-    var elements = [];
-    for (let i = 0; i < n; i++) {
-      elements.push(
-        <i
-          className='fa fa-star'
-          aria-hidden='true'
-          style={{ color: 'green' }}
-        ></i>
-      );
-    }
-    return elements;
-  };
+
   addVote = (id) => {
     const data = {
       _id: id,
@@ -158,21 +189,50 @@ class ReviewTab extends Component {
       });
   };
   render() {
+    let section,
+    renderOutput = [];
+
+    if (this.state && this.state.review_items && this.state.review_items.length > 0) {
+        section = this.review_items(this.state.review_items);
+        renderOutput.push(section);
+            }else {
+                renderOutput = (
+                    <div class='center' style = {{position: "fixed", top: "70 %", left: "30%" }}>  
+                    <ScaleLoader
+                    size={50}
+                    color={"green"}
+                   loading={this.state.loading}
+                     />
+                    </div>
+
+                )
+            }
+    let paginateElem = null
+    if(this.state.review_items.length > 0){
+        paginateElem = (
+            <div>
+            <hr />
+            <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}/></div>
+        )
+    }
     return (
       <React.Fragment>
         <Row>
-          <Col sm={8} md={8} lg={8}>
-            <h4 style={{ color: '#3BB143', float: 'left' }}>Reviews</h4>
-            <br />
-            <Col sm={4} md={4} lg={4}>
-              <React.Fragment>
-                <div>
-                  <Charts charts={this.props.avgRating}></Charts>
-                </div>
-              </React.Fragment>
-            </Col>
+        <Col  md={{ span: 8, offset: 0 }}>
             <React.Fragment>
-              <div>
+                <div class='row w-100  mt-5 p-5  border rounded' >
+                  <Charts charts={this.props.avgRating}></Charts>
                 <FeaturedReview
                   featuredReview={this.props.featured}
                 ></FeaturedReview>
@@ -182,13 +242,20 @@ class ReviewTab extends Component {
                 <NegativeReview
                   negativeReview={this.props.negative}
                 ></NegativeReview>
-                <ReviewList reviewList={this.props.review}></ReviewList>
-              </div>
+                </div>
+                <div class='row w-100  mt-5 p-5  border rounded'>
+                    {renderOutput}
+
+                    </div>
+
+                {paginateElem}
+                  
+             
             </React.Fragment>
           </Col>
-          <Col sm={4} md={4} lg={4}>
+          <Col  md={{ span: 3, offset: 0 }}>
             <Button variant='primary' href='/student/addreviews'>
-              + Add Reivew
+              + Add Review
             </Button>
           </Col>
         </Row>

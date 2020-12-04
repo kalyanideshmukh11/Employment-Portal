@@ -20,7 +20,6 @@ var reviewSchema = new schema(
   recommended:{ type: mongoose.Schema.Types.Number},
   company:{type: mongoose.Schema.Types.String, required: true},
   reply: {type: mongoose.Schema.Types.String},
-  // student:{type: mongoose.Schema.Types.String, required: true},
   job_title:{type: mongoose.Schema.Types.String, required: true},
   date: { type: mongoose.Schema.Types.Date, default: Date.now() },
 featured:{ type: mongoose.Schema.Types.Boolean, default: false},
