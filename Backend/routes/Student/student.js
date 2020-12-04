@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
         '-' +
         Date.now() +
         'nameSplitter' +
-        file.originalname
+        file.originalname,
     );
   },
 });
@@ -46,7 +46,7 @@ const image_storage = multer.diskStorage({
         '-' +
         Date.now() +
         'nameSplitter' +
-        file.originalname
+        file.originalname,
     );
   },
 });
@@ -68,7 +68,7 @@ const company_image_storage = multer.diskStorage({
         '-' +
         Date.now() +
         'nameSplitter' +
-        file.originalname
+        file.originalname,
     );
   },
 });
@@ -94,7 +94,7 @@ app.get('/home/:id', checkAuth, (req, res) => {
         console.log('Inside Student home data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -112,7 +112,7 @@ app.get('/profile/:id', (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -131,7 +131,7 @@ app.post('/basicProfile/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -150,7 +150,7 @@ app.post('/aboutMe/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -168,7 +168,7 @@ app.post('/addExperience/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -186,7 +186,7 @@ app.post('/addSkills/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -204,7 +204,7 @@ app.post('/addEducation/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -233,7 +233,7 @@ app.post('/addResume/:id', checkAuth, (req, res) => {
             console.log('Inside Student resume data');
             return res.status(results.status).send(results.data);
           }
-        }
+        },
       );
     }
   });
@@ -252,7 +252,7 @@ app.post('/markPrimaryResume/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -278,7 +278,7 @@ app.post('/deleteResume/:id', checkAuth, (req, res) => {
             console.log('Inside Student profile data');
             return res.status(results.status).send(results.data);
           }
-        }
+        },
       );
     }
   });
@@ -309,7 +309,7 @@ app.post('/addJobPreferences/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -326,7 +326,7 @@ app.post('/addCompanyPreferences/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -343,7 +343,7 @@ app.post('/addDemographics/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -360,7 +360,7 @@ app.get('/getStudentDemographics/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -377,7 +377,7 @@ app.get('/deleteDemographics/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(results.status).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -394,7 +394,7 @@ app.get('/studentInterviews/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(200).send(results);
       }
-    }
+    },
   );
 });
 app.get('/studentSalaries/:id', checkAuth, (req, res) => {
@@ -410,7 +410,7 @@ app.get('/studentSalaries/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(200).send(results);
       }
-    }
+    },
   );
 });
 
@@ -427,7 +427,7 @@ app.get('/studentReviews/:id', checkAuth, (req, res) => {
         console.log('Inside Student profile data');
         return res.status(200).send(results);
       }
-    }
+    },
   );
 });
 
@@ -445,7 +445,7 @@ app.get('/exploreJobs/:state', checkAuth, (req, res) => {
         console.log('Inside Jobs explore data');
         return res.status(200).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -477,7 +477,7 @@ app.post('/addProfilePicture/:id', checkAuth, (req, res) => {
             console.log('Inside Student resume data');
             return res.status(results.status).send(results.data);
           }
-        }
+        },
       );
     }
   });
@@ -503,11 +503,11 @@ app.get('/getProfilePicture/:id', (req, res) => {
         } else {
           return res.sendFile(
             path.join(__dirname, '../..') +
-              '/public/uploads/student/profile_pictures/studentPlaceholder.png'
+              '/public/uploads/student/profile_pictures/studentPlaceholder.png',
           );
         }
       }
-    }
+    },
   );
 });
 
@@ -524,7 +524,7 @@ app.post('/addCompanyPictures/:id', checkAuth, (req, res) => {
       for (var i = 0; i < req.files.length; i++) {
         var file = req.files[i];
         promises.push(
-          uploadToS3(file, 'companyPhotos', req.body.sql_company_id)
+          uploadToS3(file, 'companyPhotos', req.body.sql_company_id),
         );
       }
       Promise.all(promises)
@@ -534,7 +534,7 @@ app.post('/addCompanyPictures/:id', checkAuth, (req, res) => {
           data.forEach((url) => {
             s3Obj = {};
             (s3Obj.sql_student_id = req.body.sql_student_id),
-             (s3Obj.company_name = req.body.company_name),
+              (s3Obj.company_name = req.body.company_name),
               (s3Obj.s3Url = url);
             s3Arr.push(s3Obj);
           });
@@ -555,7 +555,7 @@ app.post('/addCompanyPictures/:id', checkAuth, (req, res) => {
                 console.log('Inside Jobs explore data');
                 return res.status(200).send(results.data);
               }
-            }
+            },
           );
         })
         .catch(function (err) {
@@ -578,7 +578,7 @@ app.get('/getCompanyPhotos/:id', checkAuth, (req, res) => {
         console.log('Inside Jobs explore data');
         return res.status(200).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -595,7 +595,7 @@ app.get('/getStudentPhotos/:id', checkAuth, (req, res) => {
         console.log('Inside Jobs explore data');
         return res.status(200).send(results.data);
       }
-    }
+    },
   );
 });
 
@@ -612,7 +612,7 @@ app.post('/incrementVisits/:id', (req, res) => {
         console.log('Inside Jobs explore data');
         return res.status(200).send(results);
       }
-    }
+    },
   );
 });
 
