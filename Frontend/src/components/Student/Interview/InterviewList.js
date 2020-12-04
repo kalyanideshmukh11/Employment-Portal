@@ -513,24 +513,25 @@ class InterviewList extends Component {
     }
     return (
       <div>
-        <div style={{ margin: 'auto', width: '60%' }}>
+        <div style={{ margin: 'auto', width: '63%' }}>
           {renderOutput}
-          <Card style={{ width: '25cm' }}>
-            <div class='col-12'>
-              <Button
-                style={{
-                  float: 'right',
-                  marginRight: '20px',
-                  marginTop: '20px',
-                  marginBottom: '20px',
-                }}
-                variant='success'
-                href='/student/interview/add'
-              >
-                Add an Interview
-              </Button>
-            </div>
-          </Card>
+
+          <div class='col-12'>
+            <Button
+              style={{
+                float: 'right',
+                marginRight: '2px',
+                marginTop: '20px',
+                marginBottom: '20px',
+                backgroundColor: '#1861bf',
+              }}
+              variant='success'
+              href='/student/interview/add'
+            >
+              + Add an Interview
+            </Button>
+          </div>
+
           {chartTag}
           <div>
             {interviewTag}
