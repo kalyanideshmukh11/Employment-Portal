@@ -162,7 +162,7 @@ render() {
         </Col>
         <Col md={{ span: 4 }}>
           <Button variant='primary' href='/student/addreviews'>
-            + Add Reivew
+            + Add Review
           </Button>
         </Col>
       </Row>

@@ -255,7 +255,7 @@ review_items = () => {
           </Col>
           <Col  md={{ span: 3, offset: 0 }}>
             <Button variant='primary' href='/student/addreviews'>
-              + Add Reivew
+              + Add Review
             </Button>
           </Col>
         </Row>
