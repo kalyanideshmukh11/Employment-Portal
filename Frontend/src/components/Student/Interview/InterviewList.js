@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import StudentNavbar from '../Navbar/navbar_student';
-//import CompanyOverviewTab from '../Tabs/homeTabs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare } from '@fortawesome/free-solid-svg-icons';
 import { Card, Col } from 'react-bootstrap';

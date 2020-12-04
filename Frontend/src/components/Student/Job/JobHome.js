@@ -255,7 +255,11 @@ class JobHome extends Component {
                       {/*`/student/interview/list/${value.id}`*/}
                       <div
                         className='ml-3'
-                        style={{ color: '#505863', font: '12px' }}
+                        style={{
+                          color: '#505863',
+                          font: '12px',
+                          textAlign: 'left',
+                        }}
                       >
                         {job.companyName}
                       </div>
@@ -267,15 +271,22 @@ class JobHome extends Component {
                         color: '#505863',
                         font: '16px',
                         fontWeight: 'bold',
+                        textAlign: 'left',
                       }}
                     >
                       {job.title}
                     </div>
                     <div className='d-flex flex-row'>
-                      <div className='ml-3' style={{ color: '#7f7f7f' }}>
+                      <div
+                        className='ml-3'
+                        style={{ color: '#7f7f7f', textAlign: 'left' }}
+                      >
                         {job.city}, {job.state}
                       </div>
-                      <div className='ml-3' style={{ color: '#7f7f7f' }}>
+                      <div
+                        className='ml-3'
+                        style={{ color: '#7f7f7f', textAlign: 'left' }}
+                      >
                         {job.posted_date}
                       </div>
                     </div>
