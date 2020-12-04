@@ -123,18 +123,14 @@ render() {
             return (
             <div>
                 <br />
-                <Card style={{borderTop: "none", borderLeft: "none", paddingLeft: "7px"}}>
-                    <h4> "{rev.headline}" </h4>
+                <div class='card bg-light p-3'>
+                    <h4 style={{paddingTop: "10px"}}> "{rev.headline}" </h4>
                     <p style={{marginLeft: "10px"}}>{rev.rating}.0 {this.createElements(rev.rating)}</p>
                     <p style={{marginLeft: "10px"}}> {rev.description}</p>
                     <p style={{fontWeight: "bold", marginLeft: "10px",  padding: "0px"}}>Pros</p>
-                    <ul>
-                        <li><p style={{marginLeft: "10px"}}>{rev.pros}</p></li>
-                    </ul>
+                    <p style={{marginLeft: "10px"}}>{rev.pros}</p>
                     <p style={{fontWeight: "bold", marginLeft: "10px"}}>Cons</p>
-                    <ul>
-                        <li><p style={{marginLeft: "10px"}}>{rev.cons}</p></li>
-                    </ul>
+                    <p style={{marginLeft: "10px"}}>{rev.cons}</p>
                     <div style={{display: "flex", justifyContent: "space-between"}}>
                         <div>
                             <br />
@@ -155,7 +151,7 @@ render() {
                             {button2}
                         </div>
                     </div>
-                    </Card>
+                    </div>
             </div>
             )
         })

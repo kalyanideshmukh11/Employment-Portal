@@ -1,5 +1,6 @@
 const Jobs = require('../models/jobs');
 const paginate = require('jw-paginate');
+const pool = require('../config/sqlConfig');
 /*const {
   getAllJobs,
 } = require('../../Frontend/src/store/actions/companyJobsAction');*/
@@ -10,6 +11,16 @@ module.exports.jobsService = function (msg, callback) {
     case 'insertJobDetails':
       insertJobDetails(msg, callback);
       break;
+    case 'getAllCompanyJobs':
+      getAllCompanyJobs(msg, callback);
+      break;
+    case 'getJobApplicants':
+      getJobApplicantsDetails(msg, callback);
+      break;
+    case 'updateApplicantStatus':
+      updateApplicantStatus(msg, callback);
+      break;
+
     case 'getJobsStatistics':
       getJobsStatistics(msg, callback);
       break;
@@ -22,6 +33,10 @@ module.exports.jobsService = function (msg, callback) {
       searchJobTitle(msg, callback);
       break;
 
+    case 'getDemographics':
+      getDemographics(msg, callback);
+      break;
+
     case 'getApplicantId':
       getApplicantId(msg, callback);
       break;
@@ -32,6 +47,10 @@ module.exports.jobsService = function (msg, callback) {
 
     case 'apply_job':
       applyToJob(msg, callback);
+      break;
+
+    case 'getAdminJobStatistics':
+      getAdminJobStatistics(msg, callback);
       break;
 
     case 'getJobs':
@@ -73,6 +92,45 @@ async function getAllCompanyJobs(msg, callback) {
     });
 }
 
+async function getJobApplicantsDetails(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In get job details topic. Msg: ', msg);
+  console.log(msg.body);
+  await Jobs.find({ _id: msg.body }, { _id: 0, applied_students: 1 })
+    .then((data) => {
+      response.status = 200;
+      response.data = data;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+async function updateApplicantStatus(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In get job details topic. Msg: ', msg);
+  console.log(msg.body.status);
+  await Jobs.findOneAndUpdate(
+    { 'applied_students._id': msg.body._id },
+    {
+      $set: {
+        'applied_students.$.application_status': msg.body.status,
+      },
+    },
+    { safe: true, new: true, useFindAndModify: false },
+  )
+    .then((data) => {
+      response.status = 200;
+      response.message = 'Updated';
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 async function getJobsStatistics(msg, callback) {
   let err = {};
   let response = {};
@@ -95,7 +153,7 @@ async function getJobsStatistics(msg, callback) {
   // console.log(response);
 
   await Jobs.aggregate([
-    { $match: { title: 'Data Scientist, Analytics' } },
+    { $match: { title: msg.body } },
     { $unwind: '$applied_students' },
     { $unwind: { path: '$applied_students.application_status' } },
 
@@ -110,12 +168,17 @@ async function getJobsStatistics(msg, callback) {
     count.selectedCount = data;
   });
 
-  await Jobs.aggregate([
-    { $match: { title: 'Data Scientist, Analytics' } },
-    { $project: { _id: 0, count: { $size: '$applied_students' } } },
-  ])
+  await Jobs.find(
+    { title: msg.body },
+    { 'applied_students.sql_student_id': 1, _id: 0 }
+  )
     .then((data) => {
-      count.applicantCount = data[0].applicants;
+      let applicantId = [];
+      for (const key of Object.keys(data[0]._doc)) {
+        applicantId = data[0]._doc[key].map((val) => val.sql_student_id);
+      }
+      console.log(applicantId);
+      count.applicantId = applicantId;
     })
     .then(() => {
       console.log(count);
@@ -141,7 +204,7 @@ async function searchJobTitle(msg, callback) {
       console.log('length:', items.length);
       response.status = 200;
       // response.data = data;
-      const pager = paginate(items.length, page, 3);
+      const pager = paginate(items.length, page, 5);
       const pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
       response.data = { pager: pager, items: pageOfItems };
       return callback(null, response);
@@ -158,7 +221,7 @@ async function getApplicantId(msg, callback) {
   console.log(msg.body);
   await Jobs.find(
     { title: 'Data Scientist, Analytics' },
-    { 'applied_students.sql_student_id': 1, _id: 0 }
+    { 'applied_students.sql_student_id': 1, _id: 0 },
   )
     .then((data) => {
       let applicantId = [];
@@ -194,6 +257,7 @@ async function getExploreJobs(msg, callback) {
     }
   });
 }
+
 async function applyToJob(msg, callback) {
   let err = {};
   let response = {};
@@ -212,7 +276,7 @@ async function applyToJob(msg, callback) {
             application_status: msg.body.application_status,
           },
         },
-      }
+      },
     )
       .then((applyJob) => {
         console.log(applyJob);
@@ -230,6 +294,81 @@ async function applyToJob(msg, callback) {
     err.data = 'Error in Data';
     return callback(err, null);
   }
+}
+
+//company job demographics topic
+async function getDemographics(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In get job demographics topic service. Msg: ', msg);
+  console.log(msg.body);
+
+  let sql = `CALL get_applicantDemographics('${msg.body}');`;
+  console.log(sql);
+  pool.query(sql, (err, result) => {
+    if (err) {
+      err.status = 400;
+      return callback(null, err);
+    }
+    if (result && result.length > 0 && result[0][0]) {
+      console.log(result);
+      response.status = 200;
+      response.message = 'APPLICANTDETAILS_FETCHED';
+      response.data = JSON.stringify(result);
+      return callback(null, response);
+    }
+  });
+}
+
+//Admin demographics topic
+async function getAdminJobStatistics(msg, callback) {
+  let err = {};
+  let response = {};
+  let count = {};
+  let start = new Date();
+  start.setDate(start.getDate() - 365);
+  start = start.toLocaleDateString();
+  console.log('In get job details topic. Msg: ', msg);
+  console.log(msg.body);
+  console.log(start);
+
+  await Jobs.aggregate([
+    { $match: { companyName: msg.body } },
+    { $unwind: '$applied_students' },
+    { $unwind: { path: '$applied_students.application_status' } },
+
+    {
+      $group: {
+        _id: '$applied_students.application_status',
+        Frequency: { $sum: 1 },
+      },
+    },
+  ]).then((data) => {
+    console.log(data);
+    count.selectedCount = data;
+  });
+
+  await Jobs.find(
+    { companyName: msg.body },
+    { 'applied_students.sql_student_id': 1, _id: 0 }
+  )
+    .then((data) => {
+      let applicantId = [];
+      for (const key of Object.keys(data[0]._doc)) {
+        applicantId = data[0]._doc[key].map((val) => val.sql_student_id);
+      }
+      console.log(applicantId);
+      count.applicantId = applicantId;
+    })
+    .then(() => {
+      console.log(count);
+      response.status = 200;
+      response.data = count;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 async function getJobs(msg, callback) {

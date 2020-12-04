@@ -7,7 +7,7 @@ import studentSalaryReducer from './studentSalaryReducer';
 import companyOverviewReducer from './studentCompanyOverview';
 export default combineReducers({
   jobs: companyJobsReducer,
-  reviews:companyReviewReducer,
+  reviews: companyReviewReducer,
   studentProfile: studentProfileReducer,
   review: studentReviewReducer,
   salary: studentSalaryReducer,

@@ -5,6 +5,7 @@ import TopRated from './topRated';
 import TopCeo from './topCeo';
 import TopStudents from './topStudents';
 import ReviewsPerday from './reviewsPerday';
+import TopVisits from './topVisits';
 import '../../../Admin.css';
 import AdminLoginCheck from '../adminLoginCheck';
 
@@ -21,17 +22,14 @@ class AnalyticsHome extends Component {
       <React.Fragment>
         <AdminLoginCheck />
         <Navbar />
-        {/* <div>
-          <ReviewsPerday></ReviewsPerday>
-        </div> */}
 
         <div class='row'>
           <div class='col-md-4'>
             <div>
               <h3>
-                <b>Top 5 most reviewed companies:</b>
+                <b>Number of reviews today:</b>
               </h3>
-              <ApexChart></ApexChart>
+              <ReviewsPerday></ReviewsPerday>
             </div>
           </div>
           <div class='col-md-4'>
@@ -45,9 +43,9 @@ class AnalyticsHome extends Component {
           <div class='col-md-4'>
             <div>
               <h3>
-                <b>Top 5 students based on total accepted reviews made:</b>
+                <b>Top 5 most reviewed companies: </b>
               </h3>
-              <TopStudents></TopStudents>
+              <ApexChart></ApexChart>
             </div>
           </div>
         </div>
@@ -57,7 +55,7 @@ class AnalyticsHome extends Component {
               <h3>
                 <b>Top 10 most viewed companies:</b>
               </h3>
-              <TopCeo></TopCeo>
+              <TopVisits></TopVisits>
             </div>
           </div>
           <div class='col-md-4'>
@@ -71,9 +69,9 @@ class AnalyticsHome extends Component {
           <div class='col-md-4'>
             <div>
               <h3>
-                <b>Number of reviews today:</b>
+                <b>Top 5 students based on total accepted reviews made:</b>
               </h3>
-              <ReviewsPerday></ReviewsPerday>
+              <TopStudents></TopStudents>
             </div>
           </div>
         </div>

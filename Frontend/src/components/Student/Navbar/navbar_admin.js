@@ -16,11 +16,12 @@ import { Redirect } from 'react-router';
 class AdminNavbar extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-        isShow: false, 
-        SearchType: 'Companies',
-        searchKeyword: '',
-        redirectVar: null, };
+    this.state = {
+      isShow: false,
+      SearchType: 'Companies',
+      searchKeyword: '',
+      redirectVar: null,
+    };
   }
 
   handleOpen = () => {
@@ -78,32 +79,41 @@ class AdminNavbar extends Component {
                 color: 'black',
                 borderColor: 'grey',
               }}
-              onClick={this.search}
-            >
+              onClick={this.search}>
               <i class='fas fa-search'></i>
             </Button>
           </Form>
           <Nav>
             <Button
+              href='/admin/allReviews'
               onClick={this.handleSearch}
               variant='success'
               style={{
-                marginLeft: '25mm',
+                marginLeft: '10mm',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
-              Reviews and Photos{' '}
+              Reviews{' '}
+            </Button>
+            <Button
+              href='/admin/allPhotos'
+              onClick={this.handleSearch}
+              variant='success'
+              style={{
+                marginLeft: '10px',
+              }}
+              type='submit'>
+              {' '}
+              Photos{' '}
             </Button>
             <Button
               href='/admin/companyProfile'
               onClick={this.handleSearch}
               variant='success'
               style={{
-                marginLeft: '5mm',
+                marginLeft: '10px',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Company Profile{' '}
             </Button>
@@ -112,32 +122,30 @@ class AdminNavbar extends Component {
               onClick={this.handleSearch}
               variant='success'
               style={{
-                marginLeft: '5mm',
+                marginLeft: '10px',
               }}
-              type='submit'
-            >
+              type='submit'>
               {' '}
               Analytics Dashboard{' '}
             </Button>
             <NavDropdown
-              style={{ marginLeft: '1cm' }}
+              style={{ marginLeft: '0.5cm'}}
               title={
-                <FontAwesomeIcon
-                  style={{ color: 'black' }}
-                  icon={faUserCircle}
-                  size='5px'
-                />
+                <i
+                  className='far fa-user-circle'
+                  style={{ fontSize: '30px' }}
+                ></i>
               }
               onMouseEnter={this.handleOpen}
               onMouseLeave={this.handleClose}
               show={this.state.isOpen}
               action
               variant='light'
+              
             >
               <NavDropdown.Item
                 onClick={this.handleLogout}
-                style={{ padding: '10px 15px 10px 15px' }}
-              >
+                style={{ padding: '10px 15px 10px 15px' }}>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>

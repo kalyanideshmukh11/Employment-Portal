@@ -11,14 +11,29 @@ class adminCompanyReport extends Component {
     constructor(props) {
         super(props); 
             this.state = {
-                selected: 0,
-                rejected: 0
+                applicantId: [],
+                ethnicity: [],
+                gender:[],
+                sexualOrient: [],
+                disability:[],
+                parent:[],
+                veteran: [],
             }
         }
 
         componentWillMount() {
-            axios.get(`${backendServer}glassdoor/jobs/${this.props.match.params.title}/fetchStatistics`)
+            axios.get(`${backendServer}admin/company/${this.props.match.params.companyName}`)
             .then(res => {
+                axios.post(`${backendServer}glassdoor/jobs/getDemographics`, res.data.applicantId )
+                .then(res => {
+                    console.log(res.data)
+                this.setState({ethnicity: res.data[0]})
+                this.setState({gender: res.data[1]})
+                this.setState({sexualOrient: res.data[2]})
+                this.setState({disability: res.data[3]})
+                this.setState({parent: res.data[4]})
+                this.setState({veteran: res.data[5]})
+            })
                 let val = res.data.selectedCount
                 for( let i = 0; i < val.length; i++ ) {
                     console.log(val[i])
@@ -28,14 +43,183 @@ class adminCompanyReport extends Component {
                         this.setState({selected: val[i].Frequency})
                     }
                 }
-                this.setState({totalJobs: res.data.jobsCount}) 
-                this.setState({applicantCount: res.data.applicantCount})
+                this.setState({applicantId: res.data.applicantId})
             });
         }
 
+        
+
 
 render() {
-    console.log(this.state.jobsCount)
+
+    let ethnicitylabels = [];
+    for(let i = 0; i<this.state.ethnicity.length; i++) {
+        ethnicitylabels.push(this.state.ethnicity[i].ethnicity);
+    }
+    console.log(ethnicitylabels);
+
+    let ethnicityCount = [];
+    for(let i = 0; i<this.state.ethnicity.length; i++) {
+        ethnicityCount.push(this.state.ethnicity[i].n);
+    }
+
+    let ethnicityData = {
+        dataPie:{
+        labels: ethnicitylabels,
+        datasets: [
+          {
+            data: ethnicityCount,
+            backgroundColor: [
+              "#228B22",
+              "#FF69B4",
+              "#20B2AA",
+              "#FFA500",
+              "#008080",
+              "#B22222",
+              "#FF7F50",
+              "#5F9EA0",
+              "#483D8B",
+              "#FFFAF0"
+            ],
+          }
+        ]
+      }
+    }
+
+    let genderlabels = [];
+    for(let i = 0; i<this.state.gender.length; i++) {
+        genderlabels.push(this.state.gender[i].gender);
+    }
+    console.log(genderlabels);
+
+    let genderCount = [];
+    for(let i = 0; i<this.state.gender.length; i++) {
+        genderCount.push(this.state.gender[i].n);
+    }
+
+    let genderData = {
+        dataPie:{
+        labels: genderlabels,
+        datasets: [
+          {
+            data: genderCount,
+            backgroundColor: [
+                "#FFA500",
+              "#008080",
+              "#B22222",
+              "#FF7F50",
+            ],
+          }
+        ]
+      }
+    }
+
+    let sexualOrientlabels = [];
+    for(let i = 0; i<this.state.sexualOrient.length; i++) {
+        sexualOrientlabels.push(this.state.sexualOrient[i].sexual_orientation);
+    }
+    console.log(sexualOrientlabels);
+
+    let sexualOrientCount = [];
+    for(let i = 0; i<this.state.sexualOrient.length; i++) {
+        sexualOrientCount.push(this.state.sexualOrient[i].n);
+    }
+
+    let sexualOrientData = {
+        dataPie:{
+        labels: sexualOrientlabels,
+        datasets: [
+          {
+            data: sexualOrientCount,
+            backgroundColor: [
+              "#F7464A",
+              "#46BFBD",
+              "#5AD3D1",
+            ],
+          }
+        ]
+      }
+    }
+
+    let disabilitylabels = [];
+    for(let i = 0; i<this.state.disability.length; i++) {
+        disabilitylabels.push(this.state.disability[i].disability);
+    }
+
+    let disabilityCount = [];
+    for(let i = 0; i<this.state.disability.length; i++) {
+        disabilityCount.push(this.state.disability[i].n);
+    }
+
+    let disabilityData = {
+        dataPie:{
+        labels: disabilitylabels,
+        datasets: [
+          {
+            data: disabilityCount,
+            backgroundColor: [
+              "#F7464A",
+              "#46BFBD",
+              "#5AD3D1",
+            ],
+          }
+        ]
+      }
+    }
+
+    let parentlabels = [];
+    for(let i = 0; i<this.state.parent.length; i++) {
+        parentlabels.push(this.state.parent[i].parent_caregiver);
+    }
+
+    let parentCount = [];
+    for(let i = 0; i<this.state.parent.length; i++) {
+        parentCount.push(this.state.parent[i].n);
+    }
+
+    let parentData = {
+        dataPie:{
+        labels: parentlabels,
+        datasets: [
+          {
+            data: parentCount,
+            backgroundColor: [
+                "#5F9EA0",
+                "#483D8B",
+                "#FFFAF0"
+            ],
+          }
+        ]
+      }
+    }
+
+    let veteranlabels = [];
+    for(let i = 0; i<this.state.veteran.length; i++) {
+        veteranlabels.push(this.state.veteran[i].veteran_status);
+    }
+
+    let veteranCount = [];
+    for(let i = 0; i<this.state.veteran.length; i++) {
+        veteranCount.push(this.state.veteran[i].n);
+    }
+
+    let veteranData = {
+        dataPie:{
+        labels: veteranlabels,
+        datasets: [
+          {
+            data: veteranCount,
+            backgroundColor: [
+              "#F7464A",
+              "#46BFBD",
+              "#5AD3D1",
+            ],
+          }
+        ]
+      }
+    }
+
+
     let companyData = {
         dataPie:{
         labels: ["Rejected", "Hired"],
@@ -61,14 +245,56 @@ return(
     <div class='container'>
         <br />
         <h1> {this.props.match.params.companyName}'s report</h1>
-        <Button> View demographics</Button>
-        <div>
+        <hr />
         <div>
             <MDBContainer>
-            <Pie data = {companyData.dataPie} />
-            <p style={{fontWeight: "bold",fontSize: "30px", marginLeft: "60px",  padding: "0px"}}>Job statistics</p>
-            <p style={{fontWeight: "light",fontSize: "20px", marginLeft: "60px",  padding: "0px"}}>Selected applicants: {this.state.selected}</p>
-            <p style={{fontWeight: "light",fontSize: "20px", marginLeft: "60px",  padding: "0px"}}>Rejected applicants: {this.state.rejected}</p>
+                <h4>Applicant Statistics</h4>
+            <Pie data = {companyData.dataPie}   />
+            </MDBContainer>
+        </div>
+        <br />
+        <h4> Applicant Demographics </h4>
+        <hr />
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+        <div>
+            <MDBContainer>
+                <h6> Ethnicity</h6>
+            <Pie data = {ethnicityData.dataPie}   />
+            </MDBContainer>
+        </div>
+        <div>
+            <MDBContainer>
+                <h6> Gender</h6>
+            <Pie data = {genderData.dataPie}   />
+            </MDBContainer>
+        </div>
+
+        <div>
+            <MDBContainer>
+                <h6> Sexual Orientation</h6>
+            <Pie data = {sexualOrientData.dataPie}   />
+            </MDBContainer>
+        </div>
+        </div>
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+        <div>
+            <MDBContainer>
+                <h6> Disability</h6>
+            <Pie data = {disabilityData.dataPie}   />
+            </MDBContainer>
+        </div>
+
+        <div>
+            <MDBContainer>
+                <h6> Parent caregiver</h6>
+            <Pie data = {parentData.dataPie}   />
+            </MDBContainer>
+        </div>
+
+        <div>
+            <MDBContainer>
+                <h6> Veteran status</h6>
+            <Pie data = {veteranData.dataPie}   />
             </MDBContainer>
         </div>
     </div>
