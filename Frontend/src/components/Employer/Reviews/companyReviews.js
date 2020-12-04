@@ -21,7 +21,9 @@ class companyReview extends Component {
 }
 
 componentWillMount() {
-    axios.get(`${backendServer}company/reviews/${localStorage.getItem("name")}`)
+    axios.get(`${backendServer}company/reviews/${localStorage.getItem("name")}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }
+})
     .then(res => {
         this.setState({ reviews: res.data });
     });

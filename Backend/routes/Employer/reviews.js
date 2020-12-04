@@ -43,7 +43,7 @@ var kafka = require('../../kafka/client');
 //     }
 // )
 
-router.get('/:companyName', (req, res) => {
+router.get('/:companyName', checkAuth, (req, res) => {
     console.log(req.params.companyName)
   kafka.make_request("review_topic", { "path": "companyReviews", "body": req.params.companyName }, function (err, results) {
     console.log(results);

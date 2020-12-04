@@ -153,18 +153,18 @@ async function companyReviews(msg, callback) {
       console.log('error');
       response.status = 400;
     }
-    // else if (data) {
-    //     console.log("fetching from redis cache");
-    //     console.log(data);
-    //     response.data = (JSON.parse(data));
-    //     console.log(response);
-    //     return callback( null, response)
-    // }
+    else if (data) {
+        console.log("fetching from redis cache");
+        console.log(data);
+        response.data = (JSON.parse(data));
+        console.log(response);
+        return callback( null, response)
+    }
     else {
       console.log('fetching from mongoDb');
       Review.find({ company: msg.body, approvedstatus: "Approved"})
       .then ((rev) => {
-         //redisClient.setex("companyReviews", 36000, JSON.stringify(rev));
+        redisClient.setex("companyReviews", 36000, JSON.stringify(rev));
         response.status = 200;
         response.data = rev;
         response.message = 'REVIEW_FETCHED';
@@ -392,6 +392,7 @@ async function getStudentReviews(msg, callback) {
   });
 }
 
+
 async function getFeaturedReview(msg, callback) {
   let err = {};
   let response = {};
@@ -409,6 +410,7 @@ async function getFeaturedReview(msg, callback) {
       console.log(err);
     });
 }
+
 
 async function getPositiveReview(msg, callback) {
   let err = {};
@@ -429,6 +431,8 @@ async function getPositiveReview(msg, callback) {
       console.log(err);
     });
 }
+
+
 async function getNegativeReview(msg, callback) {
   let err = {};
   let response = {};
@@ -528,18 +532,19 @@ async function getAllReviews(msg, callback) {
       console.log('error');
       response.status = 400;
     }
-    // else if (data) {
-    //     console.log("fetching from redis cache");
-    //     console.log(data);
-    //     response.data = (JSON.parse(data));
-    //     console.log(response);
-    //     return callback( null, response)
-    // }
+    else if (data) {
+        console.log("fetching from redis cache");
+        console.log(data);
+        response.status = 200;
+        response.data = (JSON.parse(data));
+        // console.log(response);
+        return callback( null, response)
+    }
     else {
       console.log('fetching from mongoDb');
       Review.find({company: "Google"})
       .then ((rev) => {
-         //redisClient.setex("allReviews", 36000, JSON.stringify(rev));
+        redisClient.setex("allReviews", 36000, JSON.stringify(rev));
         response.status = 200;
         response.data = rev;
         response.message = 'REVIEW_FETCHED';
@@ -573,6 +578,7 @@ async function updateApproved(msg, callback) {
         console.log(err);
       });
   }
+
 async function TopStudents(msg, callback) {
   await Review.aggregate(
     [

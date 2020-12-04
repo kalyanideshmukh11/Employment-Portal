@@ -39,8 +39,11 @@ class companyReport extends Component {
                     console.log(val[i])
                     if(val[i]._id === 'Rejected') {
                         this.setState({rejected: val[i].Frequency})
-                    } else {
+                    } else if (val[i]._id === 'Selecetd') {
                         this.setState({selected: val[i].Frequency})
+                    } else {
+                      this.setState({selected: 0})
+                      this.setState({rejected: 0})
                     }
                 }
                 this.setState({applicantId: res.data.applicantId})

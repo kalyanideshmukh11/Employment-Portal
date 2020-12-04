@@ -164,6 +164,4 @@ async function getStudentReviews(msg, callback) {
       return callback(null, response)
     }
   })
-
-
 }

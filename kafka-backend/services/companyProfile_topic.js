@@ -31,7 +31,6 @@ async function getCompanyDetails(msg, callback) {
   let response = {};
   console.log("In get company details topic service. Msg: ", msg);
   console.log(msg.body);
-
   let sql = `CALL get_companyProfile('${msg.body}');`;
   console.log(sql)
     pool.query(sql, (err, result) => {

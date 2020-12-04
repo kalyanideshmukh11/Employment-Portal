@@ -1,110 +1,155 @@
-import Navigationbar from '../../Student/Navbar/navbar_admin';
-import React, { Component } from 'react';
-import {Button} from 'react-bootstrap';
-import axios from 'axios';
-import backendServer from '../../../webConfig';
-// import { FormInput } from 'react-native-elements'
+import React, {Component} from 'react';
+import ContributionsSidebar from '../Navbar/contributions_sideBar'
+import StudentNavbar from '../Navbar/navbar_student'
+import {Button, Card, Table, Image} from 'react-bootstrap'
+import axios from 'axios'
+import backendServer from "../../../webConfig"
+import ReactPaginate from 'react-paginate';
 
 
-class adminPhotos extends Component {
 
-    constructor(props) {
-        super(props); 
-            this.state = {
-                reviews: [],
-            }
-}
+class PhotosContribution extends Component{
+ constructor(props){
+     super(props)
+         this.state = {
+            offset: 0,
+            photos: [],
+            perPage: 5,
+            currentPage: 0
+     }
+     this.handlePageClick = this.handlePageClick.bind(this);
 
-componentWillMount() {
-    axios.get(`${backendServer}admin/review/allReviews`)
-    .then(res => {
-        this.setState({ reviews: res.data });
+ }
+ handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState({
+        currentPage: selectedPage,
+        offset: offset
+    }, () => {
+        this.componentWillMount()
     });
-}
 
-handleOnClick = (e) => {
-    console.log(e.target.value)
-    const data = {
-        value: e.target.value,
-        id: e.target.id,
-    }
-    console.log(data);
-    axios.post(`${backendServer}admin/review/approve`, data)
-    .then(response => { 
-        console.log(response)    
-        if(response.status === 200) {
-            window.location = '/admin/allReviews'
-        }
+};
+
+ componentWillMount = () => {
+    axios.get(`${backendServer}student/getStudentPhotos/${localStorage.getItem("sql_student_id")}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }
     })
-}
+    .then(response => {
+        const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.state.photos = []
+        this.setState({
+            photos: this.state.photos.concat(slice),
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
+        });
 
-createElements(n) {
-    var elements = [];
-    for (let i = 0; i < n; i++) {
-      elements.push(
-        <i className='fa fa-star' aria-hidden='true' style={{ color: 'green' }}></i>,
-      );
+    })
+
+ }
+ render(){
+    let details= null;
+
+    if(this.state.photos.length > 0){
+       details = this.state.photos.map(photos => {
+           return(
+               <tr>
+                   <td>{
+                       <div>
+                        <Image src={photos.s3Url} style={{width:"5cm", height:"3cm", padding:"5px 5px 10px 50px"}}/>
+                       </div>}</td>
+   
+                   <td style={{textAlign: "center", verticalAlign:"middle"}}>{photos.date.split('T')[0]}</td>
+                   
+                   <td style={{textAlign: "center", verticalAlign:"middle", fontWeight: "600"}}>{photos.review_status}</td>
+
+                   
+               </tr>
+           )
+       })
+    } else {
+        details = (
+            <tr>
+               <td colSpan="3" style={{padding: "10px 10px 10px 10px", color:"#33333", verticalAlign:"middle"}}> Please upload photos to show it here.</td>
+            </tr>)
     }
-    return elements;
-  }
-
-render() {
-    
-    console.log(this.state.reviews)
-    let renderReviews;
-    if (this.state.reviews) {
-        renderReviews = this.state.reviews.map( rev => {
-            let button1;
-            let button2;
-            if(rev.approvedstatus === "Pending") 
-            {
-                button1 = <Button id = {rev._id} style={{marginRight: "5px"}} variant="success" onClick={this.handleOnClick} value = "Approved"> Approve </Button>
-                button2 = <Button id = {rev._id} variant="success" onClick={this.handleOnClick} value = "Rejected"> Reject </Button>
-            } else if (rev.approvedstatus === "Rejected") {
-                button1 = <p style={{color: "red", fontSize: "20px"}}><i class="fas fa-times-circle"></i></p>
-            } else {
-                button1 = <p style={{color: "green", fontSize: "20px"}}><i class="fas fa-check-square"></i></p>
-            }
-
-            return (
-            <div>
-                <br />
-                <div class='card bg-light p-3'>
-                    <h4 style={{paddingTop: "10px"}}> "{rev.headline}" </h4>
-                    <p style={{marginLeft: "10px"}}>{rev.rating}.0 {this.createElements(rev.rating)}</p>
-                    <p style={{marginLeft: "10px"}}> {rev.description}</p>
-                    <p style={{fontWeight: "bold", marginLeft: "10px",  padding: "0px"}}>Pros</p>
-                    <p style={{marginLeft: "10px"}}>{rev.pros}</p>
-                    <p style={{fontWeight: "bold", marginLeft: "10px"}}>Cons</p>
-                    <p style={{marginLeft: "10px"}}>{rev.cons}</p>
-                    <div style={{display: "flex", justifyContent: "space-between"}}>
-                        <div>
-                            <p></p>
-                        </div>
-                        <div>
-                        <div style={{display: "flex", justifyContent: "space-between"}}>
-                            {button1} 
-                            {button2}
-                            </div>
-                        </div>
-                    </div>
-                    </div>
+    let paginateElem = null
+    if(this.state.photos.length > 0){
+        paginateElem = (
+            <div style= {{marginLeft:"5mm", marginRight:"5mm"}}>
+            <hr />
+            <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+            />
+            
             </div>
-            )
-        })
+        )
     }
-return(
-    <React.Fragment>
-    <Navigationbar />
-    <div class='container'>
-        <h1> All Reviews</h1>
-        {renderReviews}
+     return(
+        <div>
+            <StudentNavbar />
+       
+        <div className='row' style={{background: "#eaeaea"}}>
+        <div className="col-4 contri" style={{paddingLeft:"5cm"}}> 
+        <ContributionsSidebar />
+        </div>
+        <div className="col-8 contri" style={{padding:"28px 20px 0px 20px"}}>  
+        <Card style={{ width: '44rem', padding:"10px 20px 0px 10px" }}>
+        <Card.Body>
+            <Card.Title>
+                Photos
+            </Card.Title>
+            
+                <Card.Text>
+                    <Button style={{backgroundColor: '#1861bf', borderColor: "#1861bf"}} href='/student/tabs/photos'>
+                        Add Photos
+                    </Button>
+                </Card.Text>
+                <br />
+                <Card.Text>
+                The Glassdoor team reviews every piece of content submitted by users, so please be patient. 
+                Contributions with the 'Pending' status are being reviewed, and will appear on the site once they are approved.
+
+                </Card.Text>
+                <Card.Text>
+                    <Table striped bordered hover size="sm">
+                    <thead>
+                        <tr>
+                        <th style={{width:"50%", padding:"10px 0px 10px 10px"}}>Details</th>
+                        <th style={{padding:"10px 0px 10px 10px"}}>Submitted</th>
+                        <th style={{padding:"10px 0px 10px 10px"}}>Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {details}
+                    </tbody>
+                    </Table>
+                </Card.Text>
+
+            </Card.Body>
+            {paginateElem}         
+
+            </Card>     
+            <br />
+            <br /> 
+            
+        
     </div>
-    </React.Fragment>
-
-)}
+    </div>
+    </div>
+     )
+ }
 }
-
-
-
-export default adminPhotos;
+export default PhotosContribution
