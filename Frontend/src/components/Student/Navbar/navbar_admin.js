@@ -89,7 +89,7 @@ class AdminNavbar extends Component {
               onClick={this.handleSearch}
               variant='success'
               style={{
-                marginLeft: '50px',
+                marginLeft: '10mm',
               }}
               type='submit'>
               {' '}
@@ -129,19 +129,20 @@ class AdminNavbar extends Component {
               Analytics Dashboard{' '}
             </Button>
             <NavDropdown
-              style={{ marginLeft: '1cm' }}
+              style={{ marginLeft: '0.5cm'}}
               title={
-                <FontAwesomeIcon
-                  style={{ color: 'black' }}
-                  icon={faUserCircle}
-                  size='5px'
-                />
+                <i
+                  className='far fa-user-circle'
+                  style={{ fontSize: '30px' }}
+                ></i>
               }
               onMouseEnter={this.handleOpen}
               onMouseLeave={this.handleClose}
               show={this.state.isOpen}
               action
-              variant='light'>
+              variant='light'
+              
+            >
               <NavDropdown.Item
                 onClick={this.handleLogout}
                 style={{ padding: '10px 15px 10px 15px' }}>

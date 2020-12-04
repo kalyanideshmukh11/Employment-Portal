@@ -37,6 +37,7 @@ async function uploadCompanyPhoto(msg, callback){
             console.log("OK")
             Company.create({
                 sql_company_id: msg.companyId,
+                company_name: msg.company_name,
                 photos: msg.data}, (error2, result2) => {
                 if (error2) {
                 error.message = error2
@@ -66,10 +67,16 @@ async function getCompanyPhotos(msg, callback){
       error.status = 500
       return callback(null, error);
     } else if (result.length > 0) {
-      console.log(result)
+      console.log(result[0].photos)
+      let final_Arr = []
+      for (const key of Object.keys(result[0].photos)) {
+        if(result[0].photos[key].review_status === "Approved"){
+          final_Arr = final_Arr.concat(result[0].photos[key])
+        }
+      }
       response.status = 200
       response.message = 'PHOTO_UPLOADED'
-      response.data = result[0].photos
+      response.data = final_Arr
       return callback(null, response)
     } else {
       response.status = 200
@@ -83,8 +90,9 @@ async function getCompanyPhotos(msg, callback){
 
 async function getStudentPhotos(msg, callback){
   let error = {}, response = {}
+  const id = msg.studentId
   console.log("IN COMPANY PHOTOS TOPIC", msg)
-  Company.find({'photos.sql_student_id': msg.studentId}, 
+  Company.find({'photos.sql_student_id' : msg.studentId}, 
    (err, result) => {
     if(err){
       error.message = err
@@ -99,16 +107,22 @@ async function getStudentPhotos(msg, callback){
         tempArr.push(tempObj)
       });
       tempArr.forEach(item => {
-        output.push(item.photos)
+          output.push(item.photos)
       })
       let photos_arr_obj = [] 
       for (const key of Object.keys(output)) {
         photos_arr_obj = photos_arr_obj.concat(output[key])
     }
-      console.log(photos_arr_obj)
+    console.log(photos_arr_obj)
+      let final_Arr = []
+      for (const key of Object.keys(photos_arr_obj)) {
+        if(photos_arr_obj[key].sql_student_id === parseInt(msg.studentId)){
+          final_Arr = final_Arr.concat(photos_arr_obj[key])
+        }
+    }
       response.status = 200
       response.message = 'PHOTO_UPLOADED'
-      response.data = photos_arr_obj
+      response.data = final_Arr
       return callback(null, response)
     }
   })

@@ -175,6 +175,9 @@ body > div.fade.modal.show > div > div > div.modal-body > form > div > label{
   border-radius: unset
 }
 
-
+#root > div > div > div > div.container > div > div.card.text-center.m-3 > div > ul > li.page-item.number-item.active > a {
+  background-color: green !important;
+  border-color: green !important;
+}
 
 
