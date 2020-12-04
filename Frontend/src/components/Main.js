@@ -30,10 +30,9 @@ import SearchSalary from './Student/Search/search_salary';
 import searchAdminCompany from './Admin/companyProfile/searchAdminCompany';
 import adminCompanyReview from './Admin/companyProfile/adminCompanyReview';
 import adminCompanyReport from './Admin/companyProfile/statistics';
-import adminDemographics from './Admin/companyProfile/demographics';
+//import adminDemographics from './Admin/companyProfile/demographics';
 import nonUserLanding from './nonUser/landingPage';
 import nonUserCompanyReview from './nonUser/nonUserReviews';
-import ApexChart from './Admin/Dashboard/mostReviewed';
 import CompanyOverview from './Student/CompanyOverview/companyOverview';
 import JobsTab from './Student/Jobs/jobsTab';
 import JobDetails from './Student/Job/JobDetails';
@@ -42,7 +41,7 @@ import JobHome from './Student/Job/JobHome';
 import AnalyticsHome from './Admin/Dashboard/analyticsHome';
 import InterviewList from './Student/Interview/InterviewList';
 import InterviewAnswers from './Student/Interview/InterviewAnswers';
-import companyDemographics from './Employer/Report/companyDemographics';
+import adminReview from './Admin/reviewsPhotos/allReviews';
 
 class Main extends Component {
   render() {
@@ -122,7 +121,7 @@ class Main extends Component {
           component={ReviewTab}
         />
         <Route exact path='/student/addreviews' component={AddReview} />
-        <Route exact path='/company/report' component={companyReport} />
+        <Route exact path='/company/report/:title' component={companyReport}/>
         <Route
           exact
           path='/student/salary/:companyName'
@@ -155,28 +154,17 @@ class Main extends Component {
           path='/admin/companyReview/:companyName'
           component={adminCompanyReview}
         />
-        <Route
-          exact
-          path='/admin/statistics/:companyName'
-          component={adminCompanyReport}
-        />
-        <Route
-          exact
-          path='/admin/demographics/:companyName'
-          component={adminDemographics}
-        />
+        <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
+        <Route exact path='/' component = {nonUserLanding} />
+        <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
+
+        <Route exact path='/student/job/jobdetails' component={JobDetails} />
+        <Route exact path='/admin/allReviews' component={adminReview} />
         <Route exact path='/' component={nonUserLanding} />
         <Route
           exact
           path='/reviews/:companyName'
           component={nonUserCompanyReview}
-        />
-
-        <Route exact path='/student/job/jobdetails' component={JobDetails} />
-        <Route
-          exact
-          path='/company/demogrphics'
-          component={companyDemographics}
         />
         <Route exact path='/student/job/home' component={JobHome} />
       </div>

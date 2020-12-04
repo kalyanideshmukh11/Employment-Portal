@@ -85,6 +85,7 @@ class AdminNavbar extends Component {
           </Form>
           <Nav>
             <Button
+              href ='/admin/allReviews'
               onClick={this.handleSearch}
               variant='success'
               style={{
@@ -93,14 +94,26 @@ class AdminNavbar extends Component {
               type='submit'
             >
               {' '}
-              Reviews and Photos{' '}
+              Reviews{' '}
+            </Button>
+            <Button
+              href ='/admin/allPhotos'
+              onClick={this.handleSearch}
+              variant='success'
+              style={{
+                marginLeft: '10px',
+              }}
+              type='submit'
+            >
+              {' '}
+              Photos{' '}
             </Button>
             <Button
               href='/admin/companyProfile'
               onClick={this.handleSearch}
               variant='success'
               style={{
-                marginLeft: '5mm',
+                marginLeft: '10px',
               }}
               type='submit'
             >
@@ -112,7 +125,7 @@ class AdminNavbar extends Component {
               onClick={this.handleSearch}
               variant='success'
               style={{
-                marginLeft: '5mm',
+                marginLeft: '10px',
               }}
               type='submit'
             >

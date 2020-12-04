@@ -16,7 +16,7 @@ class adminCompany extends Component {
         componentWillMount() {
             axios.get(`${backendServer}admin/company/fetchCompanies`)
             .then ( res => {
-                console.log(res.data.data);
+                //console.log(res.data );
                 this.setState({companyList: res.data.data})
                 this.setState({companyRating: res.data.avgRating})
             }
@@ -24,6 +24,7 @@ class adminCompany extends Component {
         }
 
         render() {
+          //console.log(this.state.companyRating);
             let renderCompanyList;
             if (this.state.companyList){
             renderCompanyList = this.state.companyList.map(company => {

@@ -13,6 +13,7 @@ const adminCompanyRouter = require('./routes/Admin/adminCompany');
 const adminRouter = require('./routes/Admin/analytics');
 const studentJobRouter = require('./routes/Student/job');
 const studentReviewRouter= require('./routes/Student/reviews');
+const adminReviewRouter = require('./routes/Admin/reviewsPhotos');
 
 app.use('/images', images);
 app.use('/student', studentRouter);
@@ -28,6 +29,7 @@ app.use('/student/salary', salaryRouter);
 app.use('/admin', adminRouter);
 app.use('/student/job', studentJobRouter);
 app.use('/student/reviews',studentReviewRouter);
+app.use('/admin/review', adminReviewRouter);
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {
