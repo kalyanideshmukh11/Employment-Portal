@@ -9,14 +9,17 @@ var jobsSchema = new Schema(
     description: { type: String, required: true },
     responsibilities: { type: String, required: true },
     qualification: { type: String, required: true },
+    fromSalary: { type: mongoose.Schema.Types.Number, default: 0 },
+    toSalary: { type: mongoose.Schema.Types.Number, default: 0 },
     industry: { type: String },
     country: { type: String },
     workType: { type: String },
+    jobType: { type: String },
     address: { type: String, required: true },
     city: { type: String, required: true },
     state: { type: String },
     zipcode: { type: String },
-    posted_date: { type: String },
+    posted_date: { type: String, required: true },
     applied_students: [
       {
         resume_file_name: { type: String, required: true },
@@ -29,7 +32,7 @@ var jobsSchema = new Schema(
   },
   {
     versionKey: false,
-  }
+  },
 );
 
 var jobsModel = mongoose.model('Job', jobsSchema);

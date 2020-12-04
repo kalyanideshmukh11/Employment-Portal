@@ -17,6 +17,8 @@ import AddJob from './Employer/Jobs/AddJob';
 import Jobs from './Employer/Jobs/Jobs';
 import companyReviews from './Employer/Reviews/companyReviews';
 import AddInterview from './Student/Interview/AddInterview';
+import ApplicantDetails from './Employer/Jobs/ApplicantDetails';
+import StudentProfileReadonly from './Student/Profile/profile_student_readonly';
 import SearchJob from './Student/Search/search_jobs';
 import SearchCompany from './Student/Search/search_company';
 import SearchInterview from './Student/Search/search_interview';
@@ -87,6 +89,16 @@ class Main extends Component {
         <Route exact path='/company/profileUpdate' component={updateCompany} />
         <Route exact path='/company/addjob' component={AddJob} />
         <Route exact path='/company/jobs' component={Jobs} />
+        <Route
+          exact
+          path='/company/jobs/applicantdetails'
+          component={ApplicantDetails}
+        />
+        <Route
+          exact
+          path='/company/jobs/applicantdetails/viewapplicant'
+          component={StudentProfileReadonly}
+        />
         <Route exact path='/company/reviews' component={companyReviews} />
         <Route exact path='/student/interview/add' component={AddInterview} />
         <Route exact path='/student/interview/list' component={InterviewList} />
@@ -121,7 +133,7 @@ class Main extends Component {
           component={ReviewTab}
         />
         <Route exact path='/student/addreviews' component={AddReview} />
-        <Route exact path='/company/report/:title' component={companyReport}/>
+        <Route exact path='/company/report/:title' component={companyReport} />
         <Route
           exact
           path='/student/salary/:companyName'
@@ -135,9 +147,6 @@ class Main extends Component {
         <Route exact path='/student/jobs/:companyName' component={JobsTab} />
         <Route exact path='/student/tabs' component={HomeTabs} />
         <Route exact path='/student/tabs/photos' component={PhotosTab} />
-        <Route exact path='/student/job/jobdetails' component={JobDetails} />
-
-
         <Route exact path='/admin/home' component={AnalyticsHome} />
         <Route
           exact
@@ -155,10 +164,15 @@ class Main extends Component {
           component={adminCompanyReview}
         />
         <Route exact path='/admin/statistics/:companyName' component = {adminCompanyReport} />
-        <Route exact path='/' component = {nonUserLanding} />
-        <Route exact path='/reviews/:companyName' component ={nonUserCompanyReview}/>
-        <Route exact path='/student/job/home' component={JobHome} />
+        <Route exact path='/student/job/jobdetails' component={JobDetails} />
         <Route exact path='/admin/allReviews' component={adminReview} />
+        <Route exact path='/' component={nonUserLanding} />
+        <Route
+          exact
+          path='/reviews/:companyName'
+          component={nonUserCompanyReview}
+        />
+        <Route exact path='/student/job/home' component={JobHome} />
       </div>
     );
   }

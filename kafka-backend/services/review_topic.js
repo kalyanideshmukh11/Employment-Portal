@@ -7,9 +7,8 @@ const sqlDB = require('../config/sqlConfig');
 exports.reviewService = function (msg, callback) {
   console.log('In reviewService - path:', msg.path);
   switch (msg.path) {
-
     case 'getAllReviews':
-      getAllReviews(msg,callback);
+      getAllReviews(msg, callback);
       break;
 
     case 'companyReviews':
@@ -136,12 +135,11 @@ async function getReviewDetails(msg, callback) {
             response.data = doc;
             return callback(null, response);
           }
-        }
+        },
       );
     }
   });
 }
-
 
 async function companyReviews(msg, callback) {
   let err = {};
@@ -174,7 +172,7 @@ async function companyReviews(msg, callback) {
         console.log(err);
       });
     }
-})
+  });
 }
 // async function companyReviews(msg, callback) {
 //   let err = {};
@@ -221,7 +219,7 @@ async function updateFavFeatured(msg, callback) {
     await Review.findByIdAndUpdate(
       { _id: msg.id },
       { favorite: true },
-      { safe: true, new: true, useFindAndModify: false }
+      { safe: true, new: true, useFindAndModify: false },
     )
       .then((user) => {
         console.log(user);
@@ -237,7 +235,7 @@ async function updateFavFeatured(msg, callback) {
     await Review.findByIdAndUpdate(
       { _id: msg.id },
       { featured: true },
-      { safe: true, new: true, useFindAndModify: false }
+      { safe: true, new: true, useFindAndModify: false },
     )
       .then((user) => {
         console.log(user);
@@ -282,7 +280,7 @@ async function ReviewsPerDay(msg, callback) {
       console.log('Results:', results);
       let output = { total: results.total ? results.total : 0 };
       callback(null, output);
-    }
+    },
   );
 }
 
@@ -326,7 +324,7 @@ async function MostReviewed(msg, callback) {
       let final_output = { names: names, reviews: reviews };
       console.log('Results:', results);
       callback(null, final_output);
-    }
+    },
   );
 }
 
@@ -370,7 +368,7 @@ async function TopRated(msg, callback) {
       let final_output = { names: names, avgrating: avgrating };
       console.log('Results:', results);
       callback(null, final_output);
-    }
+    },
   );
 }
 
@@ -490,7 +488,7 @@ async function updateHelpful(msg, callback) {
     await Review.findByIdAndUpdate(
       { _id: msg.id },
       { favorite: true },
-      { safe: true, new: true, useFindAndModify: false }
+      { safe: true, new: true, useFindAndModify: false },
     )
       .then((user) => {
         console.log(user);
@@ -506,7 +504,7 @@ async function updateHelpful(msg, callback) {
     await Review.findByIdAndUpdate(
       { _id: msg.id },
       { featured: true },
-      { safe: true, new: true, useFindAndModify: false }
+      { safe: true, new: true, useFindAndModify: false },
     )
       .then((user) => {
         console.log(user);
@@ -520,7 +518,6 @@ async function updateHelpful(msg, callback) {
       });
   }
 }
-
 
 async function getAllReviews(msg, callback) {
   let err = {};
@@ -542,7 +539,7 @@ async function getAllReviews(msg, callback) {
     }
     else {
       console.log('fetching from mongoDb');
-      Review.find({company: "Google"})
+      Review.find()
       .then ((rev) => {
         redisClient.setex("allReviews", 36000, JSON.stringify(rev));
         response.status = 200;
@@ -554,7 +551,7 @@ async function getAllReviews(msg, callback) {
         console.log(err);
       });
     }
-})
+  });
 }
 
 async function updateApproved(msg, callback) {
@@ -562,23 +559,22 @@ async function updateApproved(msg, callback) {
   let response = {};
   console.log('In update review approved service. Msg: ', msg);
 
-    await Review.findByIdAndUpdate(
-      { _id: msg.id },
-      { approvedstatus: msg.body },
-      { safe: true, new: true, useFindAndModify: false }
-    )
-      .then((user) => {
-        console.log(user);
-        console.log('Review marks as favourite');
-        response.status = 200;
-        response.message = 'REVIEW_UPDATED';
-        return callback(null, response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
+  await Review.findByIdAndUpdate(
+    { _id: msg.id },
+    { approvedstatus: msg.body },
+    { safe: true, new: true, useFindAndModify: false },
+  )
+    .then((user) => {
+      console.log(user);
+      console.log('Review marks as favourite');
+      response.status = 200;
+      response.message = 'REVIEW_UPDATED';
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 async function TopStudents(msg, callback) {
   await Review.aggregate(
     [
@@ -612,7 +608,7 @@ async function TopStudents(msg, callback) {
       }
       let final_output = { student_ids: student_ids, number: number };
       callback(null, output);
-    }
+    },
   );
 }
 
@@ -652,6 +648,6 @@ async function TopCeo(msg, callback) {
       let final_output = { names: names, count: count };
 
       callback(null, final_output);
-    }
+    },
   );
 }
