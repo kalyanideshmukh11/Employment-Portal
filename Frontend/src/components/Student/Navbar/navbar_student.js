@@ -31,15 +31,27 @@ class StudentNavbar extends Component {
   }
 
   search = () => {
+    if (this.state.SearchType === 'Jobs') {
+      this.setState({
+        redirectVar: (
+          <Redirect
+            to={{
+              pathname: '/student/job/home',
+              state: { search_param: this.state.searchKeyword },
+            }}
+          />
+        ),
+      });
+    }
     if (!this.state.searchKeyword) {
       return;
     } else {
-      if (this.state.SearchType === 'Jobs') {
+      /*if (this.state.SearchType === 'Jobs') {
         let url = '/student/search/job/' + this.state.searchKeyword;
         this.setState({
           redirectVar: <Redirect to={url} />,
         });
-      }
+      }*/
       if (this.state.SearchType === 'Companies') {
         let url = '/student/search/company/' + this.state.searchKeyword;
         this.setState({
@@ -195,6 +207,12 @@ class StudentNavbar extends Component {
                 }}
               >
                 Demographics
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                href='/student/job/appliedJobs'
+                style={{ padding: '15px 15px 15px 15px' }}
+              >
+                Job Applications
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item

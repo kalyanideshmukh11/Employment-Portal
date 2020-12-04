@@ -224,7 +224,7 @@ class ApplicantDetails extends Component {
               <span style={{ float: 'right' }}>
                 <Link
                   to={{
-                    pathname: `/admin/statistics/${this.props.location.state.title}`,
+                    pathname: `/company/report/${this.props.location.state.title}`,
                   }}>
                   <Button variant='success'>View Job Statistics</Button>
                 </Link>

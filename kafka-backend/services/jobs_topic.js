@@ -1,9 +1,6 @@
 const Jobs = require('../models/jobs');
 const paginate = require('jw-paginate');
 const pool = require('../config/sqlConfig');
-/*const {
-  getAllJobs,
-} = require('../../Frontend/src/store/actions/companyJobsAction');*/
 
 module.exports.jobsService = function (msg, callback) {
   console.log('In jobs service path', msg.path);
@@ -55,6 +52,18 @@ module.exports.jobsService = function (msg, callback) {
 
     case 'getJobs':
       getJobs(msg, callback);
+      break;
+
+    case 'search_job_home':
+      searchJobHome(msg, callback);
+      break;
+
+    case 'applied_jobs':
+      getStudentAppliedJobs(msg, callback);
+      break;
+
+    case 'updateApplicantStatus':
+      updateApplicantStatus(msg, callback);
       break;
   }
 };
@@ -120,7 +129,7 @@ async function updateApplicantStatus(msg, callback) {
         'applied_students.$.application_status': msg.body.status,
       },
     },
-    { safe: true, new: true, useFindAndModify: false },
+    { safe: true, new: true, useFindAndModify: false }
   )
     .then((data) => {
       response.status = 200;
@@ -221,7 +230,7 @@ async function getApplicantId(msg, callback) {
   console.log(msg.body);
   await Jobs.find(
     { title: 'Data Scientist, Analytics' },
-    { 'applied_students.sql_student_id': 1, _id: 0 },
+    { 'applied_students.sql_student_id': 1, _id: 0 }
   )
     .then((data) => {
       let applicantId = [];
@@ -261,33 +270,51 @@ async function getExploreJobs(msg, callback) {
 async function applyToJob(msg, callback) {
   let err = {};
   let response = {};
+  let studentFName,
+    studentLName = '';
   console.log('In post APPLY TO JOB topic service. Msg: ', msg);
+  let sql = `Call getStudentHome_data('${msg.body.sql_student_id}');`;
 
   try {
-    await Jobs.findByIdAndUpdate(
-      { _id: msg.body.job_id },
-      {
-        $addToSet: {
-          applied_students: {
-            resume_file_name: msg.body.resume_file_name,
-            //cover_file: msg.body.cover_file,
-            cover_file_name: msg.body.cover_file_name,
-            sql_student_id: msg.body.sql_student_id,
-            application_status: msg.body.application_status,
-          },
-        },
-      },
-    )
-      .then((applyJob) => {
-        console.log(applyJob);
-        console.log('Applied to job');
-        response.status = 200;
-        response.message = 'APPLIED';
-        return callback(null, response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    pool.query(sql, async (err, result) => {
+      if (err) {
+        error.message = err;
+        error.status = 500;
+        return callback(null, error);
+      } else {
+        studentFName = result[0][0].first_name;
+        studentLName = result[0][0].last_name;
+        console.log('studentFName');
+        console.log('studentLName');
+        console.log(studentFName);
+        console.log(studentLName);
+        await Jobs.findByIdAndUpdate(
+          { _id: msg.body.job_id },
+          {
+            $addToSet: {
+              applied_students: {
+                resume_file_name: msg.body.resume_file_name,
+                cover_file_name: msg.coverletter,
+                sql_student_id: msg.body.sql_student_id,
+                application_status: msg.body.application_status,
+                student_first_name: studentFName,
+                student_last_name: studentLName,
+              },
+            },
+          }
+        )
+          .then((applyJob) => {
+            console.log(applyJob);
+            console.log('Applied to job');
+            response.status = 200;
+            response.message = 'APPLIED';
+            return callback(null, response);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   } catch (error) {
     console.log(error);
     err.status = 500;
@@ -378,6 +405,85 @@ async function getJobs(msg, callback) {
     .then((data) => {
       response.status = 200;
       response.data = data;
+      return callback(null, response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+async function searchJobHome(msg, callback) {
+  let err = {};
+  let response = {};
+
+  console.log('In job search Home. Msg: ', msg);
+
+  await Jobs.find({
+    $or: [
+      { title: new RegExp(msg.body.search_param, 'gi') },
+      { companyName: new RegExp(msg.body.search_param, 'gi') },
+    ],
+  })
+    .then((data) => {
+      if (data.length > 0) {
+        response.status = 200;
+        // response.data = data;
+        response.data = data;
+        return callback(null, response);
+      } else {
+        response.status = 500;
+        // response.data = data;
+        response.message = 'NO_RECORD';
+        return callback(null, response);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+async function getStudentAppliedJobs(msg, callback) {
+  let err = {};
+  let response = {};
+
+  console.log('In getStudentAppliedJobs. Msg: ', msg);
+
+  await Jobs.find({ 'applied_students.sql_student_id': msg.body.student_id })
+    .then((data) => {
+      if (data.length > 0) {
+        response.status = 200;
+        // response.data = data;
+        response.data = data;
+        return callback(null, response);
+      } else {
+        response.status = 500;
+        // response.data = data;
+        response.message = 'NO_RECORD';
+        return callback(null, response);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+async function updateApplicantStatus(msg, callback) {
+  let err = {};
+  let response = {};
+  console.log('In updateApplicantStatus topic. Msg: ', msg);
+  console.log(msg.body.status);
+  await Jobs.findOneAndUpdate(
+    { 'applied_students._id': msg.body._id },
+    {
+      $set: {
+        'applied_students.$.application_status': msg.body.status,
+      },
+    },
+    { safe: true, new: true, useFindAndModify: false }
+  )
+    .then((data) => {
+      response.status = 200;
+      response.message = 'Updated';
       return callback(null, response);
     })
     .catch((err) => {
