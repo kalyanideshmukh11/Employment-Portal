@@ -3,7 +3,7 @@
 const Review = require("../models/review");
 const Company = require("../models/company");
 const pool = require('../config/sqlConfig');
-// const redisClient = require('../redisConfig');
+const redisClient = require('../config/redisConfig');
 
 exports.companyProfileService = function (msg, callback) {
   console.log("In companyProfileService - path:", msg.path);
@@ -31,6 +31,21 @@ async function getCompanyDetails(msg, callback) {
   let response = {};
   console.log("In get company details topic service. Msg: ", msg);
   console.log(msg.body);
+
+  redisClient.get('companyDetails', function (err, data) {
+    if (err) {
+      console.log('error');
+      response.status = 400;
+    }
+    else if (data) {
+        console.log("fetching from redis cache");
+        console.log(data);
+        response.status = 200;
+        response.data = (JSON.parse(data));
+        // console.log(response);
+        return callback( null, response)
+    }
+    else {
   let sql = `CALL get_companyProfile('${msg.body}');`;
   console.log(sql)
     pool.query(sql, (err, result) => {
@@ -40,6 +55,7 @@ async function getCompanyDetails(msg, callback) {
         return callback(null, err)
       }
       if (result && result.length > 0 && result[0][0]) {
+        redisClient.setex("companyDetails", 36000, JSON.stringify(result[0][0]));
         response.status = 200;
         response.message = "COMPANYDETAILS_FETCHED";
         response.data = (JSON.stringify(result[0][0]));
@@ -47,6 +63,8 @@ async function getCompanyDetails(msg, callback) {
         return callback(null, response)
       };
     });
+    }
+});
 }
 
 async function updateCompanyDetails(msg, callback) {
@@ -66,6 +84,7 @@ async function updateCompanyDetails(msg, callback) {
         return callback(null, err)
       }
       if (result && result.length > 0 && result[0][0]) {
+        redisClient.del('companyDetails')
         response.status = 200;
         response.message = "COMPANYDETAILS_UPDATED";
         console.log(response);
