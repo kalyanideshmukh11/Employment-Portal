@@ -1,4 +1,4 @@
-const { s3Bucket, awsAccessKey, awsSecretAccessKey, s3Permission } = require('./awsS3config.js');
+const { s3Bucket, awsAccessKey, awsSecretAccessKey, s3Permission } = require('./awsS3config');
 const fs = require('fs');
 const AWS = require('aws-sdk');
 

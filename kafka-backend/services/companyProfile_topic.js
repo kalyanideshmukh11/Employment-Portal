@@ -1,7 +1,7 @@
 "use strict";
 
 const Review = require("../models/review");
-
+const Company = require("../models/company");
 const pool = require('../config/sqlConfig');
 // const redisClient = require('../redisConfig');
 
@@ -138,5 +138,4 @@ async function addReviewReply(msg, callback) {
       .catch(err => {
               console.log(err)
       });
-           
 }

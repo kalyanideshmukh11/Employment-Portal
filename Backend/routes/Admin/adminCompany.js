@@ -42,11 +42,11 @@ router.post('/search/job', (req, res) => {
 });
 
 
-router.get('/:companyName/fetchStatistics', (req, res) => {
+router.get('/:companyName', (req, res) => {
   console.log('In company profile jobs route');
   kafka.make_request(
     'jobs_topic',
-    { path: 'getJobsStatistics', body: req.params.companyName },
+    { path: 'getAdminJobStatistics', body: req.params.companyName },
     function (err, results) {
       if (err) {
         console.log('Inside err');
