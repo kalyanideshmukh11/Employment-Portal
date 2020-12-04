@@ -180,17 +180,27 @@ class JobHome extends Component {
         headers: { Authorization: `${localStorage.getItem('token')}` },
       })
       .then((response) => {
-        if (response.data) {
-          const slice = response.data.slice(
+        if (response.data && response.data === 'NO_RECORD') {
+          this.setState({
+            status: response.data,
+          });
+        } else if (response.data) {
+          console.log('response.data');
+          console.log(response.data);
+          const slice = response.data.data.slice(
             this.state.offset,
             this.state.offset + this.state.perPage
           );
           this.setState({
-            allJobs: response.data,
-            filterJobs: response.data,
+            allJobs: response.data.data,
+            filterJobs: response.data.data,
             curJob: slice[0],
             showJobs: slice,
-            pageCount: Math.ceil(response.data.length / this.state.perPage),
+            pageCount: Math.ceil(
+              response.data.data.length / this.state.perPage
+            ),
+            img: response.data.img,
+            status: '',
           });
 
           this.forceUpdate();
@@ -208,9 +218,12 @@ class JobHome extends Component {
       minSalary: '1',
       maxSalary: '9999999',
       location_filter: '',
-      filterJobs: this.state.allJobs,
+      filterJobs: [],
       offset: 0,
       currentPage: 0,
+      allJobs: [],
+      showJobs: [],
+      curJob: null,
     });
     this.getJobs(nextProp);
   }
@@ -285,6 +298,21 @@ class JobHome extends Component {
     if (this.state && this.state.curJob) {
       curJob = this.state.curJob;
     }
+    let renderOutput = [];
+    if (this.state.status === 'NO_RECORD') {
+      renderOutput = (
+        <div
+          style={{
+            padding: '0px 10px 10px 10px',
+            color: 'gray',
+            fontSize: '18px',
+          }}
+        >
+          Your search does not match any open jobs. Keep checking back for more
+          jobs.
+        </div>
+      );
+    }
     if (this.state && this.state.showJobs && this.state.showJobs.length > 0) {
       paginateElem = (
         <div style={{ marginLeft: '5mm', marginRight: '5mm' }}>
@@ -304,8 +332,16 @@ class JobHome extends Component {
           />
         </div>
       );
-
+      let count = 0;
       jobTag = this.state.showJobs.map((job) => {
+        var imgSrc =
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAclBMVEX///8AAACmpqZFRUVCQkLa2totLS3y8vJlZWUfHx9xcXHIyMgpKSnx8fE/Pz+Pj49VVVUJCQnCwsLq6uoUFBSurq7R0dH4+PhRUVFfX1+VlZWBgYEyMjKIiIhra2t5eXmgoKAZGRm2trbZ2dk3Nzfj4+M48jMoAAAEBklEQVR4nO3d6XqiMBSAYW1r3RcUt45t1er93+JMRwkawulRJI34fT95Auk7TF0wxVqNiIiIiIh+ve2Tp8a/JRzUPbX8LeGzL2ELIUKEPwijqgsHjfKa9UIQvpQ4w/y16sImwpJDWDyEZZcRzvcTof08GSeN+ld6wOCE3XokVH9Kxo2kcfVe3xwwQKHYiVCqjdBfCBHer7D1ZvXpFMZDe9zLvQi39sCGU9jLHLBzL8KpPXDmFLbn9jiE3kNoQpiE0HsITQiTEHoPoQlhEkLvqd89fbmFmQPejfC9Oz6r++QWju1xoxzhYnx13VKEeV19FaNAu8oLnxEiRHjW+nzH3AIW9uVHbvOx2Uz7AH8UjmZXtCtDePOKPOM/V174glARwuIhlEKoKStsipl3vHN53MnxMkL1ruUIu3FPaGPe+7fa0rhd+nNmhduNtGt88mqhHKH8Ckr5unQjvcefylOc/N1CwELxKgZChAh1wsWnVcspjDr2uJVauLR3HXkVXr3a5FMtnNm7dr0Ky7zmfRRmLoOOEV4VQhPCJIQ1hAgvDaEJYRLCGkKEl1Z0tcn9Ct/21p9kb93CL2vYvqUWTu1dn7wK86rOVQyECBGGK1wn4xbyuICFE/l2T41k3FgcNk2fJ7PChjzFvmThzQvvE9Jbh1AKoSaExUMohVBTRjhbDYRW5p1xZyeNW4irTcQpXkNZbSK/amO1CUKECBXC3Whx1ujZKYwWVqO2Wjiwpxh4FbLa5P6vCCNEiBDhIYSaEJoQJiGsIUR4aY8rrP5qk7V9c+exW2jfObr/oRZu7SmmXoWO+zu7hPXYGhVHamHeFFynQYjw4YXrZJz8uUUUsHD/PhR6N5cAp9Kw4Zu02mQmT8FqkwtDWDyEUgg1ISweQqlyhOvFSCp5Pu63llJDczyHcChOsUxXqpQj/CO/pkqW0E7kYSnIIWzJ+6av+H5XGJcljBEiRHgUvq6sNk5hvLPHqYWRvecq9imMJvbId6ewYw9rtrXC18y11g+v5/BaYV8vbNr7IrwqhGkIjyH8DqHZgFATwjSExxB+h9BsQKjpcYVRw7pj8/zPzYUT+z7TfoWZN+DtWwvzpgjsOk0BYV4IESL0IVzKU5QtnHbEkufJIsK1OMNn2Z89KSsiVIdQU1nCD7OhqkLOoa6QhdU/hwh1IdTEI01unEOzoarC6p9DhLpCFvJ7qAuhJoS5PbyQRxpdIQs5h7oQauJ/aW6Pew6b9jmc+xfOT74X5Otwr8JB4+K6m8MPbn+XyewgXKYbetaGCzr+dKdfhJJZHO5ocrw7w2mOTT+Ut0fu9suncB0ru8LeJbx8qoBSCa/41wwm3TlEGHL8Hv6vKX9FSOBlFsMREREREZGX/gIAA/VAN9vp3wAAAABJRU5ErkJggg==';
+        if (this.state.img) {
+          imgSrc = `${backendServer}company/imageUpload/${this.state.img[count]}`;
+        }
+        count++;
+        console.log('imgSrc');
+        console.log(job);
         return (
           <Card border-width='10px' style={{ width: '100%', color: 'black' }}>
             <Button
@@ -321,7 +357,7 @@ class JobHome extends Component {
                     <Card.Img
                       variant='top'
                       class='building-icon'
-                      src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAclBMVEX///8AAACmpqZFRUVCQkLa2totLS3y8vJlZWUfHx9xcXHIyMgpKSnx8fE/Pz+Pj49VVVUJCQnCwsLq6uoUFBSurq7R0dH4+PhRUVFfX1+VlZWBgYEyMjKIiIhra2t5eXmgoKAZGRm2trbZ2dk3Nzfj4+M48jMoAAAEBklEQVR4nO3d6XqiMBSAYW1r3RcUt45t1er93+JMRwkawulRJI34fT95Auk7TF0wxVqNiIiIiIh+ve2Tp8a/JRzUPbX8LeGzL2ELIUKEPwijqgsHjfKa9UIQvpQ4w/y16sImwpJDWDyEZZcRzvcTof08GSeN+ld6wOCE3XokVH9Kxo2kcfVe3xwwQKHYiVCqjdBfCBHer7D1ZvXpFMZDe9zLvQi39sCGU9jLHLBzL8KpPXDmFLbn9jiE3kNoQpiE0HsITQiTEHoPoQlhEkLvqd89fbmFmQPejfC9Oz6r++QWju1xoxzhYnx13VKEeV19FaNAu8oLnxEiRHjW+nzH3AIW9uVHbvOx2Uz7AH8UjmZXtCtDePOKPOM/V174glARwuIhlEKoKStsipl3vHN53MnxMkL1ruUIu3FPaGPe+7fa0rhd+nNmhduNtGt88mqhHKH8Ckr5unQjvcefylOc/N1CwELxKgZChAh1wsWnVcspjDr2uJVauLR3HXkVXr3a5FMtnNm7dr0Ky7zmfRRmLoOOEV4VQhPCJIQ1hAgvDaEJYRLCGkKEl1Z0tcn9Ct/21p9kb93CL2vYvqUWTu1dn7wK86rOVQyECBGGK1wn4xbyuICFE/l2T41k3FgcNk2fJ7PChjzFvmThzQvvE9Jbh1AKoSaExUMohVBTRjhbDYRW5p1xZyeNW4irTcQpXkNZbSK/amO1CUKECBXC3Whx1ujZKYwWVqO2Wjiwpxh4FbLa5P6vCCNEiBDhIYSaEJoQJiGsIUR4aY8rrP5qk7V9c+exW2jfObr/oRZu7SmmXoWO+zu7hPXYGhVHamHeFFynQYjw4YXrZJz8uUUUsHD/PhR6N5cAp9Kw4Zu02mQmT8FqkwtDWDyEUgg1ISweQqlyhOvFSCp5Pu63llJDczyHcChOsUxXqpQj/CO/pkqW0E7kYSnIIWzJ+6av+H5XGJcljBEiRHgUvq6sNk5hvLPHqYWRvecq9imMJvbId6ewYw9rtrXC18y11g+v5/BaYV8vbNr7IrwqhGkIjyH8DqHZgFATwjSExxB+h9BsQKjpcYVRw7pj8/zPzYUT+z7TfoWZN+DtWwvzpgjsOk0BYV4IESL0IVzKU5QtnHbEkufJIsK1OMNn2Z89KSsiVIdQU1nCD7OhqkLOoa6QhdU/hwh1IdTEI01unEOzoarC6p9DhLpCFvJ7qAuhJoS5PbyQRxpdIQs5h7oQauJ/aW6Pew6b9jmc+xfOT74X5Otwr8JB4+K6m8MPbn+XyewgXKYbetaGCzr+dKdfhJJZHO5ocrw7w2mOTT+Ut0fu9suncB0ru8LeJbx8qoBSCa/41wwm3TlEGHL8Hv6vKX9FSOBlFsMREREREZGX/gIAA/VAN9vp3wAAAABJRU5ErkJggg=='
+                      src={imgSrc}
                     ></Card.Img>
                   </div>
                   <div class='col-md-8'>
@@ -372,12 +408,10 @@ class JobHome extends Component {
         );
       });
     }
-    return (
-      <div>
-        <StudentNavbar />
-        <br />
-        <br />
 
+    let filterTag = null;
+    if (jobTag) {
+      filterTag = (
         <div
           className='d-flex flex-row'
           style={{ width: '80%', marginLeft: '90px', marginBottom: '20px' }}
@@ -449,7 +483,15 @@ class JobHome extends Component {
             </Button>
           </InputGroup>
         </div>
-
+      );
+    }
+    return (
+      <div>
+        <StudentNavbar />
+        <br />
+        <br />
+        <div>{renderOutput}</div>
+        {filterTag}
         <div className='row'>
           <div
             class='col-5'

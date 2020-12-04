@@ -406,58 +406,114 @@ async function getJobs(msg, callback) {
     if (err) {
       console.log('error');
       response.status = 400;
-    }
-    else if (data) {
-        console.log("fetching from redis cache");
-        console.log(data);
-        response.status = 200;
-        response.data = (JSON.parse(data));
-        // console.log(response);
-        return callback( null, response)
-  } else {
-  let sql = `Call get_allCompanyProfilePicture();`;
-  pool.query(sql, async (err, result) => {
-    if (err) {
-      err.status = 400;
-      return callback(null, err);
-    }
-    if (result && result.length > 0 && result[0][0]) {
-      var companies = result[0];
-      await Jobs.find()
-        .then((data) => {
-          response.status = 200;
-          let photoImg = [];
-          for (let i = 0; i < data.length; i++) {
-            let idx = companies.findIndex((company) => {
-              return company.id === parseInt(data[i].sql_company_id);
+    } else if (data) {
+      console.log('fetching from redis cache');
+      console.log(data);
+      response.status = 200;
+      response.data = JSON.parse(data);
+      // console.log(response);
+      return callback(null, response);
+    } else {
+      let sql = `Call get_allCompanyProfilePicture();`;
+      pool.query(sql, async (err, result) => {
+        if (err) {
+          err.status = 400;
+          return callback(null, err);
+        }
+        if (result && result.length > 0 && result[0][0]) {
+          var companies = result[0];
+          await Jobs.find()
+            .then((data) => {
+              response.status = 200;
+              let photoImg = [];
+              for (let i = 0; i < data.length; i++) {
+                let idx = companies.findIndex((company) => {
+                  return company.id === parseInt(data[i].sql_company_id);
+                });
+                if (idx !== -1) {
+                  data[i]['cphoto_file_name'] = companies[idx].cphoto_file_name;
+                  photoImg.push(companies[idx].cphoto_file_name);
+                }
+              }
+              let out = {
+                data,
+                img: photoImg,
+              };
+              redisClient.setex('allJobs', 36000, JSON.stringify(out));
+              response.data = out;
+              return callback(null, response);
+            })
+            .catch((err) => {
+              console.log(err);
             });
-            if (idx !== -1) {
-              data[i]['cphoto_file_name'] = companies[idx].cphoto_file_name;
-              photoImg.push(companies[idx].cphoto_file_name);
-            }
-          }
-          let out = {
-            data,
-            img: photoImg,
-          };
-          redisClient.setex("allJobs", 36000, JSON.stringify(out));
-          response.data = out;
-          return callback(null, response);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        }
+      });
     }
-  })
-  }
-});
+  });
 }
 
 async function searchJobHome(msg, callback) {
   let err = {};
   let response = {};
 
-  console.log('In job search Home. Msg: ', msg);
+  let sql = `Call get_allCompanyProfilePicture();`;
+  pool.query(sql, async (err, result) => {
+    console.log(result);
+    if (err) {
+      err.status = 400;
+      return callback(null, err);
+    }
+    if (result && result.length > 0 && result[0][0]) {
+      var companies = result[0];
+      console.log('companies');
+      //console.log(companies);
+      await Jobs.find({
+        $or: [
+          { title: new RegExp(msg.body.search_param, 'gi') },
+          { companyName: new RegExp(msg.body.search_param, 'gi') },
+        ],
+      })
+        .then((data) => {
+          if (data.length > 0) {
+            let photoImg = [];
+            for (let i = 0; i < data.length; i++) {
+              console.log('data');
+              let idx = companies.findIndex((company) => {
+                return company.id === parseInt(data[i].sql_company_id);
+              });
+              console.log('data[i].sql_company_id = ', data[i].sql_company_id);
+              console.log(idx);
+              if (idx !== -1) {
+                data[i]['cphoto_file_name'] = companies[idx].cphoto_file_name;
+                photoImg.push(companies[idx].cphoto_file_name);
+              }
+              console.log(
+                'data[i].cphoto_file_name = ',
+                data[i].cphoto_file_name
+              );
+            }
+            let out = {
+              data,
+              img: photoImg,
+            };
+            response.data = out;
+            console.log('response.data value ');
+            console.log(photoImg);
+            response.status = 200;
+            return callback(null, response);
+          } else {
+            response.status = 200;
+            response.data = 'NO_RECORD';
+            return callback(null, response);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  });
+
+  /*console.log('In job search Home. Msg: ', msg);
 
   await Jobs.find({
     $or: [
@@ -480,7 +536,7 @@ async function searchJobHome(msg, callback) {
     })
     .catch((err) => {
       console.log(err);
-    });
+    });*/
 }
 
 async function getStudentAppliedJobs(msg, callback) {
