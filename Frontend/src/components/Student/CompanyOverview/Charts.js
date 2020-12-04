@@ -23,7 +23,7 @@ export const CompanyCharts = (props) => {
           //labels: ["Recommended"],
           datasets: [
             {
-              data: [reviewList.recommended,reviewList.recommended],
+              data: [reviewList.recommended+1,reviewList.recommended],
               backgroundColor: ["#008000", "#DCDCDC"],
             }
           ]

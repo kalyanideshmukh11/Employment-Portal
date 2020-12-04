@@ -14,7 +14,7 @@ class JobsTab extends Component {
       inputValue: '',
       offset: 0,
       company_jobs: [],
-      perPage: 4,
+      perPage: 5,
       currentPage: 0,
       loading: true
     }
