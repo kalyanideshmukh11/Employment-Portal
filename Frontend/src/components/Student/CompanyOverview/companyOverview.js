@@ -14,6 +14,13 @@ class CompanyOverview extends Component {
       user: {},
     };
   }
+  componentDidMount() {
+    axios
+      .post(`${backendServer}student/incrementVisits/${this.routeParam}`)
+      .then((res) => {
+        console.log('API has been hit for increment');
+      });
+  }
 
   componentWillMount() {
     axios
