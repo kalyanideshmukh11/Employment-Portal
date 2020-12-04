@@ -17,7 +17,9 @@ class updateCompany extends Component {
   }
   
   componentWillMount() {
-    axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`)
+    axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }
+  })
     .then(res => {
         this.setState({ user: res.data });
     });
@@ -78,7 +80,9 @@ handleUpdate = (e) => {
     cphoto_file_name: this.state.fileText
   }
   console.log(data);
-  axios.post(`${backendServer}company/profile/update/${localStorage.getItem("sql_company_id")}`, data)
+  axios.post(`${backendServer}company/profile/update/${localStorage.getItem("sql_company_id")}`, data,
+  {headers: { Authorization: `${localStorage.getItem("token")}` }
+})
   .then (response => {
     if(response.status === 200 ) {
       alert("Company profile updated successfully")

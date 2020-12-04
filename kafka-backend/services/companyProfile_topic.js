@@ -31,7 +31,6 @@ async function getCompanyDetails(msg, callback) {
   let response = {};
   console.log("In get company details topic service. Msg: ", msg);
   console.log(msg.body);
-
   let sql = `CALL get_companyProfile('${msg.body}');`;
   console.log(sql)
     pool.query(sql, (err, result) => {
@@ -85,7 +84,6 @@ async function getAllCompanies(msg, callback) {
   let sql = `CALL get_allCompanies();`;
   console.log(sql)
     pool.query(sql, (err, result) => {
-      // console.log(result)
       if (err) {
         err.status = 400;
         return callback(null, err)
@@ -94,8 +92,6 @@ async function getAllCompanies(msg, callback) {
         response.status = 200;
         response.message = "ALLCOMPANY_FETCHED";
         response.data = (result[0]);
-        // console.log(response);
-        // return callback(null, response)
       };
     });
 

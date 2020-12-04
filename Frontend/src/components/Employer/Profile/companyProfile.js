@@ -15,7 +15,9 @@ class companyProfile extends Component {
 }
 
 componentWillMount() {
-    axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`)
+    axios.get(`${backendServer}company/profile/${localStorage.getItem("sql_company_id")}`, 
+    {headers: { Authorization: `${localStorage.getItem("token")}` }
+})
     .then(res => {
         this.setState({ user: res.data });
     });
