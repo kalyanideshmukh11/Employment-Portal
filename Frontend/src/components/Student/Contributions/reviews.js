@@ -37,6 +37,7 @@ class ReviewContribution extends Component{
     {headers: { Authorization: `${localStorage.getItem("token")}` }
     })
     .then(response => {
+        console.log(response)
         const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
         this.state.company_reviews = []
         this.setState({

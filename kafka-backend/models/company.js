@@ -11,9 +11,10 @@ var companySchema = new schema(
       s3Url: {type: String},
       review_status: {type: String, required: true, default: "Pending"},
       date: { type: mongoose.Schema.Types.Date, default: Date.now() },
+      company_name: {type: String}
     }],
-    sql_company_id: {type: Number},
-    company_name: {type: String}
+    sql_company_id: {type: Number}
+  
   },
   {
     versionKey: false,
