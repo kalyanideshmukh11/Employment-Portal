@@ -11,8 +11,8 @@ import {
   Dropdown,
   InputGroup,
 } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
 import { Redirect } from 'react-router';
 
