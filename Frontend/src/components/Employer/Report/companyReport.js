@@ -24,6 +24,7 @@ class companyReport extends Component {
     axios
       .get(`${backendServer}glassdoor/jobs/${title}/fetchStatistics`)
       .then((res) => {
+        console.log(res.data)
         axios
           .post(
             `${backendServer}glassdoor/jobs/getDemographics`,
@@ -44,7 +45,7 @@ class companyReport extends Component {
           console.log(val[i]);
           if (val[i]._id === 'Rejected') {
             this.setState({ rejected: val[i].Frequency });
-          } else if (val[i]._id === 'Selecetd') {
+          } else if (val[i]._id === 'Hired') {
             this.setState({ selected: val[i].Frequency });
           } else {
             this.setState({ selected: 0 });
@@ -56,7 +57,6 @@ class companyReport extends Component {
   }
 
   render() {
-    console.log(this.props.match.params.title);
     let ethnicitylabels = [];
     for (let i = 0; i < this.state.ethnicity.length; i++) {
       ethnicitylabels.push(this.state.ethnicity[i].ethnicity);

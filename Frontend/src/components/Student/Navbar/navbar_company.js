@@ -130,7 +130,7 @@ class StudentNavbar extends Component {
               </NavDropdown.Item>
 
 
-              <NavDropdown.Item
+              {/* <NavDropdown.Item
                 href='/student/demographics'
                 style={{ padding: '15px 15px 15px 15px' }}
                 onClick={() => {
@@ -138,7 +138,7 @@ class StudentNavbar extends Component {
                 }}
               >
                 Demographics
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
 
 
               <NavDropdown.Divider />

@@ -21,7 +21,9 @@ class companyReview extends Component {
 }
 
 componentWillMount() {
-    axios.get(`${backendServer}company/reviews/${localStorage.getItem("name")}`)
+    axios.get(`${backendServer}company/reviews/${localStorage.getItem("name")}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }
+})
     .then(res => {
         this.setState({ reviews: res.data });
     });
@@ -83,6 +85,7 @@ handleSendMessage = (e) => {
     .then(response => {
         if(response.status === 200) {
             alert("Message successfully sent")
+            window.location = '/company/reviews'
         }
     })
 }

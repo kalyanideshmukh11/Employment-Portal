@@ -65,6 +65,7 @@ class ApplicantDetails extends Component {
         let file_extension = resume_data.resume.substr(
           resume_data.resume.length - 3,
         );
+        console.log(file_extension)
         if (file_extension === 'pdf') {
           var file = new Blob([response.data], { type: 'application/pdf' });
           const fileUrl = URL.createObjectURL(file);
@@ -130,6 +131,7 @@ class ApplicantDetails extends Component {
         />
       );
       for (var i = 0; i < slice.length; i++) {
+        console.log(slice[i].cover_file_name.split('split')[1]);
         const id = slice[i]._id;
         const filename = slice[i].resume_file_name;
         renderOutput.push(
@@ -146,7 +148,7 @@ class ApplicantDetails extends Component {
                       },
                     }}>
                     <a href='#'>
-                      {slice[i].first_name} {slice[i].last_name}
+                      {slice[i].student_first_name} {slice[i].student_last_name}
                     </a>
                   </Link>
                 </h6>
@@ -159,7 +161,7 @@ class ApplicantDetails extends Component {
                       onClick={this.openResume}
                       style={{ textDecoration: 'none' }}>
                       <h6 id={filename}>
-                        {slice[i].resume_file_name.split('split')[1]}{' '}
+                        {slice[i].resume_file_name.split('nameSplitter')[1]}{' '}
                       </h6>
                     </Button>
                   </h6>
@@ -171,8 +173,8 @@ class ApplicantDetails extends Component {
                       variant='link'
                       onClick={this.openResume}
                       style={{ textDecoration: 'none' }}>
-                      <h6 id={filename}>
-                        {slice[i].cover_file_name.split('split')[1]}{' '}
+                      <h6 id={slice[i].cover_file_name}>
+                        {slice[i].cover_file_name.split('nameSplitter')[1]}{' '}
                       </h6>
                     </Button>
                   </h6>
