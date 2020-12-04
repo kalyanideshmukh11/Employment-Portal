@@ -48,10 +48,12 @@ class HomeTabs extends Component {
         loadComponent: (
           <Interview id={this.props.location.companyID}></Interview>
         ),
+        showInterviewButton: 1,
       };
     } else if (this.props.location.category === 'answers') {
       this.state = {
         loadComponent: <Answers state={this.props.location.state}></Answers>,
+        showInterviewBtn: 1,
       };
     } else if (this.props.location.category === 'photos') {
       this.state = {
@@ -77,6 +79,7 @@ class HomeTabs extends Component {
     ) {
       this.setState({
         loadComponent: <Answers state={nextProp.location.state}></Answers>,
+        showInterviewButton: 1,
       });
     }
   }
@@ -102,12 +105,29 @@ class HomeTabs extends Component {
       });
     }
 
+    if (
+      this.props.location.category &&
+      (this.props.location.category === 'interviews' ||
+        this.props.location.category === 'answers')
+    ) {
+      this.setState({ showInterviewButton: 1 });
+    } else {
+      this.setState({ showInterviewButton: 0 });
+    }
+
     console.log('this.state');
     console.log(this.state);
   }
-  loadComp(param) {
-    console.log('Button clicked', param);
-    this.setState({ loadComponent: param });
+  loadComp(param, tag = 'na') {
+    console.log('Button clicked', param, tag);
+    let showInterviewBtn = 0;
+    if (tag === 'interviews') {
+      showInterviewBtn = 1;
+    }
+    this.setState({
+      loadComponent: param,
+      showInterviewButton: showInterviewBtn,
+    });
     this.forceUpdate();
   }
 
@@ -118,10 +138,7 @@ class HomeTabs extends Component {
     let addButton = null;
     if (this.state && this.state.loadComponent) {
       loadComponent = this.state.loadComponent;
-      if (
-        this.props.location &&
-        this.props.location.category === 'interviews'
-      ) {
+      if (this.state.showInterviewButton) {
         addButton = (
           <Button
             href='/student/interview/add'
@@ -218,7 +235,12 @@ class HomeTabs extends Component {
                 </Button>
                 <Button
                   onClick={() =>
-                    this.loadComp(<Comp str='This is Interviews'></Comp>)
+                    this.loadComp(
+                      <Interview
+                        id={this.props.location.companyID}
+                      ></Interview>,
+                      'interviews'
+                    )
                   }
                   style={{
                     backgroundColor: 'transparent',

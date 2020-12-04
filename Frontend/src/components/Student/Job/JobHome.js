@@ -1,23 +1,6 @@
 import React, { Component } from 'react';
 import StudentNavbar from '../Navbar/navbar_student';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBriefcase,
-  faPen,
-  faPlusCircle,
-  faEnvelope,
-  faPhone,
-  faGlobeAmericas,
-  faMapMarked,
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  Button,
-  InputGroup,
-  FormControl,
-  ListGroup,
-  Card,
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button, InputGroup, FormControl, Card } from 'react-bootstrap';
 import backendServer from '../../../webConfig';
 import axios from 'axios';
 import { Multiselect } from 'multiselect-react-dropdown';
@@ -28,7 +11,25 @@ class JobHome extends Component {
     super(props);
     this.state = {};
     this.onClick = this.onClick.bind(this);
+    this.onPostDateFilter = this.onPostDateFilter.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onFilter = this.onFilter.bind(this);
+    this.onJobTypeFilter = this.onJobTypeFilter.bind(this);
+    this.onFocus = this.onFocus.bind(this);
   }
+
+  onFocus = (e) => {
+    console.log('focus');
+    e.target.value = '';
+    console.log(e);
+  };
+
+  onChange = (e) => {
+    console.log(e);
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
 
   onClick = (e, job) => {
     this.setState({
@@ -45,11 +46,102 @@ class JobHome extends Component {
         { value: 'Internship', key: 4 },
         { value: 'Temporary', key: 5 },
       ],
+      posting_filter: [{ value: 'All' }, { value: 'Most Recent' }],
       curJob: null,
+      minSalary: '1',
+      maxSalary: '9999999',
+      location_filter: '',
     });
+    this.getJobs(this.props);
+  };
 
+  onFilter() {
+    var filteredList = this.state.allJobs;
+    console.log('here');
+    console.log(this.state);
+    var list = [];
+    if (filteredList && filteredList.length > 0) {
+      if (this.state.location_filter !== '') {
+        let location_filter = this.state.location_filter.toLowerCase();
+        list = filteredList.filter((job) => {
+          if (
+            job.address &&
+            job.address.toLowerCase().includes(location_filter)
+          ) {
+            return true;
+          } else if (
+            job.state &&
+            job.state.toLowerCase().includes(location_filter)
+          ) {
+            return true;
+          } else if (
+            job.country &&
+            job.country.toLowerCase().includes(location_filter)
+          ) {
+            return true;
+          } else if (
+            job.city &&
+            job.city.toLowerCase().includes(location_filter)
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+      } else {
+        list = filteredList;
+      }
+      console.log('after location: ', list.length);
+      if (
+        this.state.minSalary !== '1' &&
+        this.state.maxSalary !== '9999999' &&
+        this.state.minSalary !== '' &&
+        this.state.maxSalary !== ''
+      ) {
+        list = list.filter((job) => {
+          console.log('job');
+          console.log(job);
+          console.log(job.fromSalary);
+          console.log(job.toSalary);
+          console.log(this.state);
+          if (job.fromSalary && job.toSalary) {
+            return (
+              parseInt(job.fromSalary) >= parseInt(this.state.minSalary) &&
+              parseInt(job.toSalary) <= parseInt(this.state.maxSalary)
+            );
+          } else {
+            return false;
+          }
+        });
+      }
+    }
+    console.log('after all filter:', list.length);
+    this.setState({
+      filterJobs: list,
+      curJob: list[0],
+      minSalary: '1',
+      maxSalary: '9999999',
+      location_filter: '',
+    });
+    if (list.length === 0) {
+      this.setState({ noRecords: 1, curJob: null });
+    }
+  }
+
+  getJobs(props) {
+    let axiosLink = `${backendServer}student/job/all`;
+    console.log('testing');
+    console.log(props.location.state);
+    if (
+      props.location &&
+      props.location.state &&
+      props.location.state.search_param !== ''
+    ) {
+      axiosLink = `${backendServer}student/job/search/${props.location.state.search_param}`;
+    }
+    console.log(axiosLink);
     axios
-      .get(`${backendServer}student/job/all`)
+      .get(axiosLink)
       .then((response) => {
         if (response.data) {
           this.setState({
@@ -57,14 +149,74 @@ class JobHome extends Component {
             filterJobs: response.data,
             curJob: response.data[0],
           });
+
+          this.forceUpdate();
         }
       })
       .catch((error) => {
         console.log('Error');
         console.log(error);
       });
+  }
 
-    // axios get all jobs ordered by posting date
+  componentWillReceiveProps(nextProp) {
+    console.log('Received: ', nextProp);
+    this.setState({
+      minSalary: '1',
+      maxSalary: '9999999',
+      location_filter: '',
+      filterJobs: this.state.allJobs,
+    });
+    this.getJobs(nextProp);
+  }
+
+  onPostDateFilter = (e, x) => {
+    // sort
+    console.log('onPostDateFilter');
+    console.log(x.value);
+    this.setState({
+      selected_posting_filter: [{ value: x.value }],
+    });
+    let filteredList = this.state.filterJobs;
+    if (x.value !== 'All' && filteredList) {
+      filteredList.sort(function (a, b) {
+        return new Date(b.posted_date) - new Date(a.posted_date);
+      });
+      this.setState({
+        filterJobs: filteredList,
+      });
+    }
+  };
+
+  onJobTypeFilter = (e, x) => {
+    // sort
+    console.log('onJobTypeFilter');
+    console.log(x.value);
+    /*this.setState({
+      selected_posting_filter: [{ value: x.value }],
+    });*/
+    let filteredList = this.state.filterJobs;
+    if (x.value === 'All Job Types') {
+      this.setState({
+        filterJobs: this.state.allJobs,
+      });
+    } else if (filteredList) {
+      let list = [];
+      list = filteredList.filter((job) => {
+        console.log('job');
+        console.log(job);
+        console.log(this.state);
+        if (job.jobType) {
+          return job.jobType === x.value;
+          //job.jobType.includes(location_filter)
+        } else {
+          return false;
+        }
+      });
+      this.setState({
+        filterJobs: list,
+      });
+    }
   };
 
   render() {
@@ -142,16 +294,28 @@ class JobHome extends Component {
         <br />
 
         <div
-          className='d-flex'
-          style={{ width: '50%', marginLeft: '90px', marginBottom: '20px' }}
+          className='d-flex flex-row'
+          style={{ width: '80%', marginLeft: '90px', marginBottom: '20px' }}
         >
+          <Multiselect
+            options={this.state.posting_filter}
+            displayValue='value'
+            singleSelect
+            name='posting_date'
+            onSelect={this.onPostDateFilter}
+            style={{
+              multiselectContainer: { width: '10.5cm' },
+            }}
+            selectedValues={this.state.selected_posting_filter}
+          />
+          &nbsp;&nbsp;
           <Multiselect
             required={true}
             options={this.state.job_type}
             displayValue='value'
             singleSelect
             name='job_type'
-            onSelect=''
+            onSelect={this.onJobTypeFilter}
             style={{
               multiselectContainer: { width: '100%', fontSize: '16px' },
             }}
@@ -162,6 +326,10 @@ class JobHome extends Component {
               placeholder='Min Salary'
               aria-label='min_salary'
               aria-describedby='basic-addon1'
+              name='minSalary'
+              onChange={this.onChange}
+              onFocus={this.onFocus}
+              type='number'
             />
           </InputGroup>
           &nbsp;&nbsp;
@@ -172,15 +340,28 @@ class JobHome extends Component {
               placeholder='Max Salary'
               aria-label='max_salary'
               aria-describedby='basic-addon1'
+              name='maxSalary'
+              onChange={this.onChange}
+              type='number'
+              onFocus={this.onFocus}
             />
           </InputGroup>
           &nbsp;&nbsp;
-          <InputGroup className='mb-3'>
+          <InputGroup>
             <FormControl
               placeholder='Location'
               aria-label='location'
               aria-describedby='basic-addon1'
+              name='location_filter'
+              onChange={this.onChange}
+              onFocus={this.onFocus}
             />
+          </InputGroup>
+          &nbsp;&nbsp;
+          <InputGroup>
+            <Button onClick={this.onFilter} variant='success'>
+              Filter
+            </Button>
           </InputGroup>
         </div>
 
