@@ -410,6 +410,7 @@ async function getJobs(msg, callback) {
       // console.log(response);
       return callback(null, response);
     } else {
+      console.log("fetching from mongoDb")
       let sql = `Call get_allCompanyProfilePicture();`;
       pool.query(sql, async (err, result) => {
         if (err) {
