@@ -138,7 +138,7 @@ class PhotosTab extends Component {
                 <Card>
                     <div class='row'>
                     <div class='col-12'>
-                        <Button style={{float:"right", marginRight:"20px", marginTop:"20px", marginBottom: "20px"}} variant='success' onClick={this.handleShow}>Add Photos</Button>
+                        <Button style={{float:"right", marginRight:"20px", marginTop:"20px", marginBottom: "20px", backgroundColor:"#1861bf", color:"white"}} onClick={this.handleShow}>Add Photos</Button>
 
                     </div>
 
