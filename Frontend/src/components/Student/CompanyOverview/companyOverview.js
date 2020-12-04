@@ -31,7 +31,8 @@ componentDidMount(){
 
 getComapnayInfo =() =>{
   axios
-  .get(`${backendServer}company/profile/${this.props.companyID}`)
+  .get(`${backendServer}company/profile/${this.props.companyID}`,
+  {headers: { Authorization: `${localStorage.getItem("token")}` }})
   .then((res) => {
     if (res.status === 200) {
       if (res.data) {
@@ -43,7 +44,8 @@ getComapnayInfo =() =>{
 }
 getPositiveReview = () => {
   axios
-    .get(`${backendServer}company/reviews/positive/${this.props.companyName}`)
+    .get(`${backendServer}company/reviews/positive/${this.props.companyName}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }})
     .then((res) => {
       if (res.status === 200) {
         if (res.data) {
@@ -56,7 +58,8 @@ getPositiveReview = () => {
 
 getNegativeReview = () => {
   axios
-    .get(`${backendServer}company/reviews/negative/${this.props.companyName}`)
+    .get(`${backendServer}company/reviews/negative/${this.props.companyName}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }})
     .then((res) => {
       if (res.status === 200) {
         if (res.data) {
@@ -68,7 +71,8 @@ getNegativeReview = () => {
 };
 getFeaturedReview = () => {
   axios
-    .get(`${backendServer}company/reviews/featured/${this.props.companyName}`)
+    .get(`${backendServer}company/reviews/featured/${this.props.companyName}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }})
     .then((res) => {
       if (res.status === 200) {
         if (res.data) {
@@ -81,7 +85,8 @@ getFeaturedReview = () => {
 
 getAverageRating = () => {
   axios
-    .get(`${backendServer}company/reviews/rating/${this.props.companyName}`)
+    .get(`${backendServer}company/reviews/rating/${this.props.companyName}`,
+    {headers: { Authorization: `${localStorage.getItem("token")}` }})
     .then((res) => {
       if (res.status === 200) {
         if (res.data) {

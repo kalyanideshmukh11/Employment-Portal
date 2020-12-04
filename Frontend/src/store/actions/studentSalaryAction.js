@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const insertNewSalaryDetails = (salaryData) => (dispatch) => {
   axios
-    .post(`${backendServer}student/salary/`, salaryData)
+    .post(`${backendServer}student/salary/`,{headers: { Authorization: `${localStorage.getItem("token")}` }}, salaryData)
     .then((response) =>
       dispatch({
         type: NEW_SALARY_POSTING,

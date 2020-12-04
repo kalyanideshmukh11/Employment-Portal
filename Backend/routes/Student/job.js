@@ -1,6 +1,7 @@
 const express = require('express');
 const kafka = require('../../kafka/client');
 const router = express.Router();
+var { checkAuth } = require('../../config/passport');
 
 router.post('/apply', (req, res) => {
   console.log('In apply JOB route');
@@ -27,7 +28,7 @@ router.post('/apply', (req, res) => {
   );
 });
 
-router.get('/:companyName', (req, res) => {
+router.get('/:companyName',checkAuth, (req, res) => {
   console.log('In company jobs route');
   console.log(req.params.companyName);
   kafka.make_request(

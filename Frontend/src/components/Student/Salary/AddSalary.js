@@ -30,7 +30,8 @@ class AddSalary extends Component {
   getSalary=()=> {
     console.log("function called.")
     setTimeout(() => {
-        axios.get(`${backendServer}student/salary/${this.props.companyName}`)
+        axios.get(`${backendServer}student/salary/${this.props.companyName}`,
+        {headers: { Authorization: `${localStorage.getItem("token")}` }})
         .then(response => {
           console.log(response)
             const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
@@ -105,6 +106,19 @@ salaryItems = () => {
   }
 
   render() {
+    let error = {
+      message: null
+  }
+  let success = {
+      message: null
+  }
+  if(this.props.status === "Inserted Successfully"){
+      success.message = "Successfully added your salary details."
+      setTimeout(function() {window.location = '/student/contributions/salaries'}, 1500);
+  } else if(this.state.server_status === 500){
+      error.message = "Unable to make changes."
+      setTimeout(function() {window.location = '/student/contributions/salaries'}, 2000);
+  }
     let section,
     renderOutput = [];
 
@@ -172,7 +186,7 @@ salaryItems = () => {
                     ></Form.Control>
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Currancy*</Form.Label>
+                    <Form.Label>Currency*</Form.Label>
                     <Form.Control
                       required={true}
                       type='text'

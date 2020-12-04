@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, Button, Modal, Form, Alert, Badge } from 'react-bootstrap';
 import { Doughnut } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 
@@ -48,7 +47,7 @@ export const Charts = (props) => {
 
         <div style={{display: "flex", justifyContent: "space-between"}}>
           <div>
-          <p style={{marginLeft: "10px", padding: "25px"}}>{reviewList.avgRating}.0 {createElements(reviewList.avgRating)}</p>
+          <p style={{marginLeft: "10px", padding: "20px"}}>{Math.round(reviewList.avgRating)}.0 {createElements(reviewList.avgRating)}</p>
           <p style={{fontWeight: "light",fontSize: "15px", marginLeft: "0px", padding: "60px"}}>Overall Rating</p>
           </div>
           <div>

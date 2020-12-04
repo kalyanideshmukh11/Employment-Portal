@@ -53,7 +53,8 @@ class ReviewTab extends Component {
   getReview=()=> {
     console.log("function called.")
     setTimeout(() => {
-        axios.get(`${backendServer}student/reviews/${this.props.companyName}`)
+        axios.get(`${backendServer}student/reviews/${this.props.companyName}`,
+        {headers: { Authorization: `${localStorage.getItem("token")}` }})
         .then(response => {
           console.log(response)
             const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
@@ -97,7 +98,8 @@ review_items = () => {
 
   getPositiveReview = () => {
     axios
-      .get(`${backendServer}company/reviews/positive/${this.props.companyName}`)
+      .get(`${backendServer}company/reviews/positive/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
       .then((res) => {
         if (res.status === 200) {
           if (res.data) {
@@ -110,7 +112,8 @@ review_items = () => {
 
   getNegativeReview = () => {
     axios
-      .get(`${backendServer}company/reviews/negative/${this.props.companyName}`)
+      .get(`${backendServer}company/reviews/negative/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
       .then((res) => {
         if (res.status === 200) {
           if (res.data) {
@@ -122,7 +125,8 @@ review_items = () => {
   };
   getFeaturedReview = () => {
     axios
-      .get(`${backendServer}company/reviews/featured/${this.props.companyName}`)
+      .get(`${backendServer}company/reviews/featured/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
       .then((res) => {
         if (res.status === 200) {
           if (res.data) {
@@ -135,7 +139,8 @@ review_items = () => {
 
   getAverageRating = () => {
     axios
-      .get(`${backendServer}company/reviews/rating/${this.props.companyName}`)
+      .get(`${backendServer}company/reviews/rating/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
       .then((res) => {
         if (res.status === 200) {
           if (res.data) {

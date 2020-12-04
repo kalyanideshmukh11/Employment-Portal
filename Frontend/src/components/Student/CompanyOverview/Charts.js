@@ -48,7 +48,7 @@ export const CompanyCharts = (props) => {
 
         <div style={{display: "flex", justifyContent: "space-between"}}>
           <div>
-          <p style={{marginLeft: "10px", padding: "25px"}}>{reviewList.avgRating}.0 {createElements(reviewList.avgRating)}</p>
+          <p style={{marginLeft: "10px", padding: "20px"}}>{Math.round(reviewList.avgRating)}.0 {createElements(reviewList.avgRating)}</p>
           <p style={{fontWeight: "light",fontSize: "15px", marginLeft: "0px", padding: "60px"}}>Overall Rating</p>
           </div>
           <div>
