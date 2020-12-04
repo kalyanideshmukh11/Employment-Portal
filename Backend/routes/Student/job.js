@@ -65,32 +65,7 @@ router.post('/apply/:id', checkAuth, (req, res) => {
   });
 });
 
-/*router.post('/apply', (req, res) => {
-  console.log('In apply JOB route');
-  console.log(req.body);
-  console.log('FULL--------');
-  kafka.make_request(
-    'jobs_topic',
-    {
-      path: 'apply_job',
-      body: req.body,
-    },
-    function (err, results) {
-      if (err) {
-        console.log('Inside err');
-        console.log(err);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('Some error has occured');
-      } else {
-        console.log(results);
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(results.message);
-      }
-    }
-  );
-});*/
-
-router.get('/all', (req, res) => {
+router.get('/all', checkAuth, (req, res) => {
   console.log('Get all jobs');
   kafka.make_request(
     'jobs_topic',
@@ -110,7 +85,7 @@ router.get('/all', (req, res) => {
   );
 });
 
-router.get('/search/:search_param', (req, res) => {
+router.get('/search/:search_param', checkAuth, (req, res) => {
   console.log('Search jobs');
   console.log(req.params);
   kafka.make_request(
@@ -131,7 +106,7 @@ router.get('/search/:search_param', (req, res) => {
   );
 });
 
-router.get('/getMyJobs/:student_id', (req, res) => {
+router.get('/getMyJobs/:student_id', checkAuth, (req, res) => {
   console.log('Get my applied jobs');
   console.log(req.params);
   kafka.make_request(

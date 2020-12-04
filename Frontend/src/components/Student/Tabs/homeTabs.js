@@ -48,7 +48,6 @@ class HomeTabs extends Component {
         loadComponent: (
           <Interview id={this.props.location.companyID}></Interview>
         ),
-        showInterviewButton: 1,
       };
     } else if (this.props.location.category === 'answers') {
       this.state = {
@@ -79,7 +78,6 @@ class HomeTabs extends Component {
     ) {
       this.setState({
         loadComponent: <Answers state={nextProp.location.state}></Answers>,
-        showInterviewButton: 1,
       });
     }
   }
@@ -104,29 +102,11 @@ class HomeTabs extends Component {
         loadComponent: <Answers state={this.props.location.state}></Answers>,
       });
     }
-
-    if (
-      this.props.location.category &&
-      (this.props.location.category === 'interviews' ||
-        this.props.location.category === 'answers')
-    ) {
-      this.setState({ showInterviewButton: 1 });
-    } else {
-      this.setState({ showInterviewButton: 0 });
-    }
-
-    console.log('this.state');
-    console.log(this.state);
   }
   loadComp(param, tag = 'na') {
     console.log('Button clicked', param, tag);
-    let showInterviewBtn = 0;
-    if (tag === 'interviews') {
-      showInterviewBtn = 1;
-    }
     this.setState({
       loadComponent: param,
-      showInterviewButton: showInterviewBtn,
     });
     this.forceUpdate();
   }
@@ -135,25 +115,8 @@ class HomeTabs extends Component {
     // TODO add image link
     var imgSrc = `${backendServer}company/imageUpload/${this.props.location.filename}`;
     let loadComponent = null;
-    let addButton = null;
     if (this.state && this.state.loadComponent) {
       loadComponent = this.state.loadComponent;
-      if (this.state.showInterviewButton) {
-        addButton = (
-          <Button
-            href='/student/interview/add'
-            style={{
-              float: 'right',
-              marginLeft: '470px',
-              backgroundColor: '#1861bf',
-              border: '#1861bf',
-            }}
-          >
-            {' '}
-            Add an Interview
-          </Button>
-        );
-      }
     }
     return (
       <React.Fragment>
@@ -293,7 +256,6 @@ class HomeTabs extends Component {
                   {' '}
                   Photos{' '}
                 </Button>
-                {addButton}
               </div>
             </div>
           </div>

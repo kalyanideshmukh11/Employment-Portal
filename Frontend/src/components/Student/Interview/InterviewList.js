@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare } from '@fortawesome/free-solid-svg-icons';
-import { Card, Col } from 'react-bootstrap';
+import { Card, Col, Button } from 'react-bootstrap';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
 import { Link } from 'react-router-dom';
 import { Doughnut } from 'react-chartjs-2';
 import { MDBContainer } from 'mdbreact';
+import ReactPaginate from 'react-paginate';
 
 class InterviewList extends Component {
   constructor(props) {
@@ -18,17 +19,52 @@ class InterviewList extends Component {
       offer_status: '',
       interview_q_a: [],
       interview_date: '',
+      offset: 0,
+      perPage: 5,
+      currentPage: 0,
+      interviews: [],
     };
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
+  handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+
+    this.setState(
+      {
+        currentPage: selectedPage,
+        offset: offset,
+      },
+      () => {
+        this.getInterviews();
+      }
+    );
+  };
+
   componentDidMount() {
-    console.log(this.props.id)
+    this.getInterviews();
+  }
+
+  getInterviews() {
     axios
-      .get(`${backendServer}student/interview/get/${this.props.id}`)
+      .get(`${backendServer}student/interview/get/${this.props.id}`, {
+        headers: { Authorization: `${localStorage.getItem('token')}` },
+      })
       .then((response) => {
-        if (response.data) {
+        if (response.data && response.data === 'NO_RECORD') {
           this.setState({
-            interviews: response.data,
+            status: response.data,
+          });
+        } else if (response.data) {
+          const slice = response.data.slice(
+            this.state.offset,
+            this.state.offset + this.state.perPage
+          );
+          this.setState({
+            interviews: slice,
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
+            allInterviews: response.data,
           });
         }
       })
@@ -152,12 +188,47 @@ class InterviewList extends Component {
       '#f1f2f2',
       '#f1f2f2',
     ];
-    if (this.state && this.state.interviews) {
+    let paginateElem = null;
+    let renderOutput = [];
+    if (this.state.status === 'NO_RECORD') {
+      renderOutput = (
+        <div
+          style={{
+            padding: '0px 10px 10px 10px',
+            color: 'gray',
+            fontSize: '18px',
+          }}
+        >
+          This company has no interviews available. Be the first to add them.
+        </div>
+      );
+    }
+
+    if (this.state && this.state.interviews && this.state.allInterviews) {
       console.log('interviews');
       console.log(this.state.interviews);
 
-      let d = this.calculateExp(this.state.interviews);
-      avgDifficulty = this.getDifficultyAverage(this.state.interviews);
+      paginateElem = (
+        <div style={{ marginLeft: '5mm', marginRight: '5mm' }}>
+          <hr />
+          <ReactPaginate
+            previousLabel={'prev'}
+            nextLabel={'next'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={'pagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'active'}
+          />
+        </div>
+      );
+
+      let d = this.calculateExp(this.state.allInterviews);
+      avgDifficulty = this.getDifficultyAverage(this.state.allInterviews);
       avgDifficulty = avgDifficulty.toFixed(2);
       avgDifficultyColor = this.getDifficultyAverageColor(avgDifficulty);
       let l = [];
@@ -234,7 +305,7 @@ class InterviewList extends Component {
           interviewCard.difficulty
         );
         return (
-          <Card style={{ width: '22cm' }}>
+          <Card style={{ width: '25cm' }}>
             <Card.Title
               style={{
                 padding: '30px 20px 0px 20px',
@@ -311,140 +382,162 @@ class InterviewList extends Component {
         position: 'right',
       },
     };
-    return (
-      <div>
-        <div style={{ margin: 'auto', width: '50%' }}>
-          <Card style={{ width: '22cm' }}>
-            <br />
 
-            <Col sm={4} md={4} lg={4}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }}
-              >
+    let chartTag = null;
+
+    if (interviewTag) {
+      chartTag = (
+        <Card style={{ width: '25cm' }}>
+          <br />
+          <Col sm={4} md={4} lg={4}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div>
+                <MDBContainer>
+                  <p
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: '15px',
+                      marginLeft: '40px',
+                      padding: '0px',
+                    }}
+                  >
+                    Experience
+                  </p>
+                  <Doughnut data={data} options={options} />
+                </MDBContainer>
+              </div>
+              <div className='d-flex flex-row' style={{ marginLeft: '200px' }}>
+                <div style={{ marginRight: '20px', marginTop: '35px' }}>
+                  <p
+                    style={{
+                      fontWeight: 'normal',
+                      fontSize: '50px',
+                      marginLeft: '32px',
+                    }}
+                  >
+                    {avgDifficulty}
+                  </p>
+                  <h3>Average</h3>
+                </div>
                 <div>
                   <MDBContainer>
-                    <p
-                      style={{
-                        fontWeight: 'bold',
-                        fontSize: '15px',
-                        marginLeft: '40px',
-                        padding: '0px',
-                      }}
-                    >
-                      Experience
-                    </p>
-                    <Doughnut data={data} options={options} />
+                    <div>
+                      <p
+                        style={{
+                          fontWeight: 'bold',
+                          fontSize: '15px',
+                          padding: '0px',
+                        }}
+                      >
+                        Difficulty
+                      </p>
+                      <div
+                        className='d-flex flex-row'
+                        style={{ marginTop: '1.75mm' }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faSquare}
+                          style={{
+                            color: avgDifficultyColor[4],
+                            marginTop: '1.74mm',
+                          }}
+                        />
+                        <span style={{ marginLeft: '1mm' }}>Hard</span>
+                      </div>
+
+                      <div
+                        className='d-flex flex-row'
+                        style={{ marginTop: '1.75mm' }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faSquare}
+                          style={{
+                            color: avgDifficultyColor[3],
+                            marginTop: '1.74mm',
+                          }}
+                        />
+                      </div>
+
+                      <div
+                        className='d-flex flex-row'
+                        style={{ marginTop: '1.75mm' }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faSquare}
+                          style={{
+                            color: avgDifficultyColor[2],
+                            marginTop: '1.72mm',
+                          }}
+                        />
+                        <span style={{ marginLeft: '1mm' }}>Average</span>
+                      </div>
+                      <div
+                        className='d-flex flex-row'
+                        style={{ marginTop: '1.75mm' }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faSquare}
+                          style={{
+                            color: avgDifficultyColor[1],
+                            marginTop: '1.72mm',
+                          }}
+                        />
+                      </div>
+                      <div
+                        className='d-flex flex-row'
+                        style={{ marginTop: '1.75mm' }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faSquare}
+                          style={{
+                            color: avgDifficultyColor[0],
+                            marginTop: '1.73mm',
+                          }}
+                        />
+                        <span style={{ marginLeft: '1mm' }}>Easy</span>
+                      </div>
+                    </div>
                   </MDBContainer>
                 </div>
-                <div
-                  className='d-flex flex-row'
-                  style={{ marginLeft: '200px' }}
-                >
-                  <div style={{ marginRight: '20px', marginTop: '35px' }}>
-                    <p
-                      style={{
-                        fontWeight: 'normal',
-                        fontSize: '50px',
-                        marginLeft: '32px',
-                      }}
-                    >
-                      {avgDifficulty}
-                    </p>
-                    <h3>Average</h3>
-                  </div>
-                  <div>
-                    <MDBContainer>
-                      <div>
-                        <p
-                          style={{
-                            fontWeight: 'bold',
-                            fontSize: '15px',
-                            padding: '0px',
-                          }}
-                        >
-                          Difficulty
-                        </p>
-                        <div
-                          className='d-flex flex-row'
-                          style={{ marginTop: '1.75mm' }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faSquare}
-                            style={{
-                              color: avgDifficultyColor[4],
-                              marginTop: '1.74mm',
-                            }}
-                          />
-                          <span style={{ marginLeft: '1mm' }}>Hard</span>
-                        </div>
-
-                        <div
-                          className='d-flex flex-row'
-                          style={{ marginTop: '1.75mm' }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faSquare}
-                            style={{
-                              color: avgDifficultyColor[3],
-                              marginTop: '1.74mm',
-                            }}
-                          />
-                        </div>
-
-                        <div
-                          className='d-flex flex-row'
-                          style={{ marginTop: '1.75mm' }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faSquare}
-                            style={{
-                              color: avgDifficultyColor[2],
-                              marginTop: '1.72mm',
-                            }}
-                          />
-                          <span style={{ marginLeft: '1mm' }}>Average</span>
-                        </div>
-                        <div
-                          className='d-flex flex-row'
-                          style={{ marginTop: '1.75mm' }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faSquare}
-                            style={{
-                              color: avgDifficultyColor[1],
-                              marginTop: '1.72mm',
-                            }}
-                          />
-                        </div>
-                        <div
-                          className='d-flex flex-row'
-                          style={{ marginTop: '1.75mm' }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faSquare}
-                            style={{
-                              color: avgDifficultyColor[0],
-                              marginTop: '1.73mm',
-                            }}
-                          />
-                          <span style={{ marginLeft: '1mm' }}>Easy</span>
-                        </div>
-                      </div>
-                    </MDBContainer>
-                  </div>
-                </div>
               </div>
-            </Col>
-            <br />
+            </div>
+          </Col>
+          <br />
+        </Card>
+      );
+    }
+    return (
+      <div>
+        <div style={{ margin: 'auto', width: '60%' }}>
+          {renderOutput}
+          <Card style={{ width: '25cm' }}>
+            <div class='col-12'>
+              <Button
+                style={{
+                  float: 'right',
+                  marginRight: '20px',
+                  marginTop: '20px',
+                  marginBottom: '20px',
+                }}
+                variant='success'
+                href='/student/interview/add'
+              >
+                Add an Interview
+              </Button>
+            </div>
           </Card>
+          {chartTag}
           <div>
             {interviewTag}
             <br />
             <br />
           </div>
+          {paginateElem}
         </div>
       </div>
     );

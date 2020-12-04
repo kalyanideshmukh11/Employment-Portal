@@ -7,7 +7,6 @@ class InterviewAnswers extends Component {
     let qTag = null;
     let ansTag = null;
     if (this.props && this.props.state) {
-      console.log('HERERERERER');
       qTag = (
         <Card style={{ width: '22cm' }}>
           <Card.Title

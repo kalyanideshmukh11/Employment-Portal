@@ -22,7 +22,10 @@ class AppliedJobs extends Component {
       .get(
         `${backendServer}student/job/getMyJobs/${localStorage.getItem(
           'sql_student_id'
-        )}`
+        )}`,
+        {
+          headers: { Authorization: `${localStorage.getItem('token')}` },
+        }
       )
       .then((response) => {
         console.log('response from backend');
@@ -40,7 +43,9 @@ class AppliedJobs extends Component {
     };
 
     axios
-      .post(`${backendServer}glassdoor/jobs/applicantstatus/update`, args)
+      .post(`${backendServer}glassdoor/jobs/applicantstatus/update`, args, {
+        headers: { Authorization: `${localStorage.getItem('token')}` },
+      })
       .then((response) => {
         console.log(response.data);
         console.log('Status Code : ', response.status);

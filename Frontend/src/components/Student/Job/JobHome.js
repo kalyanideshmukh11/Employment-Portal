@@ -5,18 +5,41 @@ import backendServer from '../../../webConfig';
 import axios from 'axios';
 import { Multiselect } from 'multiselect-react-dropdown';
 import JobDetails from './JobDetails';
+import ReactPaginate from 'react-paginate';
 
 class JobHome extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      offset: 0,
+      perPage: 5,
+      currentPage: 0,
+      allJobs: [],
+      filterJobs: [],
+    };
     this.onClick = this.onClick.bind(this);
     this.onPostDateFilter = this.onPostDateFilter.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onFilter = this.onFilter.bind(this);
     this.onJobTypeFilter = this.onJobTypeFilter.bind(this);
     this.onFocus = this.onFocus.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
+
+  handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+    const slice = this.state.filterJobs.slice(
+      offset,
+      offset + this.state.perPage
+    );
+    this.setState({
+      currentPage: selectedPage,
+      offset: offset,
+      showJobs: slice,
+      curJob: slice[0],
+    });
+  };
 
   onFocus = (e) => {
     console.log('focus');
@@ -116,15 +139,27 @@ class JobHome extends Component {
       }
     }
     console.log('after all filter:', list.length);
-    this.setState({
-      filterJobs: list,
-      curJob: list[0],
-      minSalary: '1',
-      maxSalary: '9999999',
-      location_filter: '',
-    });
-    if (list.length === 0) {
-      this.setState({ noRecords: 1, curJob: null });
+    if (list.length > 0) {
+      const slice = list.slice(0, this.state.perPage);
+      this.setState({
+        filterJobs: list,
+        curJob: slice[0],
+        showJobs: slice,
+        minSalary: '1',
+        maxSalary: '9999999',
+        location_filter: '',
+        offset: 0,
+        currentPage: 0,
+      });
+    } else {
+      this.setState({
+        filterJobs: list,
+        curJob: null,
+        minSalary: '1',
+        maxSalary: '9999999',
+        location_filter: '',
+        noRecords: 1,
+      });
     }
   }
 
@@ -141,13 +176,21 @@ class JobHome extends Component {
     }
     console.log(axiosLink);
     axios
-      .get(axiosLink)
+      .get(axiosLink, {
+        headers: { Authorization: `${localStorage.getItem('token')}` },
+      })
       .then((response) => {
         if (response.data) {
+          const slice = response.data.slice(
+            this.state.offset,
+            this.state.offset + this.state.perPage
+          );
           this.setState({
             allJobs: response.data,
             filterJobs: response.data,
-            curJob: response.data[0],
+            curJob: slice[0],
+            showJobs: slice,
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
           });
 
           this.forceUpdate();
@@ -166,6 +209,8 @@ class JobHome extends Component {
       maxSalary: '9999999',
       location_filter: '',
       filterJobs: this.state.allJobs,
+      offset: 0,
+      currentPage: 0,
     });
     this.getJobs(nextProp);
   }
@@ -182,8 +227,14 @@ class JobHome extends Component {
       filteredList.sort(function (a, b) {
         return new Date(b.posted_date) - new Date(a.posted_date);
       });
+      const slice = filteredList.slice(
+        this.state.offset,
+        this.state.offset + this.state.perPage
+      );
       this.setState({
         filterJobs: filteredList,
+        showJobs: slice,
+        curJob: slice[0],
       });
     }
   };
@@ -213,8 +264,15 @@ class JobHome extends Component {
           return false;
         }
       });
+
+      const slice = filteredList.slice(
+        this.state.offset,
+        this.state.offset + this.state.perPage
+      );
       this.setState({
         filterJobs: list,
+        showJobs: slice,
+        curJob: slice[0],
       });
     }
   };
@@ -222,16 +280,32 @@ class JobHome extends Component {
   render() {
     let jobTag = null;
     let curJob = null;
+    let paginateElem = null;
 
     if (this.state && this.state.curJob) {
       curJob = this.state.curJob;
     }
-    if (
-      this.state &&
-      this.state.filterJobs &&
-      this.state.filterJobs.length > 0
-    ) {
-      jobTag = this.state.filterJobs.map((job) => {
+    if (this.state && this.state.showJobs && this.state.showJobs.length > 0) {
+      paginateElem = (
+        <div style={{ marginLeft: '5mm', marginRight: '5mm' }}>
+          <hr />
+          <ReactPaginate
+            previousLabel={'prev'}
+            nextLabel={'next'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={'pagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'active'}
+          />
+        </div>
+      );
+
+      jobTag = this.state.showJobs.map((job) => {
         return (
           <Card border-width='10px' style={{ width: '100%', color: 'black' }}>
             <Button
@@ -387,59 +461,10 @@ class JobHome extends Component {
               height: '730px',
             }}
           >
-            {jobTag}
-            {/*<div>
-              <ListGroup variant='flush'>
-                <ListGroup.Item
-                  action
-                  variant='light'
-                  active={this.state.profileState}
-                  onClick={() => {
-                    localStorage.setItem('active-list', 'profile');
-                  }}
-                  style={{ color: 'black' }}
-                  href='/student/profile'
-                >
-                  Profile
-                </ListGroup.Item>
-                <ListGroup.Item
-                  action
-                  variant='light'
-                  active={this.state.resumeState}
-                  onClick={() => {
-                    localStorage.setItem('active-list', 'resume');
-                  }}
-                  style={{ color: 'black' }}
-                  href='/student/resume'
-                >
-                  Resume
-                </ListGroup.Item>
-                <ListGroup.Item
-                  action
-                  variant='light'
-                  active={this.state.jobPreferenceState}
-                  onClick={() => {
-                    localStorage.setItem('active-list', 'jobPreference');
-                  }}
-                  style={{ color: 'black' }}
-                  href='/student/jobPreference'
-                >
-                  Job Preference
-                </ListGroup.Item>
-                <ListGroup.Item
-                  action
-                  variant='light'
-                  active={this.state.demographicsState}
-                  onClick={() => {
-                    localStorage.setItem('active-list', 'demographics');
-                  }}
-                  style={{ color: 'black' }}
-                  href='/student/demographics'
-                >
-                  Demographics
-                </ListGroup.Item>
-              </ListGroup>
-            </div>*/}
+            <div>
+              {jobTag}
+              {paginateElem}
+            </div>
           </div>
           <div
             class='col-7'
@@ -452,109 +477,6 @@ class JobHome extends Component {
             }}
           >
             <JobDetails info={curJob} />
-            {/*<div class='row'>
-              <div class='col'>
-                <h4
-                  style={{
-                    fontFamily: 'helvetica',
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {' '}
-                  A B
-                </h4>
-              </div>
-              <div class='col'>
-                <Button
-                  style={{ float: 'right', marginRight: '1mm' }}
-                  variant='link'
-                  onClick={this.handleShow}
-                >
-                  <FontAwesomeIcon
-                    style={{ marginTop: '', color: 'gray' }}
-                    icon={faPen}
-                    size='sm'
-                  />
-                </Button>
-              </div>
-            </div>
-            <div class='row'>
-              <div class='col col-md-4'>job_title</div>
-              <div class='col col-md-4'>
-                <div style={{ marginTop: '1.75mm' }}>
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  <span style={{ marginLeft: '1mm' }}>a@b.com</span>
-                </div>
-              </div>
-              <div class='col col-md-4'>phone_number</div>
-            </div>
-            <div class='row'>
-              <div class='col col-md-4'>location</div>
-              <div class='col col-md-4'>website</div>
-            </div>
-            <br />
-            <br />
-            <h4 style={{ fontFamily: 'helvetica', fontWeight: 'bold' }}>
-              {' '}
-              About Me
-              <Button
-                variant='link'
-                style={{ textDecoration: 'none' }}
-                onClick={this.handleAboutMeModalShow}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </Button>
-            </h4>
-            <hr />
-            about_me
-            <br />
-            <br />
-            <h4 style={{ fontFamily: 'helvetica', fontWeight: 'bold' }}>
-              {' '}
-              Experience
-              <Button
-                variant='link'
-                style={{ textDecoration: 'none' }}
-                onClick={this.handleExperienceModalShow}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </Button>
-            </h4>
-            <hr />
-            experience
-            <br />
-            <br />
-            <h4 style={{ fontFamily: 'helvetica', fontWeight: 'bold' }}>
-              {' '}
-              Skills
-              <Button
-                variant='link'
-                style={{ textDecoration: 'none' }}
-                onClick={this.handleSkillsModalShow}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </Button>
-            </h4>
-            <hr />
-            skills
-            <br />
-            <br />
-            <h4 style={{ fontFamily: 'helvetica', fontWeight: 'bold' }}>
-              {' '}
-              Education
-              <Button
-                variant='link'
-                style={{ textDecoration: 'none' }}
-                onClick={this.handleEducationModalShow}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </Button>
-            </h4>
-            <hr />
-            education
-            <br />
-                <br />*/}
           </div>
         </div>
       </div>

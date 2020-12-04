@@ -23,6 +23,7 @@ class JobApplicationModal extends Component {
   componentDidMount() {
     console.log('Here');
     let resumeTag = [];
+    let nameSplitter = 'nameSplitter';
     axios.defaults.withCredentials = true;
     axios
       .get(
@@ -40,17 +41,28 @@ class JobApplicationModal extends Component {
 
         if (response.data[0].resumes && response.data[0].resumes.length > 0) {
           for (let i = 0; i < response.data[0].resumes.length; i++) {
+            if (response.data[0].resumes[i].resume.includes('!***!')) {
+              nameSplitter = '!***!';
+            } else {
+              nameSplitter = 'nameSplitter';
+            }
             if (response.data[0].resumes[i].is_primary) {
               this.setState({
                 primaryResume: response.data[0].resumes[i].resume,
+                placeholder: response.data[0].resumes[i].resume.split(
+                  nameSplitter
+                )[1],
               });
             }
-            resumeTag.push({ value: response.data[0].resumes[i].resume });
+
+            resumeTag.push({
+              label: response.data[0].resumes[i].resume.split(nameSplitter)[1],
+              value: response.data[0].resumes[i].resume,
+            });
           }
 
           this.setState({
             resumeOptions: resumeTag,
-            placeholder: this.state.primaryResume,
             selected_resume: this.state.primaryResume,
           });
         }
@@ -106,7 +118,6 @@ class JobApplicationModal extends Component {
 
   render() {
     console.log('render');
-    console.log(this.state.placeholder);
     console.log(this.state);
     let error = {
       message: null,
@@ -172,15 +183,6 @@ class JobApplicationModal extends Component {
                   title=''
                 />
               </Form.File>
-              {/*<Form.Group>
-              <Form.File
-                id='exampleFormControlFile1'
-                name='cover_file'
-                label='Cover Letter'
-                accept='.doc,.docx,pdf'
-                onChange={this.onClickCover}
-              />
-            </Form.Group>*/}
             </Form.Group>
           </Form>
           <div>
