@@ -21,7 +21,7 @@ exports.reviewService = function (msg, callback) {
 
     case 'getStudentReviews':
       getStudentReviews(msg, callback);
-
+      break;
     case 'reviewsPerDay':
       ReviewsPerDay(msg, callback);
       break;
