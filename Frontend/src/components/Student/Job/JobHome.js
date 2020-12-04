@@ -1,34 +1,58 @@
 import React, { Component } from 'react';
 import StudentNavbar from '../Navbar/navbar_student';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBriefcase,
-  faPen,
-  faPlusCircle,
-  faEnvelope,
-  faPhone,
-  faGlobeAmericas,
-  faMapMarked,
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  Button,
-  InputGroup,
-  FormControl,
-  ListGroup,
-  Card,
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button, InputGroup, FormControl, Card } from 'react-bootstrap';
 import backendServer from '../../../webConfig';
 import axios from 'axios';
 import { Multiselect } from 'multiselect-react-dropdown';
 import JobDetails from './JobDetails';
+import ReactPaginate from 'react-paginate';
 
 class JobHome extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      offset: 0,
+      perPage: 5,
+      currentPage: 0,
+      allJobs: [],
+      filterJobs: [],
+    };
     this.onClick = this.onClick.bind(this);
+    this.onPostDateFilter = this.onPostDateFilter.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onFilter = this.onFilter.bind(this);
+    this.onJobTypeFilter = this.onJobTypeFilter.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
+
+  handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    const offset = selectedPage * this.state.perPage;
+    const slice = this.state.filterJobs.slice(
+      offset,
+      offset + this.state.perPage
+    );
+    this.setState({
+      currentPage: selectedPage,
+      offset: offset,
+      showJobs: slice,
+      curJob: slice[0],
+    });
+  };
+
+  onFocus = (e) => {
+    console.log('focus');
+    e.target.value = '';
+    console.log(e);
+  };
+
+  onChange = (e) => {
+    console.log(e);
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
 
   onClick = (e, job) => {
     this.setState({
@@ -45,41 +69,243 @@ class JobHome extends Component {
         { value: 'Internship', key: 4 },
         { value: 'Temporary', key: 5 },
       ],
+      posting_filter: [{ value: 'All' }, { value: 'Most Recent' }],
       curJob: null,
+      minSalary: '1',
+      maxSalary: '9999999',
+      location_filter: '',
     });
+    this.getJobs(this.props);
+  };
 
+  onFilter() {
+    var filteredList = this.state.allJobs;
+    console.log('here');
+    console.log(this.state);
+    var list = [];
+    if (filteredList && filteredList.length > 0) {
+      if (this.state.location_filter !== '') {
+        let location_filter = this.state.location_filter.toLowerCase();
+        list = filteredList.filter((job) => {
+          if (
+            job.address &&
+            job.address.toLowerCase().includes(location_filter)
+          ) {
+            return true;
+          } else if (
+            job.state &&
+            job.state.toLowerCase().includes(location_filter)
+          ) {
+            return true;
+          } else if (
+            job.country &&
+            job.country.toLowerCase().includes(location_filter)
+          ) {
+            return true;
+          } else if (
+            job.city &&
+            job.city.toLowerCase().includes(location_filter)
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+      } else {
+        list = filteredList;
+      }
+      console.log('after location: ', list.length);
+      if (
+        this.state.minSalary !== '1' &&
+        this.state.maxSalary !== '9999999' &&
+        this.state.minSalary !== '' &&
+        this.state.maxSalary !== ''
+      ) {
+        list = list.filter((job) => {
+          console.log('job');
+          console.log(job);
+          console.log(job.fromSalary);
+          console.log(job.toSalary);
+          console.log(this.state);
+          if (job.fromSalary && job.toSalary) {
+            return (
+              parseInt(job.fromSalary) >= parseInt(this.state.minSalary) &&
+              parseInt(job.toSalary) <= parseInt(this.state.maxSalary)
+            );
+          } else {
+            return false;
+          }
+        });
+      }
+    }
+    console.log('after all filter:', list.length);
+    if (list.length > 0) {
+      const slice = list.slice(0, this.state.perPage);
+      this.setState({
+        filterJobs: list,
+        curJob: slice[0],
+        showJobs: slice,
+        minSalary: '1',
+        maxSalary: '9999999',
+        location_filter: '',
+        offset: 0,
+        currentPage: 0,
+      });
+    } else {
+      this.setState({
+        filterJobs: list,
+        curJob: null,
+        minSalary: '1',
+        maxSalary: '9999999',
+        location_filter: '',
+        noRecords: 1,
+      });
+    }
+  }
+
+  getJobs(props) {
+    let axiosLink = `${backendServer}student/job/all`;
+    console.log('testing');
+    console.log(props.location.state);
+    if (
+      props.location &&
+      props.location.state &&
+      props.location.state.search_param !== ''
+    ) {
+      axiosLink = `${backendServer}student/job/search/${props.location.state.search_param}`;
+    }
+    console.log(axiosLink);
     axios
-      .get(`${backendServer}student/job/all`)
+      .get(axiosLink, {
+        headers: { Authorization: `${localStorage.getItem('token')}` },
+      })
       .then((response) => {
         if (response.data) {
+          const slice = response.data.slice(
+            this.state.offset,
+            this.state.offset + this.state.perPage
+          );
           this.setState({
             allJobs: response.data,
             filterJobs: response.data,
-            curJob: response.data[0],
+            curJob: slice[0],
+            showJobs: slice,
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
           });
+
+          this.forceUpdate();
         }
       })
       .catch((error) => {
         console.log('Error');
         console.log(error);
       });
+  }
 
-    // axios get all jobs ordered by posting date
+  componentWillReceiveProps(nextProp) {
+    console.log('Received: ', nextProp);
+    this.setState({
+      minSalary: '1',
+      maxSalary: '9999999',
+      location_filter: '',
+      filterJobs: this.state.allJobs,
+      offset: 0,
+      currentPage: 0,
+    });
+    this.getJobs(nextProp);
+  }
+
+  onPostDateFilter = (e, x) => {
+    // sort
+    console.log('onPostDateFilter');
+    console.log(x.value);
+    this.setState({
+      selected_posting_filter: [{ value: x.value }],
+    });
+    let filteredList = this.state.filterJobs;
+    if (x.value !== 'All' && filteredList) {
+      filteredList.sort(function (a, b) {
+        return new Date(b.posted_date) - new Date(a.posted_date);
+      });
+      const slice = filteredList.slice(
+        this.state.offset,
+        this.state.offset + this.state.perPage
+      );
+      this.setState({
+        filterJobs: filteredList,
+        showJobs: slice,
+        curJob: slice[0],
+      });
+    }
+  };
+
+  onJobTypeFilter = (e, x) => {
+    // sort
+    console.log('onJobTypeFilter');
+    console.log(x.value);
+    /*this.setState({
+      selected_posting_filter: [{ value: x.value }],
+    });*/
+    let filteredList = this.state.filterJobs;
+    if (x.value === 'All Job Types') {
+      this.setState({
+        filterJobs: this.state.allJobs,
+      });
+    } else if (filteredList) {
+      let list = [];
+      list = filteredList.filter((job) => {
+        console.log('job');
+        console.log(job);
+        console.log(this.state);
+        if (job.jobType) {
+          return job.jobType === x.value;
+          //job.jobType.includes(location_filter)
+        } else {
+          return false;
+        }
+      });
+
+      const slice = filteredList.slice(
+        this.state.offset,
+        this.state.offset + this.state.perPage
+      );
+      this.setState({
+        filterJobs: list,
+        showJobs: slice,
+        curJob: slice[0],
+      });
+    }
   };
 
   render() {
     let jobTag = null;
     let curJob = null;
+    let paginateElem = null;
 
     if (this.state && this.state.curJob) {
       curJob = this.state.curJob;
     }
-    if (
-      this.state &&
-      this.state.filterJobs &&
-      this.state.filterJobs.length > 0
-    ) {
-      jobTag = this.state.filterJobs.map((job) => {
+    if (this.state && this.state.showJobs && this.state.showJobs.length > 0) {
+      paginateElem = (
+        <div style={{ marginLeft: '5mm', marginRight: '5mm' }}>
+          <hr />
+          <ReactPaginate
+            previousLabel={'prev'}
+            nextLabel={'next'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={'pagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'active'}
+          />
+        </div>
+      );
+
+      jobTag = this.state.showJobs.map((job) => {
         return (
           <Card border-width='10px' style={{ width: '100%', color: 'black' }}>
             <Button
@@ -103,7 +329,11 @@ class JobHome extends Component {
                       {/*`/student/interview/list/${value.id}`*/}
                       <div
                         className='ml-3'
-                        style={{ color: '#505863', font: '12px' }}
+                        style={{
+                          color: '#505863',
+                          font: '12px',
+                          textAlign: 'left',
+                        }}
                       >
                         {job.companyName}
                       </div>
@@ -115,15 +345,22 @@ class JobHome extends Component {
                         color: '#505863',
                         font: '16px',
                         fontWeight: 'bold',
+                        textAlign: 'left',
                       }}
                     >
                       {job.title}
                     </div>
                     <div className='d-flex flex-row'>
-                      <div className='ml-3' style={{ color: '#7f7f7f' }}>
+                      <div
+                        className='ml-3'
+                        style={{ color: '#7f7f7f', textAlign: 'left' }}
+                      >
                         {job.city}, {job.state}
                       </div>
-                      <div className='ml-3' style={{ color: '#7f7f7f' }}>
+                      <div
+                        className='ml-3'
+                        style={{ color: '#7f7f7f', textAlign: 'left' }}
+                      >
                         {job.posted_date}
                       </div>
                     </div>
@@ -142,16 +379,28 @@ class JobHome extends Component {
         <br />
 
         <div
-          className='d-flex'
-          style={{ width: '50%', marginLeft: '90px', marginBottom: '20px' }}
+          className='d-flex flex-row'
+          style={{ width: '80%', marginLeft: '90px', marginBottom: '20px' }}
         >
+          <Multiselect
+            options={this.state.posting_filter}
+            displayValue='value'
+            singleSelect
+            name='posting_date'
+            onSelect={this.onPostDateFilter}
+            style={{
+              multiselectContainer: { width: '10.5cm' },
+            }}
+            selectedValues={this.state.selected_posting_filter}
+          />
+          &nbsp;&nbsp;
           <Multiselect
             required={true}
             options={this.state.job_type}
             displayValue='value'
             singleSelect
             name='job_type'
-            onSelect=''
+            onSelect={this.onJobTypeFilter}
             style={{
               multiselectContainer: { width: '100%', fontSize: '16px' },
             }}
@@ -162,6 +411,10 @@ class JobHome extends Component {
               placeholder='Min Salary'
               aria-label='min_salary'
               aria-describedby='basic-addon1'
+              name='minSalary'
+              onChange={this.onChange}
+              onFocus={this.onFocus}
+              type='number'
             />
           </InputGroup>
           &nbsp;&nbsp;
@@ -172,15 +425,28 @@ class JobHome extends Component {
               placeholder='Max Salary'
               aria-label='max_salary'
               aria-describedby='basic-addon1'
+              name='maxSalary'
+              onChange={this.onChange}
+              type='number'
+              onFocus={this.onFocus}
             />
           </InputGroup>
           &nbsp;&nbsp;
-          <InputGroup className='mb-3'>
+          <InputGroup>
             <FormControl
               placeholder='Location'
               aria-label='location'
               aria-describedby='basic-addon1'
+              name='location_filter'
+              onChange={this.onChange}
+              onFocus={this.onFocus}
             />
+          </InputGroup>
+          &nbsp;&nbsp;
+          <InputGroup>
+            <Button onClick={this.onFilter} variant='success'>
+              Filter
+            </Button>
           </InputGroup>
         </div>
 
@@ -195,59 +461,10 @@ class JobHome extends Component {
               height: '730px',
             }}
           >
-            {jobTag}
-            {/*<div>
-              <ListGroup variant='flush'>
-                <ListGroup.Item
-                  action
-                  variant='light'
-                  active={this.state.profileState}
-                  onClick={() => {
-                    localStorage.setItem('active-list', 'profile');
-                  }}
-                  style={{ color: 'black' }}
-                  href='/student/profile'
-                >
-                  Profile
-                </ListGroup.Item>
-                <ListGroup.Item
-                  action
-                  variant='light'
-                  active={this.state.resumeState}
-                  onClick={() => {
-                    localStorage.setItem('active-list', 'resume');
-                  }}
-                  style={{ color: 'black' }}
-                  href='/student/resume'
-                >
-                  Resume
-                </ListGroup.Item>
-                <ListGroup.Item
-                  action
-                  variant='light'
-                  active={this.state.jobPreferenceState}
-                  onClick={() => {
-                    localStorage.setItem('active-list', 'jobPreference');
-                  }}
-                  style={{ color: 'black' }}
-                  href='/student/jobPreference'
-                >
-                  Job Preference
-                </ListGroup.Item>
-                <ListGroup.Item
-                  action
-                  variant='light'
-                  active={this.state.demographicsState}
-                  onClick={() => {
-                    localStorage.setItem('active-list', 'demographics');
-                  }}
-                  style={{ color: 'black' }}
-                  href='/student/demographics'
-                >
-                  Demographics
-                </ListGroup.Item>
-              </ListGroup>
-            </div>*/}
+            <div>
+              {jobTag}
+              {paginateElem}
+            </div>
           </div>
           <div
             class='col-7'
@@ -260,109 +477,6 @@ class JobHome extends Component {
             }}
           >
             <JobDetails info={curJob} />
-            {/*<div class='row'>
-              <div class='col'>
-                <h4
-                  style={{
-                    fontFamily: 'helvetica',
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {' '}
-                  A B
-                </h4>
-              </div>
-              <div class='col'>
-                <Button
-                  style={{ float: 'right', marginRight: '1mm' }}
-                  variant='link'
-                  onClick={this.handleShow}
-                >
-                  <FontAwesomeIcon
-                    style={{ marginTop: '', color: 'gray' }}
-                    icon={faPen}
-                    size='sm'
-                  />
-                </Button>
-              </div>
-            </div>
-            <div class='row'>
-              <div class='col col-md-4'>job_title</div>
-              <div class='col col-md-4'>
-                <div style={{ marginTop: '1.75mm' }}>
-                  <FontAwesomeIcon icon={faEnvelope} />
-                  <span style={{ marginLeft: '1mm' }}>a@b.com</span>
-                </div>
-              </div>
-              <div class='col col-md-4'>phone_number</div>
-            </div>
-            <div class='row'>
-              <div class='col col-md-4'>location</div>
-              <div class='col col-md-4'>website</div>
-            </div>
-            <br />
-            <br />
-            <h4 style={{ fontFamily: 'helvetica', fontWeight: 'bold' }}>
-              {' '}
-              About Me
-              <Button
-                variant='link'
-                style={{ textDecoration: 'none' }}
-                onClick={this.handleAboutMeModalShow}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </Button>
-            </h4>
-            <hr />
-            about_me
-            <br />
-            <br />
-            <h4 style={{ fontFamily: 'helvetica', fontWeight: 'bold' }}>
-              {' '}
-              Experience
-              <Button
-                variant='link'
-                style={{ textDecoration: 'none' }}
-                onClick={this.handleExperienceModalShow}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </Button>
-            </h4>
-            <hr />
-            experience
-            <br />
-            <br />
-            <h4 style={{ fontFamily: 'helvetica', fontWeight: 'bold' }}>
-              {' '}
-              Skills
-              <Button
-                variant='link'
-                style={{ textDecoration: 'none' }}
-                onClick={this.handleSkillsModalShow}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </Button>
-            </h4>
-            <hr />
-            skills
-            <br />
-            <br />
-            <h4 style={{ fontFamily: 'helvetica', fontWeight: 'bold' }}>
-              {' '}
-              Education
-              <Button
-                variant='link'
-                style={{ textDecoration: 'none' }}
-                onClick={this.handleEducationModalShow}
-              >
-                <FontAwesomeIcon icon={faPlusCircle} />
-              </Button>
-            </h4>
-            <hr />
-            education
-            <br />
-                <br />*/}
           </div>
         </div>
       </div>

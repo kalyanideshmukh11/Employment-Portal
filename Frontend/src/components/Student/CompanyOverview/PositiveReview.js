@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, Button, Modal, Form, Alert, Badge } from 'react-bootstrap';
 
-export const NegativeReview = (props) => {
-  let negative = props.negativeReview;
-  console.log('Inside negative review');
-  console.log(negative);
-  if (negative) {
+export const PositiveReview = (props) => {
+  let positive = props.company_positiveReview;
+  console.log('Inside positive review');
+  console.log(positive);
+  if (positive) {
     const createElements = (n) => {
       var elements = [];
       for (let i = 0; i < n; i++) {
@@ -32,20 +32,19 @@ export const NegativeReview = (props) => {
         );
       }
       return elements;
-    } 
+    }
     const list = (
       <div>
-        
         <Button
           class='button button1'
           style={{
-            backgroundColor: '#eb4133',
-            bordercolor: '#eb4133',
+            backgroundColor: '#0caa41',
+            bordercolor: '#0caa41',
             color: 'white',
             fontSize: '13px',
           }}
         >
-          Negative Review
+          Positive Review
         </Button>
         <p
           style={{
@@ -55,20 +54,20 @@ export const NegativeReview = (props) => {
             fontWeight: 'bold',
           }}
         >
-          "{negative.headline}"
+          "{positive.headline}"
         </p>
         <div style={{display: "flex", justifyContent: "space-between"}}>
-                    <p style={{marginLeft: "10px"}}>{negative.rating}.0 {createElements(negative.rating)}</p>
-                    <p style={{marginLeft: "10px"}}>Recommends {creatCards(negative.ceo_rating)}</p>
-                    <p style={{marginLeft: "10px"}}>Approves of CEO {creatCards(negative.recommended)}</p>
+                    <p style={{marginLeft: "10px"}}>{positive.rating}.0 {createElements(positive.rating)}</p>
+                    <p style={{marginLeft: "10px"}}>Recommends {creatCards(positive.ceo_rating)}</p>
+                    <p style={{marginLeft: "10px"}}>Approves of CEO {creatCards(positive.recommended)}</p>
                     </div>
-        <p style={{ marginLeft: '10px' }}> {negative.description}</p>
+        <p style={{ marginLeft: '10px' }}> {positive.description}</p>
         <p style={{ fontWeight: 'bold', marginLeft: '10px', padding: '0px' }}>
           Pros
         </p>
-        <p style={{ marginLeft: '10px' }}>{negative.pros}</p>
+        <p style={{ marginLeft: '10px' }}>{positive.pros}</p>
         <p style={{ fontWeight: 'bold', marginLeft: '10px' }}>Cons</p>
-        <p style={{ marginLeft: '10px' }}>{negative.cons}</p>
+        <p style={{ marginLeft: '10px' }}>{positive.cons}</p>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div></div>
           <div>
@@ -81,7 +80,7 @@ export const NegativeReview = (props) => {
                 fontSize: '15px',
               }}
             >
-              Helpful({negative.helpful})
+              Helpful({positive.helpful})
             </Button>
           </div>
         </div>

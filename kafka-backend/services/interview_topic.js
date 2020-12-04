@@ -96,7 +96,7 @@ async function getAllInterviewsForCompany(msg, callback) {
       response.data = JSON.stringify(interview);
       return callback(null, response);
     } else {
-      response.status = 500;
+      response.status = 200;
       response.data = 'NO_RECORD';
       return callback(null, response);
     }

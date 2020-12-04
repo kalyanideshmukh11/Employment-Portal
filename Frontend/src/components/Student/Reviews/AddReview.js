@@ -46,13 +46,29 @@ class AddReview extends Component {
     console.log(reviewData);
     this.props.insertNewReviewDetails(reviewData);
     //fix redirection on submit
-    if(this.props.status === "Inserted Sucessfully"){
-      alert("Review Added!");
-      this.props.history.push('/student/contributions/reviews');
-  }
+    console.log("review added")
+  //   if(this.props.status === "Inserted Sucessfully"){
+  //     alert("Inserted Sucessfully Message received");
+  //     console.log("review added")
+  //     //this.props.history.push('/student/contributions/reviews');
+  //     setTimeout(function() {window.location = '/student/contributions/reviews'}, 1500);
+  // }
   }
 
   render() {
+    let error = {
+      message: null
+  }
+  let success = {
+      message: null
+  }
+  if(this.props.status === "Inserted Successfully"){
+      success.message = "Successfully added your salary details."
+      setTimeout(function() {window.location = '/student/contributions/reviews'}, 1500);
+  } else if(this.state.server_status === 500){
+      error.message = "Unable to make changes."
+      setTimeout(function() {window.location = '/student/contributions/reviews'}, 2000);
+  }
     return (
       <React.Fragment>
       <Navbar />

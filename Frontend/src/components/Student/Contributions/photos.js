@@ -57,7 +57,8 @@ class PhotosContribution extends Component{
                <tr>
                    <td>{
                        <div>
-                        <Image src={photos.s3Url} style={{width:"5cm", height:"3cm", padding:"5px 5px 10px 50px"}}/>
+                        <Image src={photos.s3Url} style={{width:"5cm", height:"3cm", padding:"5px 5px 0px 50px"}}/> <br />
+                        <i style={{padding:"0px 5px 10px 50px", fontSize:"13px", fontWeight:"400"}}> Uploaded to: {photos.company_name} </i>
                        </div>}</td>
    
                    <td style={{textAlign: "center", verticalAlign:"middle"}}>{photos.date.split('T')[0]}</td>

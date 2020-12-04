@@ -19,10 +19,22 @@ export const FeaturedReview = (props) => {
       }
       return elements;
     };
-
+    const creatCards=(n) => {
+      var elements = [];
+      if(n=== 1) {
+        elements.push(
+          <i className='fa fa-square' aria-hidden='true' style={{ color: 'green' }}></i>,
+        );
+      }
+      if(n=== 0){
+        elements.push(
+          <i className='fa fa-square' aria-hidden='true' style={{ color: 'red' }}></i>,
+        );
+      }
+      return elements;
+    } 
     const list = (
       <div>
-        <hr />
         <Button
           class='button button1'
           style={{
@@ -44,9 +56,11 @@ export const FeaturedReview = (props) => {
         >
           "{reviewList.headline}"
         </p>
-        <p style={{ marginLeft: '10px' }}>
-          {reviewList.rating}.0 {createElements(reviewList.rating)}
-        </p>
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <p style={{marginLeft: "10px"}}>{reviewList.rating}.0 {createElements(reviewList.rating)}</p>
+                    <p style={{marginLeft: "10px"}}>Recommends {creatCards(reviewList.ceo_rating)}</p>
+                    <p style={{marginLeft: "10px"}}>Approves of CEO {creatCards(reviewList.recommended)}</p>
+                    </div>
         <p style={{ marginLeft: '10px' }}> {reviewList.description}</p>
         <p style={{ fontWeight: 'bold', marginLeft: '10px', padding: '0px' }}>
           Pros
@@ -76,7 +90,7 @@ export const FeaturedReview = (props) => {
   } else {
     return (
       <div>
-        <p>Loading featured review.</p>
+        <p></p>
       </div>
     );
   }

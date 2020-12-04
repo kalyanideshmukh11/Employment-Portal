@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Button, Modal, Form, Alert, Badge } from 'react-bootstrap';
 
 export const NegativeReview = (props) => {
-  let negative = props.negativeReview;
+  let negative = props.company_negativeReview;
   console.log('Inside negative review');
   console.log(negative);
   if (negative) {
@@ -32,10 +32,9 @@ export const NegativeReview = (props) => {
         );
       }
       return elements;
-    } 
+    }
     const list = (
       <div>
-        
         <Button
           class='button button1'
           style={{

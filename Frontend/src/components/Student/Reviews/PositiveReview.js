@@ -19,10 +19,23 @@ export const PositiveReview = (props) => {
       }
       return elements;
     };
-
+const creatCards=(n) => {
+  var elements = [];
+  if(n=== 1) {
+    elements.push(
+      <i className='fa fa-square' aria-hidden='true' style={{ color: 'green' }}></i>,
+    );
+  }
+  if(n=== 0){
+    elements.push(
+      <i className='fa fa-square' aria-hidden='true' style={{ color: 'red' }}></i>,
+    );
+  }
+  return elements;
+} 
     const list = (
       <div>
-        <hr />
+       
         <Button
           class='button button1'
           style={{
@@ -44,9 +57,11 @@ export const PositiveReview = (props) => {
         >
           "{positive.headline}"
         </p>
-        <p style={{ marginLeft: '10px' }}>
-          {positive.rating}.0 {createElements(positive.rating)}
-        </p>
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <p style={{marginLeft: "10px"}}>{positive.rating}.0 {createElements(positive.rating)}</p>
+                    <p style={{marginLeft: "10px"}}>Recommends {creatCards(positive.ceo_rating)}</p>
+                    <p style={{marginLeft: "10px"}}>Approves of CEO {creatCards(positive.recommended)}</p>
+                    </div>
         <p style={{ marginLeft: '10px' }}> {positive.description}</p>
         <p style={{ fontWeight: 'bold', marginLeft: '10px', padding: '0px' }}>
           Pros
@@ -76,7 +91,7 @@ export const PositiveReview = (props) => {
   } else {
     return (
       <div>
-        <p>Loading positive review.</p>
+        <p></p>
       </div>
     );
   }

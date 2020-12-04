@@ -45,6 +45,7 @@ import InterviewList from './Student/Interview/InterviewList';
 import InterviewAnswers from './Student/Interview/InterviewAnswers';
 import adminReview from './Admin/reviewsPhotos/allReviews';
 import adminPhotos from './Admin/reviewsPhotos/allPhotos';
+import AppliedJobs from './Student/Job/AppliedJobs';
 
 class Main extends Component {
   render() {
@@ -170,12 +171,6 @@ class Main extends Component {
           path='/admin/statistics/:companyName'
           component={adminCompanyReport}
         />
-        ]{' '}
-        <Route
-          exact
-          path='/reviews/:companyName'
-          component={nonUserCompanyReview}
-        />
         <Route exact path='/student/job/jobdetails' component={JobDetails} />
         <Route exact path='/admin/allReviews' component={adminReview} />
         <Route exact path='/' component={nonUserLanding} />
@@ -186,6 +181,7 @@ class Main extends Component {
         />
         <Route exact path='/admin/allPhotos' component={adminPhotos} />
         <Route exact path='/student/job/home' component={JobHome} />
+        <Route exact path='/student/job/appliedJobs' component={AppliedJobs} />
       </div>
     );
   }

@@ -49,7 +49,6 @@ async function uploadCompanyPhoto(msg, callback) {
         response.data = 'CHANGES_SAVED';
         return callback(null, response);
       } else if (!error1 && !result1) {
-        console.log('OK');
         Company.create(
           {
             sql_company_id: msg.companyId,

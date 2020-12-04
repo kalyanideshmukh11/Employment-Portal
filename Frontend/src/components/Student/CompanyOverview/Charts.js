@@ -1,9 +1,10 @@
 import React from 'react';
+import { Card, Button, Modal, Form, Alert, Badge } from 'react-bootstrap';
 import { Doughnut } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 
-export const Charts = (props) => {  
-    let reviewList = props.charts[0];
+export const CompanyCharts = (props) => {  
+    let reviewList = props.company_charts[0];
     console.log("Inside charts")
     console.log(reviewList) 
     if(reviewList){
@@ -74,7 +75,7 @@ export const Charts = (props) => {
 else{
     return(
         <div>
-            <p> </p>
+            <p></p>
         </div>
     )
 }
