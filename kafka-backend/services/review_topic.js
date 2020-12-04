@@ -158,7 +158,7 @@ async function companyReviews(msg, callback) {
         if (err || !doc) {
           response.status = 400;
         } else {
-          console.log(doc)
+          console.log(doc);
           //redisClient.setex("allReviews", 36000, JSON.stringify(doc));
           response.status = 200;
           response.data = doc;
@@ -494,7 +494,6 @@ async function TopStudents(msg, callback) {
     ],
     function (err, results) {
       console.log('Results:', results);
-      // let output = [];
       if (results.length > 5) {
         results = results.slice(0, 5);
       }
