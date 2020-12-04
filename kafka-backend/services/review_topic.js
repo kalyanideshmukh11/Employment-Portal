@@ -145,20 +145,6 @@ async function companyReviews(msg, callback) {
   let err = {};
   let response = {};
   console.log('In company reviews service. Msg: ', msg);
-
-  redisClient.get('companyReviews', function (err, data) {
-    if (err) {
-      console.log('error');
-      response.status = 400;
-    }
-    else if (data) {
-        console.log("fetching from redis cache");
-        console.log(data);
-        response.data = (JSON.parse(data));
-        console.log(response);
-        return callback( null, response)
-    }
-    else {
       console.log('fetching from mongoDb');
       Review.find({ company: msg.body, approvedstatus: "Approved"})
       .then ((rev) => {
@@ -171,9 +157,7 @@ async function companyReviews(msg, callback) {
       .catch((err) => {
         console.log(err);
       });
-    }
-  });
-}
+  }
 // async function companyReviews(msg, callback) {
 //   let err = {};
 //   let response = {};
@@ -575,6 +559,7 @@ async function updateApproved(msg, callback) {
       console.log(err);
     });
 }
+
 async function TopStudents(msg, callback) {
   await Review.aggregate(
     [
