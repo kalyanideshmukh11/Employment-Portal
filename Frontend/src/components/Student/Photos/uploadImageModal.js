@@ -55,6 +55,7 @@ class UploadImageModalForm extends Component{
         }
         form_data.append('sql_student_id', localStorage.getItem('sql_student_id'))
         form_data.append('sql_company_id', this.props.companyID)
+        form_data.append('company_name', this.props.companyName)
         this.setState({loading: true})
         axios.post(`${backendServer}student/addCompanyPictures/${this.props.companyID}`, form_data,
         {headers: { Authorization: `${localStorage.getItem("token")}` }
@@ -93,10 +94,10 @@ class UploadImageModalForm extends Component{
     }
     if(this.state.status === 'CHANGES_SAVED'){
         success.message = "Successfully uploaded the images."
-        setTimeout(function() {window.location = '/student/tabs/photos'}, 1500);
+        setTimeout(function() {window.location = '/student/contributions/salaries'}, 1500);
     } else if(this.state.server_status === 500){
         error.message = "Unable to upload the image."
-        setTimeout(function() {window.location = '/student/tabs/photos'}, 2000);
+        setTimeout(function() {window.location = '/student/contributions/salaries'}, 2000);
     }
     let section, renderOutput = [];
     if (this.state && this.state.images && this.state.images.length > 0) {
