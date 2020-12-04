@@ -488,7 +488,7 @@ async function getAllReviews(msg, callback) {
     }
     else {
       console.log('fetching from mongoDb');
-      Review.find()
+      Review.find({})
       .then ((rev) => {
         redisClient.setex("allReviews", 36000, JSON.stringify(rev));
         response.status = 200;
@@ -516,6 +516,7 @@ async function updateApproved(msg, callback) {
     .then((user) => {
       console.log(user);
       console.log('Review marks as favourite');
+      redisClient.del('allReviews')
       response.status = 200;
       response.message = 'REVIEW_UPDATED';
       return callback(null, response);
