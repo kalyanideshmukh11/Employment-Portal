@@ -48,11 +48,6 @@ class StudentProfileRO extends Component {
     this.props.getStudentProfile();
 
     setTimeout(() => {
-      console.log(this.props.studentProfile_data);
-      this.setState({});
-    }, 800);
-
-    setTimeout(() => {
       let details = this.props.studentProfile_data;
       console.log('hello');
       console.log(details);
