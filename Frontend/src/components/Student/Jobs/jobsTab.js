@@ -1,114 +1,150 @@
 import React, { Component } from 'react';
-import { Button, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import Navbar from '../../Student/Navbar/navbar_student';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { saveJobs } from '../../../store/actions/studentJobsAction';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
+import ReactPaginate from 'react-paginate';
+import ScaleLoader from "react-spinners/ScaleLoader";
+import JobList from './jobList';
 
 class JobsTab extends Component {
   constructor(props) {
     super(props);
-    this.routeParam = props.match.params.companyName;
     this.state = {
-        showModal: false,
-      };
-      this.handleOpenModal = this.handleOpenModal.bind(this);
-      this.handleCloseModal = this.handleCloseModal.bind(this);
+      student_jobs: [],
+      inputValue: '',
+      offset: 0,
+      company_jobs: [],
+      perPage: 5,
+      currentPage: 0,
+      loading: true
+    }
+    this.companyJobs = this.companyJobs.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
+    this.getJobs();
   }
 
-  componentDidMount() {
-    axios.get(`${backendServer}glassdoor/jobs/${this.routeParam}/fetchjobs/`)
-          .then(res => {
-              if(res.status === 200){
-                  if(res.data){
-                      this.props.saveJobs(res.data)
-                      console.log(this.props.jobs)
-                  }
-              }
-          })
-  };
-  handleOpenModal(arg) {
-    let jobdata = this.props.jobs.filter((job) => job._id === arg);
+  getJobs = () => {
+    console.log("function called.")
+    setTimeout(() => {
+      axios.get(`${backendServer}student/job/${this.props.companyName}`,
+      {headers: { Authorization: `${localStorage.getItem("token")}` }})
+        .then(response => {
+          console.log(response)
+          const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+          this.state.company_jobs = []
+          this.state.student_jobs = response.data
+          this.setState({
+            company_jobs: this.state.company_jobs.concat(slice),
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
+            loading: false
+          });
+        })
+    }, 800)
+  }
+  handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    console.log(selectedPage)
+    const offset = selectedPage * this.state.perPage;
+
     this.setState({
-      showModal: true,
-      jobdata: jobdata[0],
-      job_id: arg,
+      currentPage: selectedPage,
+      offset: offset
+    }, () => {
+      this.getJobs()
     });
-  }
 
-  handleCloseModal() {
-    this.setState({ showModal: false });
+  };
+
+  companyJobs = () => {
+    console.log("this is called")
+    var itemsRender = [], items, item;
+    if (this.state && this.state.company_jobs && this.state.company_jobs.length > 0) {
+      items = this.state.company_jobs
+      if (items.length > 0) {
+        for (var i = 0; i < items.length; i++) {
+          item = <JobList company_jobs={items[i]} />;
+          itemsRender.push(item);
+        }
+      }
+      console.log(itemsRender)
+      return itemsRender;
+    }
+  };
+  searchChangeHandler = (e) => {
+    console.log("onchange search", e.target.value)
+    this.setState({
+      inputValue: e.target.value
+    })
+  }
+  search = (event) => {
+    event.preventDefault();
+    const company_jobs = this.state.student_jobs.filter(job => {
+      console.log("inside search", this.state.inputValue)
+      console.log((job.title.toLowerCase().includes(this.state.inputValue.toLowerCase()) || job.city.toLowerCase().includes(this.state.inputValue.toLowerCase())))
+      return (job.title.toLowerCase().includes(this.state.inputValue.toLowerCase()) || job.city.toLowerCase().includes(this.state.inputValue.toLowerCase()))
+    })
+
+    console.log('Result after search filter', company_jobs)
+
+    this.setState(() => ({ company_jobs }))
   }
 
   render() {
-    let renderOutput = [];
-    if (this.props && this.props.jobs && this.props.jobs.length > 0) {
-      for (var i = 0; i < this.props.jobs.length; i++) {
-        const job_id = this.props.jobs[i]._id;
-        renderOutput.push(
-          <div className='container' style={{ paddingRight: '60%' }}>
-            <div className='col-md-12'>
-              <Card.Title>
-                <a href='#' onClick={() => this.handleOpenModal(job_id)}>
-                  {this.props.jobs[i].title}
-                </a>
-                <Card.Body>
-                    <h6>{this.props.jobs[i].companyName}- {this.props.jobs[i].city},{this.props.jobs[i].state}</h6>
-                    <div>
-                    {this.props.jobs[i].posted_date}
-                    </div>
-                </Card.Body>
-              </Card.Title>
-              <hr />
-            </div>
-          </div>,
-        );
-      }
+    let section,
+      renderOutput = [];
+    if (this.state && this.state.company_jobs && this.state.company_jobs.length > 0) {
+      section = this.companyJobs(this.state.company_jobs);
+      renderOutput.push(section);
+    } else {
+      renderOutput = (
+        <div class='center' style={{ position: "fixed", top: "95%", left: "30%" }}>
+          <ScaleLoader
+            size={50}
+            color={"green"}
+            loading={this.state.loading}
+          />
+        </div>
+
+      )
     }
+    let paginateElem = null
+    if (this.state.company_jobs.length > 0) {
+      paginateElem = (
+        <div>
+          <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"} /></div>
+      )
+    }
+
     return (
-      <React.Fragment>
-        <Navbar />
-        <div className='container'>
-          <div className='row'>
-            <div className='col-md-12 mt-5'>
-              <h3
-                style={{ color: '#028A0F', textAlign: 'center' }}
-                className='pl-3'>
-                All Jobs
-              </h3>
-              <span style={{ float: 'right' }}>
-                <Link
-                  to={{
-                    pathname: `/company/addjob`,
-                  }}>
-                  <Button variant='success'>Add New Job</Button>
-                </Link>
-              </span>
-            </div>
-            {renderOutput}
+
+      <div style={{ margin: 'auto', width: '50%' }}>
+        <div className='col-md-12 mt-5'>
+          <div className='col-md-12 mt-5' style={{ display: 'flex' }}>
+            <input type='text' placeholder='Search Job Title, or City' className='mr-sm-3'
+              style={{ width: '8cm' }} value={this.state.inputValue} onChange={this.searchChangeHandler} />
+            <Button onClick={this.search} variant='primary'>Find Jobs</Button>
           </div>
         </div>
-      </React.Fragment>
-    );
+        <br></br>
+        <div class='row'>
+          {renderOutput}
+        </div>
+        {paginateElem}
+
+      </div>
+    )
   }
+
 }
-
-JobsTab.propTypes = {
-  saveJobs: PropTypes.func.isRequired,
-  jobs: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  jobs: state.jobs.jobs,
-});
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-      saveJobs: (data) => dispatch(saveJobs(data)),
-     
-    }
-  }
-export default connect(mapStateToProps,mapDispatchToProps )(JobsTab);
+export default JobsTab;

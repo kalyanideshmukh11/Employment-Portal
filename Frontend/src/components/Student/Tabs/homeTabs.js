@@ -5,6 +5,7 @@ import Comp from '../component';
 import CompanyOverview from '../CompanyOverview/companyOverview';
 import ReviewTab from '../Reviews/ReviewTab';
 import AddSalary from '../Salary/AddSalary';
+import JobsTab from '../Jobs/jobsTab';
 import Interview from '../Interview/InterviewList';
 import Answers from '../Interview/InterviewAnswers';
 import PhotosTab from '../Photos/photosTab';
@@ -30,7 +31,7 @@ class HomeTabs extends Component {
         this.state = {
           loadComponent: (
             <CompanyOverview
-              companyID={this.props.location.companyID}
+              companyID={this.props.location.companyID} companyName={this.props.location.companyName}
             ></CompanyOverview>
           ),
         };
@@ -147,7 +148,7 @@ class HomeTabs extends Component {
                   onClick={() =>
                     this.loadComp(
                       <CompanyOverview
-                        companyID={this.props.location.companyID}
+                        companyID={this.props.location.companyID} companyName={this.props.location.companyName}
                       ></CompanyOverview>
                     )
                   }
@@ -162,9 +163,13 @@ class HomeTabs extends Component {
                   Overview{' '}
                 </Button>
                 <Button
-                  onClick={() =>
-                    this.loadComp(<Comp str='This is Jobs Tab'></Comp>)
-                  }
+                 onClick={() =>
+                  this.loadComp(
+                    <JobsTab
+                      companyName={this.props.location.companyName}
+                    ></JobsTab>
+                  )
+                }
                   style={{
                     backgroundColor: 'transparent',
                     color: 'green',

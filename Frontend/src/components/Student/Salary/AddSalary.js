@@ -1,56 +1,77 @@
 import React, { Component } from 'react';
-import Navbar from '../../Student/Navbar/navbar_student';
-import { Link } from 'react-router-dom';
-import {
-  Container,
-  Modal,
-  Col,
-  Row,
-  Form,
-  Dropdown,
-  Button,
-  Alert,
-  ButtonGroup,
-} from 'react-bootstrap';
+import {Modal,Col,Row,Form,Button,ButtonGroup,} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  insertNewSalaryDetails,
-  getSalaryDetails,
-} from '../../../store/actions/studentSalaryAction';
+import {insertNewSalaryDetails} from '../../../store/actions/studentSalaryAction';
 import 'react-bootstrap/ModalHeader';
 import axios from 'axios';
 import backendServer from '../../../webConfig';
-import { SalaryList } from './SalaryList';
-// import { useParams } from 'react-router-dom';
+import SalaryList from './SalaryList';
+import ReactPaginate from 'react-paginate';
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 class AddSalary extends Component {
   constructor(props) {
     super(props);
-    this.state = { show: false };
+    this.state = { show: false,
+      offset: 0,
+      salary_items: [],
+      perPage: 5,
+      currentPage: 0,
+     loading: true
+     };
     this.changeHandler = this.changeHandler.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  componentDidMount() {
+    this.salaryItems = this.salaryItems.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
     this.getSalary();
-    console.log(this.props.companyName);
   }
-  getSalary = () => {
-    console.log('running');
 
-    axios
-      .get(`${backendServer}student/salary/${this.props.companyName}`)
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          if (res.data) {
-            this.props.getSalaryDetails(res.data);
-            //console.log(this.props.salary.salary[0]._id.job_title)
+  getSalary=()=> {
+    console.log("function called.")
+    setTimeout(() => {
+        axios.get(`${backendServer}student/salary/${this.props.companyName}`,
+        {headers: { Authorization: `${localStorage.getItem("token")}` }})
+        .then(response => {
+          console.log(response)
+            const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.state.salary_items = []
+            this.setState({
+                salary_items: this.state.salary_items.concat(slice),
+                pageCount: Math.ceil(response.data.length / this.state.perPage),
+                loading: false
+            });
+        })
+    }, 800)
+}
+  handlePageClick = (e) => {
+    const selectedPage = e.selected;
+    console.log(selectedPage)
+    const offset = selectedPage * this.state.perPage;
+    this.setState({
+        currentPage: selectedPage,
+        offset: offset
+    }, () => {
+        this.getSalary()
+    });
+
+};
+
+salaryItems = () => {
+  console.log("this is called")
+  var itemsRender = [], items, item;
+  if (this.state && this.state.salary_items && this.state.salary_items.length > 0) {
+      items = this.state.salary_items
+      if (items.length > 0) {
+          for (var i = 0; i < items.length; i++) {
+              item = <SalaryList salary_items={items[i]}/>;
+              itemsRender.push(item);
           }
-        }
-      });
-  };
-
+      }
+      console.log(itemsRender)
+      return itemsRender;
+  } 
+};
   showModal = () => {
     this.setState({ show: true });
   };
@@ -85,21 +106,67 @@ class AddSalary extends Component {
   }
 
   render() {
+    let error = {
+      message: null
+  }
+  let success = {
+      message: null
+  }
+  if(this.props.status === "Inserted Successfully"){
+      success.message = "Successfully added your salary details."
+      setTimeout(function() {window.location = '/student/contributions/salaries'}, 1500);
+  } else if(this.state.server_status === 500){
+      error.message = "Unable to make changes."
+      setTimeout(function() {window.location = '/student/contributions/salaries'}, 2000);
+  }
+    let section,
+    renderOutput = [];
+
+    if (this.state && this.state.salary_items && this.state.salary_items.length > 0) {
+        section = this.salaryItems(this.state.salary_items);
+        renderOutput.push(section);
+            }else {
+                renderOutput = (
+                    <div class='center' style = {{position: "fixed", top: "70 %", left: "30%" }}>  
+                    <ScaleLoader
+                    size={50}
+                    color={"green"}
+                   loading={this.state.loading}
+                     />
+                    </div>
+
+                )
+            }
+    let paginateElem = null
+    if(this.state.salary_items.length > 0){
+        paginateElem = (
+            <div>
+            <hr />
+            <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.state.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}/></div>
+        )
+    }
+
     return (
       <React.Fragment>
-        <Row>
-          <Col sm={8} md={8} lg={8}>
-            <h4 style={{ color: '#3BB143', float: 'left' }}>
-              Salary range of all the job title
-            </h4>
-            <br />
-            <React.Fragment>
-              <div className='w-100 bg-light text-dark mt-5 p-5 shadow rounded'>
-                <SalaryList salaryList={this.props.salary}></SalaryList>
-              </div>
-            </React.Fragment>
-          </Col>
-          <Col sm={4} md={4} lg={4}>
+        <Row> 
+            <Col  md={{ span: 6, offset: 3 }}>
+                <div class='row w-100  mt-5 p-5  border rounded'>
+                  {renderOutput}
+                </div>
+                  {paginateElem}
+           </Col>            
+          <Col  md={{ span: 3, offset: 0 }}>
             <Modal show={this.state.show} handleClose={this.hideModal}>
               <Modal.Header closeButton onClick={this.hideModal}>
                 <Modal.Title>Add a Salary</Modal.Title>
@@ -119,7 +186,7 @@ class AddSalary extends Component {
                     ></Form.Control>
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Currancy*</Form.Label>
+                    <Form.Label>Currency*</Form.Label>
                     <Form.Control
                       required={true}
                       type='text'
@@ -188,22 +255,21 @@ class AddSalary extends Component {
           </Col>
         </Row>
       </React.Fragment>
-    );
+    )
   }
-}
+  }
 
 AddSalary.propTypes = {
   insertNewSalaryDetails: PropTypes.func.isRequired,
   status: PropTypes.object.isRequired,
-  getSalaryDetails: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   salary: state.salary,
+  status: state.salary.status
 });
 const mapDispatchToProps = (dispatch) => {
   return {
-    getSalaryDetails: (data) => dispatch(getSalaryDetails(data)),
     insertNewSalaryDetails: (data) => dispatch(insertNewSalaryDetails(data)),
   };
 };
