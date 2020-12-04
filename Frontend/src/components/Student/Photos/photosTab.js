@@ -87,7 +87,7 @@ class PhotosTab extends Component {
     render(){
         let section,
         renderOutput = [];
-        if(this.state.status === "NO_PHOTOS_AVAILABLE"){
+        if(this.state.status === "NO_PHOTOS_AVAILABLE" || this.state.photo_items.length===0){
             renderOutput = (<div style={{padding: "0px 10px 10px 10px", color:"gray", fontSize: "18px"}}>
                 This company has no photos available. Be the first to add them.
             </div>)

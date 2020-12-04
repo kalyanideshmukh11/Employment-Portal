@@ -21,6 +21,7 @@ exports.reviewService = function (msg, callback) {
 
     case 'getStudentReviews':
       getStudentReviews(msg, callback);
+      break;
 
     case 'reviewsPerDay':
       ReviewsPerDay(msg, callback);
@@ -375,16 +376,17 @@ async function TopRated(msg, callback) {
 async function getStudentReviews(msg, callback) {
   let err = {},
     response = {};
-  console.log('get Student Interviews: ', msg);
+  console.log('get Student Reviews: ', msg);
   await Review.find({ sql_student_id: msg.userId }, (result, error) => {
     if (error) {
       err.message = error;
       err.status = 500;
       return callback(null, error);
     } else if (result) {
+      console.log(results)
       response.status = 200;
       response.message = 'STUDENT_REVIEWS';
-      response.data = JSON.stringify(result);
+      response.data = JSON.stringify(result[0]);
       return callback(null, response);
     }
   });
