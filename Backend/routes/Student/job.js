@@ -94,7 +94,7 @@ router.get('/all', (req, res) => {
   console.log('Get all jobs');
   kafka.make_request(
     'jobs_topic',
-    { path: 'get_jobs' },
+    { path: 'getJobs' },
     function (err, results) {
       if (err) {
         console.log('Inside err');
