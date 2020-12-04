@@ -12,7 +12,9 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case NEW_REVIEW_POSTING:
-      return { ...state, status: action.payload };
+      return { 
+        ...state, 
+        status: action.payload };
     case GET_REVIEW:
         return { 
           ...state, 

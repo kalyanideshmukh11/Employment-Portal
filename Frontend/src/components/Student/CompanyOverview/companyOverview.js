@@ -20,22 +20,29 @@ class CompanyOverview extends Component {
       user: {},
     };
   }
-  componentDidMount() {
-    axios
-      .post(`${backendServer}student/incrementVisits/${this.routeParam}`)
-      .then((res) => {
-        console.log('API has been hit for increment');
-      });
-  }
+  // componentDidMount() {
+  //   axios
+  //     .post(`${backendServer}student/incrementVisits/${this.routeParam}`)
+  //     .then((res) => {
+  //       console.log('API has been hit for increment');
+  //     });
+  // }
 
 componentDidMount(){
+  this.incrementCount();
   this.getComapnayInfo();
   this.getAverageRating();
   this.getPositiveReview();
   this.getNegativeReview();
   this.getFeaturedReview();
 }
-
+incrementCount = () => {
+  axios
+    .post(`${backendServer}student/incrementVisits/${this.props.companyID}`)
+    .then((res) => {
+      console.log('API has been hit for increment');
+    });
+};
 getComapnayInfo =() =>{
   axios
   .get(`${backendServer}company/profile/${this.props.companyID}`,
