@@ -33,8 +33,7 @@ class ReviewsPerday extends Component {
           series: [
             {
               name: 'Count',
-              // data: [response.data.total],
-              data: [2],
+              data: [response.data.total],
             },
           ],
         });
