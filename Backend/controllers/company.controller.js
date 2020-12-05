@@ -22,7 +22,8 @@ exports.create = (req, res) => {
   company
     .create(c)
     .then((data) => {
-      res.send(data);
+      let msg = { status: 'SUCCESS' };
+      res.send(msg);
     })
     .catch((err) => {
       res.status(500).send({
@@ -57,7 +58,7 @@ exports.search = (req, res) => {
             res.writeHead(500, { 'Content-Type': 'text/plain' });
             res.end('Some error has occured');
           } else {
-            console.log(results);
+            // console.log(results);
             // res.writeHead(200, { "Content-Type": "aplication/json" });
             res.send(results);
           }
