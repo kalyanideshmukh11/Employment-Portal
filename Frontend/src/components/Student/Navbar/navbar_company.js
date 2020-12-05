@@ -15,6 +15,7 @@ import {
 // import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import glassdorNavIco from '../images/glassdoor-logotype-rgb.png';
 import { Redirect } from 'react-router';
+// const redisClient = require('../../config/redisConfig');
 
 class StudentNavbar extends Component {
   constructor(props) {

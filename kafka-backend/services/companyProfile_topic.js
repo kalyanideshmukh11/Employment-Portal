@@ -3,7 +3,7 @@
 const Review = require("../models/review");
 const Company = require("../models/company");
 const pool = require('../config/sqlConfig');
-// const redisClient = require('../redisConfig');
+const redisClient = require('../config/redisConfig');
 
 exports.companyProfileService = function (msg, callback) {
   console.log("In companyProfileService - path:", msg.path);
@@ -31,6 +31,7 @@ async function getCompanyDetails(msg, callback) {
   let response = {};
   console.log("In get company details topic service. Msg: ", msg);
   console.log(msg.body);
+
   let sql = `CALL get_companyProfile('${msg.body}');`;
   console.log(sql)
     pool.query(sql, (err, result) => {
@@ -47,7 +48,7 @@ async function getCompanyDetails(msg, callback) {
         return callback(null, response)
       };
     });
-}
+  }
 
 async function updateCompanyDetails(msg, callback) {
   let err = {};
@@ -66,6 +67,7 @@ async function updateCompanyDetails(msg, callback) {
         return callback(null, err)
       }
       if (result && result.length > 0 && result[0][0]) {
+        redisClient.del('companyDetails')
         response.status = 200;
         response.message = "COMPANYDETAILS_UPDATED";
         console.log(response);
